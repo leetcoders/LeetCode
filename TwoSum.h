@@ -16,7 +16,7 @@
  Output: index1=1, index2=2
 
  Solution:
- 1. traverse the vector (n^n)
+ 1. traverse the vector (n^2)
  2. sort first (sort nlogn)
  */
 #include <vector>
