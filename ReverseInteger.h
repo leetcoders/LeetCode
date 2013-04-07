@@ -35,7 +35,7 @@ public:
         return flag ? -res : res;
     }
 
-	int reverse_assert(int x) {
+    int reverse_assert(int x) {
         bool flag = false;
         if (x < 0) flag = true;
         x = abs(x);
