@@ -12,8 +12,8 @@
  c) Replace a character
 
  Solution: Dynamic Programming.
-		   Time complexity: O(mn)
-		   Space complexity: O(mn)
+           Time complexity: O(mn)
+           Space complexity: O(mn)
  */
 
 class Solution {
