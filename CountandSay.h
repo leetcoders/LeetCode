@@ -15,11 +15,12 @@
  Note: The sequence of integers will be represented as a string.
 
  Solution: Count the number of equal characters one by one.
+ New in version 2: Use stringstream instead of sprintf for inverting integer into string.
 */
 
 class Solution {
 public:
-    string countAndSay(int n) {
+    string countAndSay_1(int n) {
         if (n == 1) return string("1");
         string old("11");
         string res;
@@ -56,5 +57,34 @@ public:
         sprintf(x, "%d\0", count);
         s += string(x);
         s.push_back(c);
+    }
+
+    string countAndSay_2(int n) {
+        if (n == 1) return string("1");
+        string res("11");
+        
+        for (int i = 3; i <= n; i++)
+        {
+            int count = 1;
+            char c = res[0];
+            stringstream stream;
+            for (int j = 1; j < res.size(); j++)
+            {
+                if (res[j] == c)
+                {
+                    count++;
+                }
+                else
+                {
+                    stream<<count<<c;
+                    c = res[j];
+                    count = 1;
+                }
+            }
+            stream<<count<<c;
+            res = stream.str();
+        }
+        
+        return res;
     }
 };
