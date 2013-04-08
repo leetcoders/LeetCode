@@ -11,8 +11,8 @@
  You may assume no duplicate exists in the array.
 
  Solution: 
- 1. Sequence search.
- 2. Binary search. [4 5 6] -7- 8 1 2, 5 6 0 -1- [2 3 4]
+ 1. Sequence search. O(n)
+ 2. Binary search. O(lgn) eg. [4 5 6] -7- 8 1 2, 5 6 0 -1- [2 3 4]
  */
 
 class Solution {
