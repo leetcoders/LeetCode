@@ -71,12 +71,8 @@ public:
         }
         
     	// reverse
-        vector<vector<int>> leaf2root;
-        for (size_t i = 0; i < root2leaf.size(); i++)
-        {
-            leaf2root.push_back(root2leaf[root2leaf.size()-i-1]);
-        }
-        return leaf2root;
+        reverse(root2leaf.begin(), root2leaf.end());
+        return root2leaf;
     }
 
     vector<vector<int> > levelOrderBottom_2(TreeNode *root) {
