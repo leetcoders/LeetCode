@@ -22,20 +22,15 @@
 class Solution {
 public:
     string convert(string s, int nRows) {
-        if (nRows == 1) return s;
-        
+        if (nRows == 1) return s; 
         string res;
         int offset = 2 * (nRows - 1);
         for (int i = 0; i < nRows; i++)
         {
-            
-            if (i == 0 || i == nRows-1)
-            {
+            if (i == 0 || i == nRows-1) {
                 for (int j = i; j < s.size(); j += offset)
                     res.push_back(s[j]);
-            }
-            else
-            {
+            } else {
                 int j_1 = i;
                 int j_2 = j_1 + offset - i * 2;
                 bool use_1 = true;
@@ -47,8 +42,7 @@ public:
                     use_1 = !use_1;
                 }
             }
-        }
-        
+        } 
         return res;
     }
 };
