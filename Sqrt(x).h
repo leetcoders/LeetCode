@@ -10,6 +10,7 @@
 
  Solution: 1. Binary search in range [0, x / 2 + 1].
            2. Newton iteration method. x(i+1) = (x(i) + n/x(i)) / 2.
+ See my blog (http://www.cnblogs.com/AnnieKim/archive/2013/04/18/3028607.html) for more explanation (in Chinese).
  */
 
 class Solution {
