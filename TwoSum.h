@@ -21,30 +21,30 @@
 
 bool compare(pair<int, int> a, pair<int, int> b)
 {
-	return a.second < b.second;
+    return a.second < b.second;
 }
 
 class Solution {
 public:
-	vector<int> twoSum(vector<int> &numbers, int target) {
-		vector<pair<int, int>> nums;
-		for (int i=0; i<numbers.size(); i++)
-			nums.push_back(pair<int, int>(i, numbers[i]));
-		sort(nums.begin(), nums.end(), compare);
+    vector<int> twoSum(vector<int> &numbers, int target) {
+        vector<pair<int, int>> nums;
+        for (int i=0; i<numbers.size(); i++)
+            nums.push_back(pair<int, int>(i, numbers[i]));
+        sort(nums.begin(), nums.end(), compare);
 
-		int l = 0, r = nums.size() - 1;
-		while (l < r)
-		{
+        int l = 0, r = nums.size() - 1;
+        while (l < r)
+        {
             int sum = nums[l].second + nums[r].second;
 			if (sum == target) break;
             else if (sum < target) l++;
             else r--;
-		}
+        }
 
-		vector<int> res;
-		res.push_back(min(nums[l].first, nums[r].first) + 1);
-		res.push_back(max(nums[l].first, nums[r].first) + 1);
-		
-		return res;
-	}
+        vector<int> res;
+        res.push_back(min(nums[l].first, nums[r].first) + 1);
+        res.push_back(max(nums[l].first, nums[r].first) + 1);
+    
+        return res;
+    }
 };
