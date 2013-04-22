@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 22, 2013
+ Update:     Apr 22, 2013
  Problem:    Populating Next Right Pointers in Each Node
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_116
@@ -30,7 +31,8 @@
   / \  / \
  4->5->6->7 -> NULL
 
- Solution: Two 'while' loops: top->leaf and left->right.
+ Solution: 1. Iterative: Two 'while' loops: top->leaf and left->right.
+           2. Recursive: DFS.
  */
 
 /**
@@ -44,7 +46,7 @@
 
 class Solution {
 public:
-    void connect(TreeLinkNode *root) {
+    void connect_1(TreeLinkNode *root) {
         if (!root) return;
         root->next = NULL;
         TreeLinkNode *parent = root;
@@ -62,5 +64,19 @@ public:
             cTail->next = NULL;
             parent = parent->left;
         }
+    }
+
+    void connect_2(TreeLinkNode *root) {
+        if (!root) return;
+        root->next = NULL;
+        connectRe(root);
+    }
+
+    void connectRe(TreeLinkNode *node) {
+        if (!node || !node->left) return;
+        node->left->next = node->right;
+        node->right->next = node->next ? node->next->left : NULL;
+        connectRe(node->left);
+        connectRe(node->right);
     }
 };
