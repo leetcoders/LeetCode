@@ -21,7 +21,7 @@ public:
         {
             sum = carry;
             for (int j = max(i - n + 1, 0); j <= min(m - 1, i); ++j)
-                sum += (num1[m-j-1]-'0') * (num2[n-(i-j)-1]-'0');
+                sum += (num1[m-j-1] - '0') * (num2[n-(i-j)-1] - '0');
             carry = sum / 10;
             res.push_back(sum % 10 + '0');
         }
