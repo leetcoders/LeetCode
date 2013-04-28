@@ -11,13 +11,14 @@
  However, you may not engage in multiple transactions at the same time 
  (ie, you must sell the stock before you buy again).
 
- Solution: At the beginning of the ascending order: buy.
-           At the ending of the ascending order: sell.
+ Solution: 1. At the beginning of the ascending order: buy.
+              At the ending of the ascending order: sell.
+           2. For ascending order [1,2,4], (4 - 1) == (2 - 1) + (4 - 2).
  */
 
 class Solution {
 public:
-    int maxProfit(vector<int> &prices) {
+    int maxProfit_1(vector<int> &prices) {
         int res = 0;
         int buy_i = -1;
         for (int i = 1; i < prices.size(); ++i)
@@ -34,6 +35,16 @@ public:
         }
         if (buy_i != -1)
             res += prices[prices.size() - 1] - prices[buy_i];
+        return res;
+    }
+
+    int maxProfit(vector<int> &prices) {
+        int res = 0;
+        for (int i = 1; i < prices.size(); ++i)
+        {
+            if (prices[i] > prices[i-1])
+                res += prices[i] - prices[i-1];
+        }
         return res;
     }
 };
