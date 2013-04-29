@@ -1,4 +1,4 @@
-# Leetcode
+# LeetCode
 ========
 
 Solve problems from leetcode (http://leetcode.com/onlinejudge).
