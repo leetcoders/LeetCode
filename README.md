@@ -35,6 +35,7 @@ All the codes are tested using online-judge.
 * Symmetric Tree
 * Valid Palindrome
 * Validate Binary Search Tree
+* Restore IP Addresses
 
 ### Binary Search
 * Search Insert Position
