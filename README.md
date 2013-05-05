@@ -11,6 +11,7 @@ All the codes are tested using online-judge.
 * Minimum Path Sum
 * Unique Paths
 * Unique Paths II
+* Longest Palindromic Substring
 
 ### Recursion
 * N-Queens
@@ -36,6 +37,7 @@ All the codes are tested using online-judge.
 * Valid Palindrome
 * Validate Binary Search Tree
 * Restore IP Addresses
+* Combinations
 
 ### Binary Search
 * Search Insert Position
@@ -68,6 +70,7 @@ All the codes are tested using online-judge.
 * 3Sum Closest
 * 4Sum
 * Add Binary
+* Longest Palindromic Substring
 
 ### Linked List
 * Add Two Numbers
