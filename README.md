@@ -12,6 +12,7 @@ All the codes are tested using online-judge.
 * Unique Paths
 * Unique Paths II
 * Longest Palindromic Substring
+* Interleaving String
 
 ### Recursion
 * N-Queens
@@ -38,6 +39,7 @@ All the codes are tested using online-judge.
 * Validate Binary Search Tree
 * Restore IP Addresses
 * Combinations
+* Interleaving String (dp is the best)
 
 ### Binary Search
 * Search Insert Position
