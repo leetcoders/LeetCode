@@ -42,14 +42,12 @@ public:
             res.push_back(r);
             return;
         }
-        set<int> used;
         for (int i = lastIndex + 1; i <= s.size() - (setSize - deep); ++i) {
-            if (used.find(s[i]) == used.end())
+            if (!binary_search(s.begin()+lastIndex+1, s.begin()+i, s[i]))
             {
                 r.push_back(s[i]);
                 subsetsWithDupRe(s, r, setSize, deep + 1, i);
                 r.pop_back();
-                used.insert(s[i]);
             }
         }
     }

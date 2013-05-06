@@ -42,7 +42,7 @@ public:
         }
         for (int i = start; i < num.size() && sum + num[i] <= target; ++i)
         {
-            if (find(num.begin()+start, num.begin()+i, num[i]) == num.begin()+i)
+            if (!binary_search(num.begin()+start, num.begin()+i, num[i]))
             {
                 com.push_back(num[i]);
                 combinationSum2Re(num, target, com, sum + num[i], i + 1);
