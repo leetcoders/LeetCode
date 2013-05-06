@@ -73,6 +73,7 @@ All the codes are tested using online-judge.
 * 4Sum
 * Add Binary
 * Longest Palindromic Substring
+* Next Permutation
 
 ### Linked List
 * Add Two Numbers
