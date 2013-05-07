@@ -75,6 +75,7 @@ All the codes are tested using online-judge.
 * Add Binary
 * Longest Palindromic Substring
 * Next Permutation
+* Longest Valid Parentheses
 
 ### Linked List
 * Add Two Numbers
