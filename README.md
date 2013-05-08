@@ -77,6 +77,7 @@ All the codes are tested using online-judge.
 * Next Permutation
 * Longest Valid Parentheses
 * Climbing Stairs
+* Permutation Sequence
 
 ### Linked List
 * Add Two Numbers
