@@ -117,5 +117,3 @@ All the codes are tested using online-judge.
 * Sum Root to Leaf Numbers
 * Symmetric Tree
 * Validate Binary Search Tree
-
-### Graph
