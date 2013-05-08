@@ -76,6 +76,7 @@ All the codes are tested using online-judge.
 * Longest Palindromic Substring
 * Next Permutation
 * Longest Valid Parentheses
+* Climbing Stairs
 
 ### Linked List
 * Add Two Numbers
