@@ -42,6 +42,7 @@ All the codes are tested using online-judge.
 * Interleaving String (dp is the best)
 * Combination Sum II
 * Letter Combinations of a Phone Numbers
+* Word Search
 
 ### Binary Search
 * Search Insert Position
