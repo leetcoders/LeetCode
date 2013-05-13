@@ -80,6 +80,7 @@ All the codes are tested using online-judge.
 * Longest Valid Parentheses
 * Climbing Stairs
 * Permutation Sequence
+* Simplify Path
 
 ### Linked List
 * Add Two Numbers
