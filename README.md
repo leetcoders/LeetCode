@@ -13,6 +13,7 @@ All the codes are tested using online-judge.
 * Unique Paths II
 * Longest Palindromic Substring
 * Interleaving String
+* Triangle
 
 ### Recursion
 * N-Queens
