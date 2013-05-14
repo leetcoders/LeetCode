@@ -18,8 +18,10 @@
  Bonus point if you are able to do this using only O(n) extra space, where n is the total number 
  of rows in the triangle.
 
- Solution: 1. DFS. (Time Limit Exceeded for large test data).
+ Solution: Note that there are n elements in the n-th row (n starts from 1).
+           1. DFS. (Time Limit Exceeded for large test data).
            2. DP. Do not need additional spaces (happen in-place).
+           3. DP. O(n) space (If the input 'triangle' can not be changed).
  */
 
 class Solution {
@@ -46,8 +48,21 @@ public:
 
     int minimumTotal_2(vector<vector<int>> &triangle) {
         for (int i = triangle.size() - 2; i >= 0; --i)
-            for (int j = 0; j < triangle[i].size(); ++j)
+            for (int j = 0; j < i + 1; ++j)
                 triangle[i][j] = triangle[i][j] + min(triangle[i+1][j], triangle[i+1][j+1]);
         return triangle[0][0];
+    }
+
+    int minimumTotal_3(vector<vector<int>> &triangle) {
+        int N = triangle.size();
+        int *dp = new int[N];
+        for (int i = 0; i < N; ++i)
+            dp[i] = triangle[N-1][i];
+        for (int i = N - 2; i >= 0; --i)
+            for (int j = 0; j < i + 1; ++j)
+                dp[j] = triangle[i][j] + min(dp[j], dp[j+1]);
+        int res = dp[0];
+        delete [] dp;
+        return res;
     }
 };
