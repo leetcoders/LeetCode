@@ -25,22 +25,16 @@
 class Solution {
 public:
     TreeNode *buildTree(vector<int> &preorder, vector<int> &inorder) {
-        int N = inorder.size();
-        return buildTreeRe(preorder, 0, N, inorder, 0, N);
+        return buildTreeRe(preorder.begin(), inorder.begin(), preorder.size());
     }
 
-    TreeNode *buildTreeRe(vector<int> &preorder, int pre_s, int pre_e, 
-                          vector<int> &inorder, int in_s, int in_e) {
-        int N = in_e - in_s;
+    TreeNode *buildTreeRe(vector<int>::iterator preorder, vector<int>::iterator inorder, int N) {
         if (N <= 0) return NULL;
-        int pos = 0;
-        while (pos < N && inorder[in_s + pos] != preorder[pre_s]) pos++;
-
-        TreeNode *root = new TreeNode(preorder[pre_s]);
-        root->left = buildTreeRe(preorder, pre_s + 1, pre_s + 1 + pos, 
-                                 inorder, in_s, in_s + pos);
-        root->right = buildTreeRe(preorder, pre_s + 1 + pos, pre_e, 
-                                 inorder, in_s + pos + 1, in_e);
+        vector<int>::iterator it = find(inorder, inorder + N, *preorder);
+        int pos = it - inorder;
+        TreeNode *root = new TreeNode(*preorder);
+        root->left = buildTreeRe(preorder+1, inorder, pos);
+        root->right = buildTreeRe(preorder+1+pos, inorder+pos+1, N-1-pos);
         return root;
     }
 };
