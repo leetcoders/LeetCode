@@ -14,6 +14,7 @@ All the codes are tested using online-judge.
 * Longest Palindromic Substring
 * Interleaving String
 * Triangle
+* Distinct Subsequences
 
 ### Recursion
 * N-Queens
@@ -44,6 +45,8 @@ All the codes are tested using online-judge.
 * Combination Sum II
 * Letter Combinations of a Phone Numbers
 * Word Search
+* Construct Binary Tree from Inorder and Postorder Traversal
+* Construct Binary Tree from Preorder and Inorder Traversal
 
 ### Binary Search
 * Search Insert Position
