@@ -86,6 +86,7 @@ All the codes are tested using online-judge.
 * Climbing Stairs
 * Permutation Sequence
 * Simplify Path
+* String to Integer (atoi)
 
 ### Linked List
 * Add Two Numbers
