@@ -47,6 +47,7 @@ All the codes are tested using online-judge.
 * Word Search
 * Construct Binary Tree from Inorder and Postorder Traversal
 * Construct Binary Tree from Preorder and Inorder Traversal
+* Generate Parentheses
 
 ### Binary Search
 * Search Insert Position
