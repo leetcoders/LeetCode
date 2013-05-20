@@ -50,6 +50,7 @@ All the codes are tested using online-judge.
 * Construct Binary Tree from Preorder and Inorder Traversal
 * Generate Parentheses
 * Surrounded Regions (runtime error)
+* Palindrome Partitioning
 
 ### Binary Search
 * Search Insert Position
