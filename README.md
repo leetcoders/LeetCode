@@ -15,6 +15,7 @@ All the codes are tested using online-judge.
 * Interleaving String
 * Triangle
 * Distinct Subsequences
+* Decode Ways
 
 ### Recursion
 * N-Queens
