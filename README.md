@@ -17,6 +17,7 @@ All the codes are tested using online-judge.
 * Distinct Subsequences
 * Decode Ways
 * Palindrome Partitioning II
+* Maximal Rectangle
 
 ### Recursion
 * N-Queens
