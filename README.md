@@ -92,6 +92,8 @@ All the codes are tested using online-judge.
 * Permutation Sequence
 * Simplify Path
 * String to Integer (atoi)
+* Minimum Window Substring
+* Longest Consecutive Sequence
 
 ### Linked List
 * Add Two Numbers
