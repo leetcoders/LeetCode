@@ -94,6 +94,8 @@ All the codes are tested using online-judge.
 * String to Integer (atoi)
 * Minimum Window Substring
 * Longest Consecutive Sequence
+* Trapping Rain Water
+* Valid Number
 
 ### Linked List
 * Add Two Numbers
