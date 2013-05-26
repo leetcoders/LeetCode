@@ -20,7 +20,7 @@
  isMatch("ab", ".*") ? true
  isMatch("aab", "c*a*b") ? true
 
- Solution: Take it easy!
+ Solution: ...
 */
 
 class Solution {
