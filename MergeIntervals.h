@@ -1,6 +1,6 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
- Date:       Apr 19, 2013
+ Date:       Jun 7, 2013
  Problem:    Merge Intervals
  Difficulty: Medium
  Source:     http://leetcode.com/onlinejudge#question_56
