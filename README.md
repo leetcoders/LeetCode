@@ -54,6 +54,7 @@ All the codes are tested using online-judge.
 * Surrounded Regions (runtime error)
 * Palindrome Partitioning
 * Combination Sum
+* Sudoku Solver
 
 ### Binary Search
 * Search Insert Position
