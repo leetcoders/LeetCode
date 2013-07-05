@@ -5,7 +5,7 @@ Solve problems from <a href="http://leetcode.com/onlinejudge">Leetcode</a>.
 All the codes are tested using online-judge.
 
 Here is a <a href="https://docs.google.com/spreadsheet/pub?key=0Aqt--%20wSNYfuxdGxQWVFsOGdVVWxQRlNUVXZTdEpOeEE&output=html">
-difficulty and frequency distribution chart</a> for each problem (which I got from internet and very useful).
+difficulty and frequency distribution chart</a> for each problem (which I got from the Internet and is very useful).
 
 
 
