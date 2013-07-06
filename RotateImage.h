@@ -10,7 +10,7 @@
  Follow up:
  Could you do this in-place?
 
- Solution: Rotate one-forth of the image clockwise.
+ Solution: Rotate one-fourth of the image clockwise.
  */
 
 class Solution {
