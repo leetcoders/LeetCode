@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 29, 2013
+ Update:     Jul 14, 2013
  Problem:    Valid Parentheses
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_20
@@ -10,6 +11,7 @@
 
  Solution: stack.
  */
+
 class Solution {
 public:
     bool isValid(string s) {
@@ -20,13 +22,11 @@ public:
             {
                 stk.push(s[i]);
             }
-            else if (s[i] == ')' || s[i] == ']' || s[i] == '}')
+            else
             {
-                if (stk.empty()) return false;
-                char ch = stk.top();
-                stk.pop();
-                if (abs(ch - s[i]) > 2)
+                if (stk.empty() || abs(stk.top() - s[i]) > 2) 
                     return false;
+                stk.pop();
             }
         }
         return stk.empty();
