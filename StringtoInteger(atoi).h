@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 17, 2013
+ Update:     Jul 14, 2013
  Problem:    String to Integer (atoi)
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_8
@@ -30,31 +31,24 @@
 class Solution {
 public:
     int atoi(const char *str) {
-        long long res = 0;
-        int i = 0;
-        while (isspace(str[i]))
-            i++;
-
+        while (*str == ' ')
+            str++;
         bool positive = true;
-        if (str[i] == '+' || str[i] == '-')
+        if (*str == '+' || *str == '-')
         {
-            if (str[i] == '-')
+            if (*str == '-')
                 positive = false;
-            i++;
+            str++;
         }
-
-        while (isdigit(str[i]) && str[i] != '\0')
+        long long res = 0;
+        while (isdigit(*str))
         {
-            res = res * 10 + (str[i] - '0');
-            i++;
+            res = res * 10 + (*str - '0');
+            str++;
         }
-
         res = positive ? res : -res;
-        if (res > INT_MAX)
-            return INT_MAX;
-        if (res < INT_MIN)
-            return INT_MIN;
-
+        if (res > INT_MAX) return INT_MAX;
+        if (res < INT_MIN) return INT_MIN;
         return (int)res;
     }
 };
