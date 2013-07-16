@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 10, 2013
+ Update:     Jul 16, 2013 [Two pointers ('last' and 'lastlast').]
  Problem:    Remove Duplicates from Sorted Array II
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_80
@@ -17,21 +18,16 @@
 class Solution {
 public:
     int removeDuplicates(int A[], int n) {
-        if (n == 0 || n == 1) return n;
-        int j = 1;
-        int count = 1;
-        for (int i = 1; i < n; i++)
-            if (A[i] != A[j-1])
+        if (n <= 2) return n;
+        int lastlast = 0, last = 1;
+        for (int cur = 2; cur < n; ++cur)
+        {
+            if (A[lastlast] != A[cur] || A[last] != A[cur])
             {
-                A[j++] = A[i];
-                count = 1;
+                A[++last] = A[cur];
+                lastlast++;
             }
-            else
-            {
-                if (count < 2)
-                    A[j++] = A[i];
-                count++;
-            }
-        return j;
+        }
+        return last + 1;
     }
 };
