@@ -1,7 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Jan 17, 2013
- Update:     Apr 20, 2013
+ Update:     Jul 19, 2013
  Problem:    Two Sum
  Difficulty: easy
  Source:     http://leetcode.com/onlinejudge#question_1
@@ -29,21 +29,22 @@ public:
     vector<int> twoSum(vector<int> &numbers, int target) {
         vector<pair<int, int>> nums;
         for (int i=0; i<numbers.size(); i++)
-            nums.push_back(pair<int, int>(i, numbers[i]));
+            if (numbers[i] < target)
+                nums.push_back(pair<int, int>(i + 1, numbers[i]));
         sort(nums.begin(), nums.end(), compare);
-
+    
         int l = 0, r = nums.size() - 1;
         while (l < r)
         {
             int sum = nums[l].second + nums[r].second;
-			if (sum == target) break;
+            if (sum == target) break;
             else if (sum < target) l++;
             else r--;
         }
 
         vector<int> res;
-        res.push_back(min(nums[l].first, nums[r].first) + 1);
-        res.push_back(max(nums[l].first, nums[r].first) + 1);
+        res.push_back(min(nums[l].first, nums[r].first));
+        res.push_back(max(nums[l].first, nums[r].first));
     
         return res;
     }
