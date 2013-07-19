@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 9, 2013
+ Update:     Jul 19, 2013 (Refactor)
  Problem:    Implement strStr()
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_28
@@ -14,28 +15,17 @@
 class Solution {
 public:
     char *strStr(char *haystack, char *needle) {
-        int i = 0;
-        int j = 0;
-        int index = 0;
-        while (haystack[i] != '\0' && needle[j] != '\0')
+        while(true)
         {
-            if (haystack[i] == needle[j]) {
-                if (j == 0)
-                    index = i;
-                j++;
-            } else {
-                if (j > 0) {
-                    i = index;  // reset
-                    j = 0;
-                }
+            char *h = haystack, *n = needle;
+            while (*n != '\0' && *h == *n)
+            {
+                h++; 
+                n++;
             }
-            
-            i++;
+            if (*n == '\0') return haystack;
+            if (*h == '\0') return NULL;
+            haystack++;
         }
-        
-        if (needle[j] == '\0')
-            return haystack + index;
-        else
-            return NULL;
     }
 };
