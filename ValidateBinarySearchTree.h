@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 10, 2013
+ Update:     Jul 19, 2013
  Problem:    Validate Binary Search Tree
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_98
@@ -11,7 +12,7 @@
  The right subtree of a node contains only nodes with keys greater than the node's key.
  Both the left and right subtrees must also be binary search trees.
 
- Solution: Recursion. Add to parameters(lower&upper bound). O(n)
+ Solution: Recursion. Add to parameters(lower & upper bound). O(n)
  */
 
 /**
@@ -29,17 +30,11 @@ public:
         return isValidBST(root, INT_MIN, INT_MAX);
     }
     
-    bool isValidBST(TreeNode *root, int min, int max){
-        if (!root) return true;
+    bool isValidBST(TreeNode *node, int lower, int upper){
+        if (!node) return true;
+        if (node->val <= lower || node->val >= upper) return false;
         
-        if (root->left && (root->left->val >= root->val || 
-                           root->left->val <= min))
-            return false;
-        if (root->right && (root->right->val <= root->val ||
-                            root->right->val >= max))
-            return false;
-        
-        return isValidBST(root->left, min, root->val) && 
-               isValidBST(root->right, root->val, max);
+        return isValidBST(node->left, lower, min(node->val, upper)) && 
+               isValidBST(node->right, max(lower, node->val), upper);
     }
 };
