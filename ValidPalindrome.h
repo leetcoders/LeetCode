@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 29, 2013
+ Update:     Jul 19, 2013
  Problem:    Valid Palindrome
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_125
@@ -20,16 +21,12 @@
 class Solution {
 public:
     bool isPalindrome(string s) {
-        int i = 0, j = s.size() - 1;
-        for (; i < j; ++i, --j)
+        for (int i = 0, j = s.size() - 1; i < j; ++i, --j)
         {
             while (i < j && !isalnum(s[i])) i++;
             while (i < j && !isalnum(s[j])) j--;
 
-            if (isupper(s[i])) s[i] = tolower(s[i]);
-            if (isupper(s[j])) s[j] = tolower(s[j]);
-
-            if (s[i] != s[j])
+            if (tolower(s[i]) != tolower(s[j]))
                 return false;
         }
         return true;
