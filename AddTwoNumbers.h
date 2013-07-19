@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Jan 16, 2013
+ Update:     Jul 19, 2013
  Problem:    Add Two Numbers
  Difficulty: easy
  Source:     http://www.leetcode.com/onlinejudge
@@ -27,51 +28,39 @@
 class Solution {
 public:
     ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        
-        ListNode *head = NULL;
-        ListNode *ptr = new ListNode(0);
-        
         int carrybit = 0;
+        ListNode *head = NULL, *cur = NULL;
         while (l1 || l2)
         {
-            int sum = 0;
-        
+            int sum = carrybit;
             if (l1)
             {
                 sum += l1->val;
                 l1 = l1->next;
             }
-                
             if (l2)
             {
                 sum += l2->val;
                 l2 = l2->next;
             }
-            
-            sum += carrybit;
             carrybit = sum / 10;
-            
             if (!head)
             {
-                head = new ListNode(sum%10);
-                ptr->next = head;
+                head = new ListNode(sum % 10);
+                cur = head;
             }
             else
             {
-                ListNode *node = new ListNode(sum%10);
-                ptr->next->next = node;
-                ptr->next = node;
+                ListNode *newnode = new ListNode(sum % 10);
+                cur->next = newnode;
+                cur = newnode;
             }
         }
-        
         if (carrybit == 1)
         {
-            ListNode *node = new ListNode(1);
-            ptr->next->next = node;
+            ListNode *newnode = new ListNode(1);
+            cur->next = newnode;
         }
-        
         return head;
     }
 };
