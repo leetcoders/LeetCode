@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 7, 2013
+ Update:     Jul 20, 2013
  Problem:    Reverse Integer
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_7
@@ -17,40 +18,22 @@
 
  Solution: Use % and / iteratively.
  */
-
+// #include <climits> 
+// #include <cassert>
 class Solution {
 public:
     int reverse(int x) {
-        bool flag = false;
-        if (x < 0) flag = true;
-        x = abs(x);
-        
-        int res = 0;
-        while (x > 0)
-        {
-            res = res * 10 + (x % 10);
-            x /= 10;
-        }
-        
-        return flag ? -res : res;
-    }
-
-    int reverse_assert(int x) {
-        bool flag = false;
-        if (x < 0) flag = true;
-        x = abs(x);
+        bool flag = x < 0;
+        x = flag ? -x : x;
         
         long long res = 0;
-        while (x > 0)
+        while (x)
         {
             res = res * 10 + (x % 10);
             x /= 10;
         }
-
-		// #include <climits> 
-		// #include <cassert>
-        assert( res > INT_MIN && res < INT_MAX);
-
+        
+        assert(res > INT_MIN && res < INT_MAX);
         return flag ? -res : res;
     }
 };
