@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 17, 2013
+ Update:     Jul 20, 2013
  Problem:    Generate Parentheses
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_22
@@ -18,8 +19,7 @@ public:
     vector<string> res;
     vector<string> generateParenthesis(int n) {
         res.clear();
-        string s;
-        generateParenthesisRe(n, n, s);
+        generateParenthesisRe(n, n, "");
         return res;
     }
 
