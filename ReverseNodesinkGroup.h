@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 18, 2013
+ Update:     Jul 20, 2013
  Problem:    Reverse Nodes in k-Group
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_25
@@ -32,9 +33,9 @@ public:
         int reverseTimes = len / k;
         if (reverseTimes == 0) return head;
 
-        ListNode *headptr = new ListNode(0);
-        headptr->next = head;
-        ListNode *insptr = headptr;   // insert the reversed nodes after insptr
+        ListNode headptr(0);
+        headptr.next = head;
+        ListNode *insptr = &headptr;   // insert the reversed nodes after insptr
         ListNode *cur = insptr->next;
         for (int i = 0; i < reverseTimes; ++i) {
             for (int j = 0; j < k - 1; ++j) {
@@ -46,9 +47,7 @@ public:
             insptr = cur;
             cur = insptr->next;
         }
-        head = headptr->next;
-        delete headptr;
-        return head;
+        return headptr.next;
     }
 
     int GetLength(ListNode *head)
