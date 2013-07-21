@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 23, 2013
+ Update:     Jul 21, 2013
  Problem:    Sum Root to Leaf Numbers
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_129
@@ -16,7 +17,8 @@
  The root-to-leaf path 1->3 represents the number 13.
  Return the sum = 12 + 13 = 25.
 
- Solution: Recursion (add to sum when reaching the leaf).
+ Solution: 1. Recursion (add to sum when reaching the leaf).
+           2. Iterative solution.
  */
 
 /**
@@ -30,20 +32,47 @@
  */
 class Solution {
 public:
-    int sum;
     int sumNumbers(TreeNode *root) {
-        sum = 0;
-        sumNumbersRe(root, 0);
+        return sumNumbers_1(root);
+    }
+    
+    int sumNumbers_1(TreeNode *root) {
+        int sum = 0;
+        sumNumbersRe(root, 0, sum);
         return sum;
     }
-    void sumNumbersRe(TreeNode *node, int num) {
+    
+    void sumNumbersRe(TreeNode *node, int num, int &sum) {
         if (!node) return;
         num = num * 10 + node->val;
         if (!node->left && !node->right) { 
             sum += num;
             return;
         }
-        sumNumbersRe(node->left, num);
-        sumNumbersRe(node->right, num);
+        sumNumbersRe(node->left, num, sum);
+        sumNumbersRe(node->right, num, sum);
+    }
+    
+    int sumNumbers_2(TreeNode *root) {
+        if (!root) return 0;
+        int res = 0;
+        queue<pair<TreeNode *, int>> q;
+        q.push(make_pair(root, 0));
+        while(!q.empty())
+        {
+            TreeNode *node = q.front().first;
+            int sum = q.front().second * 10 + node->val;
+            q.pop();
+            if (!node->left && !node->right)
+            {
+                res += sum;
+                continue;
+            }
+            if (node->left)
+                q.push(make_pair(node->left, sum));
+            if (node->right)
+                q.push(make_pair(node->right, sum));
+        }
+        return res;
     }
 };
