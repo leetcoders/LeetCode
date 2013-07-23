@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 6, 2013
+ Update:     Jul 23, 2013
  Problem:    Binary Tree Level Order Traversal
  Difficulty: easy
  Source:     http://leetcode.com/onlinejudge#question_102
@@ -39,14 +40,11 @@ class Solution {
 public:
     vector<vector<int> > levelOrder(TreeNode *root) {
         vector<vector<int>> res;
+        if (!root) return res;
         
         queue<TreeNode *> q;
-        if (root)
-        {
-            q.push(root);
-            q.push(NULL);   // end indicator of one level
-        }
-        
+        q.push(root);
+        q.push(NULL);   // end indicator of one level
         vector<int> level;
         while (q.size() > 0)
         {
