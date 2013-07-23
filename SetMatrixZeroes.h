@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 25, 2013
+ Update:     Jul 23, 2013
  Problem:    Set Matrix Zeroes
  Difficulty: Medium
  Source:     http://leetcode.com/onlinejudge#question_73
@@ -24,11 +25,9 @@ public:
         bool setFirstColZero = false;
 
         for (int i = 0; i < N && !setFirstColZero; ++i)
-            if (matrix[i][0] == 0) 
-                setFirstColZero = true;
+            setFirstColZero = (matrix[i][0] == 0);
         for (int j = 0; j < M && !setFirstRowZero; ++j)
-            if (matrix[0][j] == 0) 
-                setFirstRowZero = true;
+            setFirstRowZero = (matrix[0][j] == 0);
 
         for (int i = 1; i < N; ++i)
             for (int j = 1; j < M; ++j)
