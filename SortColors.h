@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 8, 2013
+ Update:     Jul 24, 2013
  Problem:    Sort Colors
  Difficulty: Medium
  Source:     http://leetcode.com/onlinejudge#question_75
@@ -16,39 +17,31 @@
  total number of 0's, then 1's and followed by 2's.
  Could you come up with an one-pass algorithm using only constant space?
 
- Solution: The idea is similar to quick-sort. Traverse the array from both side and try to push all the '0'
-           to the beginning and all the '2' to the back (f_1 is used to indicate the index of first '1' in the array).
+ Solution: 0 0 0 1 1 1 1   ......   2 2 2 2
+               |       |   |        |
+             zero     one  i       two
+              ->      ->   ->       <-  
  */
 
 class Solution {
 public:
     void sortColors(int A[], int n) {
-        int f_1 = -1;   // index of first 1
-        int f = 0;
-        int b = n - 1;
-        
-        while (f <= b)
+        int zero = -1, one = -1, two = n;
+        int i = 0;
+        while (i < two)
         {
-            while (A[b] == 2)
-                b--;
-            while (A[f] == 1 && f_1 != -1 ||
-                   A[f] == 0 && f_1 == -1) 
-                f++;
-            
-            if (f > b)
+            switch(A[i])
+            {
+            case 0:
+                swap(A[i++], A[++zero]);
+                one++;
                 break;
-            
-			if (A[f] == 0 && f_1 != -1)
-            {
-                swap(A[f], A[f_1++]);
-            }
-            if (A[f] == 1 && f_1 == -1)
-            {
-                f_1 = f;
-            }
-            if (A[f] == 2 && A[b] != 2)
-            {
-                swap(A[f], A[b]);
+            case 1:
+                one++;
+                i++;
+                break;
+            case 2:
+                swap(A[i], A[--two]);
             }
         }
     }
