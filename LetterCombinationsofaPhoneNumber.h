@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 12, 2013
+ Update:     Jul 25, 2013
  Problem:    Letter Combinations of a Phone Number
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_17
@@ -22,22 +23,23 @@ public:
         string mapping[] = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
         res.clear();
         string s;
-        letterCombinationsRe(digits, mapping, s, 0);
+        letterCombinationsRe(digits, mapping, s);
         return res;
     }
 
-    void letterCombinationsRe(const string &digits, string mapping[], string &s, int deep)
+    void letterCombinationsRe(const string &digits, string mapping[], string &s)
     {
-        if (deep == digits.size())
+        if (s.size() == digits.size())
         {
             res.push_back(s);
             return;
         }
-        for (int i = 0; i < mapping[digits[deep]-'2'].size(); ++i)
+        string &letters = mapping[digits[s.size()]-'2'];
+        for (int i = 0; i < letters.size(); ++i)
         {
-            s.push_back(mapping[digits[deep]-'2'][i]);
-            letterCombinationsRe(digits, mapping, s, deep + 1);
-            s.resize(s.size() - 1);
+            s.push_back(letters[i]);
+            letterCombinationsRe(digits, mapping, s);
+            s.pop_back();
         }
     }
 };
