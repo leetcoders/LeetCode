@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 17, 2013
+ Update:     Jul 25, 2013
  Problem:    Anagrams
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_49
@@ -17,15 +18,17 @@ class Solution {
 public:
     vector<string> anagrams(vector<string> &strs) {
         vector<string> res;
-        if (strs.size() <= 1) return res;
         map<string, int> anagram;
         for (int i = 0; i < strs.size(); ++i)
         {
             string s = strs[i];
             sort(s.begin(), s.end());
-            if (anagram.find(s) == anagram.end()) {
-                anagram.insert(make_pair(s, i));
-            } else {
+            if (anagram.find(s) == anagram.end()) 
+            {
+                anagram[s] = i;
+            } 
+            else 
+            {
                 if (anagram[s] >= 0) {
                     res.push_back(strs[anagram[s]]);
                     anagram[s] = -1;
