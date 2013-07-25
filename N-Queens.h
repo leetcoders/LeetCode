@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 24, 2013
+ Update:     Jul 25, 2013
  Problem:    N-Queens
  Difficulty: Medium
  Source:     http://leetcode.com/onlinejudge#question_51
@@ -22,48 +23,37 @@
  ".Q.."]
  ]
 
- Solution: Recursion (DFS).
+ Solution: Recursion (DFS). Use bit-manipulation solution (See N-QueensII for more details).
  */
 
 class Solution {
 public:
-    vector<vector<string>> res;
-    int *column;
-    vector<vector<string>> solveNQueens(int n) {
-        res.clear();
-        column = new int[n];
-        memset(column, -1, n*sizeof(int));
-        solveNQueensRe(n, 0);
+    vector<vector<string> > solveNQueens(int n) {
+        vector<vector<string> > res;
+        vector<string> sol;
+        solveNQueensRe(n, 0, 0, 0, sol, res);
         return res;
     }
-
-    void solveNQueensRe(int n, int row)
+    
+    void solveNQueensRe(int n, int row, int ld, int rd, vector<string> &sol, vector<vector<string>> &res)
     {
-        if (row == n) {
-            vector<string> sol(n, string(n, '.'));
-            for (int i = 0; i < n; ++i)
-                sol[column[i]][i] = 'Q';
+        if (row == (1 << n) - 1)
+        {
             res.push_back(sol);
             return;
         }
-        for (int j = 0; j < n; ++j)
+        int avail = ~(row | ld | rd);
+        for (int i = n-1; i >= 0; --i)
         {
-            if (!isValid(n, row, j)) continue;
-            column[j] = row;
-            solveNQueensRe(n, row + 1);
-            column[j] = -1;
+            int pos = 1 << i;
+            if (avail & pos)
+            {
+                string s(n, '.');
+                s[i] = 'Q';
+                sol.push_back(s);
+                solveNQueensRe(n, row | pos, (ld|pos) << 1, (rd|pos) >> 1, sol, res);
+                sol.pop_back();
+            }
         }
-    }
-
-    bool isValid(int n, int row, int col)
-    {
-        if (column[col] != -1) return false;
-        for (int i = 0; i < n; ++i)
-        {
-            if (column[i] == -1) continue;
-            if (column[i] + i == row + col) return false;
-            if (column[i] - row == i - col) return false;
-        }
-        return true;
     }
 };
