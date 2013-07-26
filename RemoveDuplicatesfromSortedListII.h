@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 10, 2013
+ Update:     Jul 26, 2013
  Problem:    Remove Duplicates from Sorted List II
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_82
@@ -24,35 +25,27 @@
 class Solution {
 public:
     ListNode *deleteDuplicates(ListNode *head) {
-        ListNode *headptr = new ListNode(0);
-        headptr->next = head;
-        ListNode *cur = headptr;
-        
-        int dval = INT_MIN;
-        while (cur && cur->next)
+        if (!head) return head;
+        ListNode headptr(0);
+        headptr.next = head;
+        int duplicate = INT_MAX;
+        ListNode *last = &headptr;
+        ListNode *cur = head;
+        while (cur)
         {
-            ListNode *nextNode = cur->next;
-            ListNode *nextNext;
-            while ((nextNext = nextNode->next) && nextNode->val == nextNext->val)
+            if (cur->next && cur->val == cur->next->val || cur->val == duplicate)
             {
-                dval = nextNode->val;
-                cur->next = nextNext;
-                delete nextNode;
-                nextNode = nextNext;
-            }
-            if (nextNode->val == dval)
-            {
-                cur->next = nextNext;
-                delete nextNode;
+                duplicate = cur->val;
+                last->next = cur->next;
+                delete cur;
+                cur = last->next;
             }
             else
-            {   
+            {
+                last = cur;
                 cur = cur->next;
             }
         }
-        
-        head = headptr->next;
-        delete headptr;
-        return head;
+        return headptr.next;
     }
 };
