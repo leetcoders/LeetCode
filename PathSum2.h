@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 6, 2013
+ Update:     Jul 26, 2013
  Problem:    Path Sum 2
  Difficulty: easy
  Source:     http://leetcode.com/onlinejudge#question_113
@@ -22,8 +23,7 @@
    [5,8,4,5]
  ]
  
- Solution: In addition to 'Path Sum', the recursion function needs one more parameter
-           to store the root->leaf path.
+ Solution: DFS. 
  */
 
 /**
@@ -37,30 +37,28 @@
  */
 class Solution {
 public:
-
-    vector<vector<int> > res;
-    
     vector<vector<int> > pathSum(TreeNode *root, int sum) {
-        vector<int> v;
-        res.clear();
-        pathSum(root, v, sum);
+        vector<vector<int>> res;
+        vector<int> path;
+        pathSumRe(root, sum, res, path);
         return res;
     }
-    
-    void pathSum(TreeNode *root, vector<int> vec, int sum) {
-        if (!root)
-            return;
-        if (root->left == NULL and root->right == NULL) // leaf node
-        { 
+    void pathSumRe(TreeNode *root, int sum, vector<vector<int>> &res, vector<int> &path)
+    {
+        if (!root) return;
+        if (!root->left && !root->right)
+        {
             if (sum == root->val)
             {
-                vec.push_back(root->val);
-                res.push_back(vec);
+                path.push_back(root->val);
+                res.push_back(path);
+                path.pop_back();
             }
             return;
         }
-        vec.push_back(root->val);
-        pathSum(root->left, vec, sum - root->val);
-        pathSum(root->right, vec, sum - root->val);
+        path.push_back(root->val);
+        pathSumRe(root->left, sum - root->val, res, path);
+        pathSumRe(root->right, sum - root->val, res, path);
+        path.pop_back();
     }
 };
