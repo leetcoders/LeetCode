@@ -11,7 +11,7 @@
  Given 1->2->3->3->4->4->5, return 1->2->5.
  Given 1->1->1->2->3, return 2->3.
 
- Solution: ...headptr...
+ Solution: 1. iterative 2. recursive
  */
 
 /**
@@ -25,6 +25,10 @@
 class Solution {
 public:
     ListNode *deleteDuplicates(ListNode *head) {
+        return deleteDuplicates_1(head);
+    }
+    
+    ListNode *deleteDuplicates_1(ListNode *head) {
         if (!head) return head;
         ListNode headptr(0);
         headptr.next = head;
@@ -47,5 +51,29 @@ public:
             }
         }
         return headptr.next;
+    }
+    
+    ListNode *deleteDuplicates_2(ListNode *head) {
+        if (!head) return head;
+        ListNode headptr(0);
+        headptr.next = head;
+        
+        if (!head->next || head->val != head->next->val)
+        {
+            head->next = deleteDuplicates_2(head->next);
+            return head;
+        }
+        else
+        {
+            int duplicate = head->val;
+            ListNode *cur = head;
+            while (cur && cur->val == duplicate)
+            {
+                headptr.next = cur->next;
+                delete cur;
+                cur = headptr.next;
+            }
+            return deleteDuplicates_2(headptr.next);
+        }
     }
 };
