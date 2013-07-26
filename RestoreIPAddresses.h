@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 1, 2013
+ Update:     Jul 26, 2013
  Problem:    Restore IP Addresses
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_93
@@ -15,65 +16,34 @@
 
 class Solution {
 public:
-    vector<string> res;
     vector<string> restoreIpAddresses(string s) {
-        res.clear();
+        vector<string> res;
         string ip;
-        restoreIpAddressesRe(s, ip, 0, s.size() - 1, 0);
+        restoreIpAddressRe(s, res, ip, 0, 0);
         return res;
     }
-
-    void restoreIpAddressesRe(const string &s, string &ip, int start, int end, int deep)
+    
+    void restoreIpAddressRe(string &s, vector<string> &res, string &ip, int deep, int start)
     {
-        if (deep == 4) {
-            if (end - start + 1 == 0)
-                res.push_back(ip);
-            return;
-        }
-        if (end - start + 1 > (4 - deep) * 3)
-            return;
-        if (end - start + 1 == (4 - deep) * 3) {
-            int i;
-            for (i = deep; i < 4; ++i, start += 3)
-            {
-                string r(s.begin() + start, s.begin() + start + 3);
-                if (!pushIpAddress(ip, r, i))
-                    break;
-            }
-            if (i == 4)
-                res.push_back(ip);
-            return;
-        }
-        for (int i = 0; i <= min(end - start, 2); ++i)
+        if (deep == 4 || start == s.size())
         {
-            string r(s.begin() + start, s.begin() + start + i + 1);
-            int before = ip.size();
-            if (!pushIpAddress(ip, r, deep))
-                continue;
-            restoreIpAddressesRe(s, ip, start + i + 1, end, deep + 1);
-            ip.resize(before);
+            if (start == s.size() && deep == 4)
+                res.push_back(ip);
+            return;
         }
-
-    }
-
-    bool checkIpAddress(const string &num)
-    {
-        if (num.size() > 1 && num[0] == '0')
-            return false;
-        stringstream stream;
-        stream<<num;
-        int iip;
-        stream>>iip;
-        return iip >= 0 && iip <= 255;
-    }
-
-    bool pushIpAddress(string &ip, string num, int deep)
-    {
-        if (!checkIpAddress(num))
-            return false;
-        ip += num;
-        if (deep != 3)
-            ip.push_back('.');
-        return true;
+        int num = 0;
+        for (int i = start; i <= start + 2 && i < s.size(); ++i)
+        {
+            num = num * 10 + s[i] - '0';
+            if (num >= 0 && num <= 255)
+            {
+                int orig = ip.size();
+                if (orig != 0) ip.push_back('.');
+                ip += s.substr(start, i - start + 1);
+                restoreIpAddressRe(s, res, ip, deep + 1, i + 1);
+                ip.resize(orig);
+                if (num == 0) break;
+            }
+        }
     }
 };
