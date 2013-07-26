@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 6, 2013
+ Update:     Jul 26, 2013
  Problem:    Path Sum
  Difficulty: easy
  Source:     http://www.leetcode.com/onlinejudge
@@ -36,10 +37,9 @@ public:
     bool hasPathSum(TreeNode *root, int sum) {
         if (!root)
             return false;
-        if (root->left == NULL and root->right == NULL)
+        if (!root->left and !root->right)
             return sum == root->val;
-        else
-            return hasPathSum(root->left, sum - root->val) || 
-                   hasPathSum(root->right, sum - root->val);
+        return hasPathSum(root->left, sum - root->val) || 
+               hasPathSum(root->right, sum - root->val);
     }
 };
