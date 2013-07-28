@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 9, 2013
+ Update:     Jul 28, 2013
  Problem:    Reverse Linked List II
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_92
@@ -27,30 +28,24 @@
 class Solution {
 public:
     ListNode *reverseBetween(ListNode *head, int m, int n) {
-        if (m == n) return head;
-        
-        ListNode *headptr = new ListNode(0); 
-        headptr->next = head;  // 'headptr' is a node pointing to head
-        
-        ListNode *insert = headptr; // insert a new node after 'insert' node
-        for (int i = 0; i < m - 1; i++)
+        ListNode headptr(0);
+        headptr.next = head;
+        ListNode *ins = &headptr, *cur = head;
+        for (int i = 1; i < n; ++i)
         {
-            insert = insert->next;
+            if (i < m)
+            {
+                ins = ins->next;
+                cur = cur->next;
+            }
+            else if (i >= m && i < n)
+            {
+                ListNode *move = cur->next;
+                cur->next = move->next;
+                move->next = ins->next;
+                ins->next = move;
+            }
         }
-        
-        ListNode *cur = insert->next;
-        for (int i = 0; i < n - m; i++)
-        {
-            ListNode *del = cur->next;
-            cur->next = del->next;
-            del->next = insert->next;
-            insert->next = del;
-        }
-        
-        if (m == 1) 
-            head = headptr->next;
-        delete headptr;
-        
-        return head;
+        return headptr.next;
     }
 };
