@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 16, 2013
+ Update:     Jul 29, 2013
  Problem:    Longest Substring Without Repeating Characters
  Difficulty: Medium
  Source:     http://leetcode.com/onlinejudge#question_3
@@ -9,28 +10,28 @@
  For example, the longest substring without repeating letters for "abcabcbb" is "abc", which the length is 3. 
  For "bbbbb" the longest substring is "b", with the length of 1.
 
- Solution: Pay attention when moving the 'start' pointer forward.
+ Solution: Pay attention when moving the 'start' pointer forward. Don't forget update 'res' in the end.
  */
 
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        int res = 0;
-        bool visited[256]; 
-        memset(visited, 0, sizeof(visited));
-        int start = 0, end = 0, size = s.size();
-        while (start + res < size && end < size)
+        bool exist[256];
+        memset(exist, 0, sizeof(exist));
+        int res = 0, back = 0, front = 0, size = s.size();
+        while (front < size && back + res < size)
         {
-            while (end < size && !visited[s[end]])
-                visited[s[end++]] = true;
-
-            res = max(end-start, res);
-            while (start < end && s[start] != s[end])
-                visited[s[start++]] = false;
-
-            start++;
-            end++;
+            if (!exist[s[front]])
+            {
+                exist[s[front++]] = true;
+            }
+            else
+            {
+                res = max(front - back, res);
+                exist[s[back++]] = false;
+            }
         }
+        res = max(front - back, res);
         return res;
     }
 };
