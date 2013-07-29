@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 22, 2013
+ Update:     Jul 29, 2013
  Problem:    Binary Tree Inorder Traversal
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_94
@@ -16,7 +17,8 @@
  return [1,3,2].
  Note: Recursive solution is trivial, could you do it iteratively?
 
- Solution: 1. Iterative way (stack). 2. Recursive solution.
+ Solution: 1.2. Iterative way (stack). 
+           3.   Recursive solution.
  */
 /**
  * Definition for binary tree
@@ -29,20 +31,25 @@
  */
 class Solution {
 public:
+    vector<int> inorderTraversal(TreeNode *root) {
+        return inorderTraversal_1(root);
+    }
+    
     vector<int> inorderTraversal_1(TreeNode *root) {
         vector<int> res;
         if (!root) return res;
         stack<pair<TreeNode *, bool>> stk;
-        stk.push(make_pair(root->right, false));
-        stk.push(make_pair(root, true));
-        stk.push(make_pair(root->left, false));
+        stk.push(make_pair(root, false));
         while (!stk.empty())
         {
             pair<TreeNode *, bool> p = stk.top();
             stk.pop();
-            if (p.second == true) {
+            if (p.second) 
+            {
                 res.push_back(p.first->val);
-            } else if (p.first) {
+            } 
+            else if (p.first)
+            {
                 stk.push(make_pair(p.first->right, false));
                 stk.push(make_pair(p.first, true));
                 stk.push(make_pair(p.first->left, false));
@@ -50,8 +57,29 @@ public:
         }
         return res;
     }
-
+    
     vector<int> inorderTraversal_2(TreeNode *root) {
+        vector<int> res;
+        stack<TreeNode *> stk;
+        TreeNode *cur = root;
+        while (cur || !stk.empty())
+        {
+            if (cur)
+            {
+                stk.push(cur);
+                cur = cur->left;
+            }
+            else if (!stk.empty())
+            {
+                res.push_back(stk.top()->val);
+                cur = stk.top()->right;
+                stk.pop();
+            }
+        }
+        return res;
+    }
+    
+    vector<int> inorderTraversal_3(TreeNode *root) {
         vector<int> res;
         inorderTraversalRe(root, res);
         return res;
