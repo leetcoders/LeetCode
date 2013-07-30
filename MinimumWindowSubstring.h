@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 24, 2013
+ Update:     Jul 30, 2013
  Problem:    Minimum Window Substring
  Difficulty: Medium
  Source:     http://leetcode.com/onlinejudge#question_76
@@ -17,48 +18,56 @@
  minimum window in S.
 
  Solution: 1. Use two pointers: start and end. 
-              First, move 'end'. When find all the needed characters, move 'start'.
-           2. Use array as map.
+              First, move 'end'. After finding all the needed characters, move 'start'.
+           2. Use array as hashtable.
  */
 
 class Solution {
 public:
     string minWindow(string S, string T) {
         int N = S.size(), M = T.size();
+        if (N < M) return "";
         int need[256] = {0};
         int find[256] = {0};
         for (int i = 0; i < M; ++i)
             need[T[i]]++;
 
         int count = 0;
-        string res;
-        int res_size = N + 1;
+        int res_start = -1, res_end = N;
         for (int start = 0, end = 0; end < N; ++end)
         {
             if (need[S[end]] == 0)
                 continue;
-
-            find[S[end]]++;
-            if (find[S[end]] <= need[S[end]])
+            
+            if (find[S[end]] < need[S[end]])
                 count++;
+            find[S[end]]++;
 
             if (count != M)
                 continue;
-
-            while (start < end) {
-                if (need[S[start]] == 0 || find[S[start]] > need[S[start]]) {
-                    find[S[start]]--;
-                    start++;
-                } else {
-                    break;
-                }
-            }
-            if (end - start + 1 < res_size)
+            // move 'start'
+            start = getNextIndex(S, find, need, start);
+            // update result
+            if (end - start < res_end - res_start)
             {
-                res = string(S.begin() + start, S.begin() + end + 1);
-                res_size = res.size();
+                res_start = start;
+                res_end = end;
             }
         }
-        return res;
+        return (res_start == -1) ? "" : S.substr(res_start, res_end - res_start + 1);
+    }
+    
+    int getNextIndex(string &S, int *find, int *need, int start)
+    {
+        int i = start, N = S.size();
+        for (; i < N; ++i)
+        {
+            if (need[S[i]] == 0)
+                continue;
+            if (find[S[i]] <= need[S[i]])
+                break;
+            find[S[i]]--;
+        }
+        return i;
     }
 };
