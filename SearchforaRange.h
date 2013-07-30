@@ -22,49 +22,41 @@ class Solution {
 public:
     vector<int> searchRange(int A[], int n, int target) {
         vector<int> res(2, -1);
-        int lower = lowerBound(A, n, target);
-        int upper = upperBound(A, n, target);
-        
-        if (lower > upper)
-            return res;
-        
-        res[0] = lower;
-        res[1] = upper;
-        
+        int lower = getLowerBound(A, n, target);
+        int upper = getUpperBound(A, n, target);
+        if (lower <= upper)
+        {
+            res[0] = lower;
+            res[1] = upper;
+        }
         return res;
     }
     
-    int lowerBound(int A[], int n, int target)
+    int getLowerBound(int A[], int n, int target)
     {
-        int f = 0;
-        int b = n - 1;
-        
-        while (f <= b)
+        int l = 0, u = n-1;
+        while (l <= u)
         {
-            int mid = (f + b) / 2;
-            if (A[mid] >= target)
-                b = mid - 1;
+            int mid = (l + u) / 2;
+            if (A[mid] < target)
+                l = mid + 1;
             else
-                f = mid + 1;
+                u = mid - 1;
         }
-        
-        return b + 1;
+        return l;
     }
     
-    int upperBound(int A[], int n, int target)
+    int getUpperBound(int A[], int n, int target)
     {
-        int f = 0;
-        int b = n - 1;
-        
-        while (f <= b)
+        int l = 0, u = n-1;
+        while (l <= u)
         {
-            int mid = (f + b) / 2;
+            int mid = (l + u) / 2;
             if (A[mid] <= target)
-                f = mid + 1;
+                l = mid + 1;
             else
-                b = mid - 1;
+                u = mid - 1;
         }
-        
-        return f - 1;
+        return u;
     }
 };
