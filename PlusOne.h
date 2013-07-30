@@ -1,35 +1,30 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 9, 2013
+ Update:     Jul 30, 2013
  Problem:    Plus One
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_66
  Notes:
  Given a number represented as an array of digits, plus one to the number.
 
- Solution: ...
+ Solution: Reverse the digits first.
  */
 
 class Solution {
 public:
     vector<int> plusOne(vector<int> &digits) {
-        bool carry_bit = false;
-        for (int i = digits.size() - 1; i >= 0; i--)
+        reverse(digits.begin(), digits.end());
+        bool carrybit = true;
+        for (int i = 0; i < digits.size() && carrybit; i++)
         {
-            carry_bit = (digits[i] + 1) >= 10;
-            digits[i] = (digits[i] + 1) % 10;
-            if (!carry_bit)
-                break;
+            int sum = digits[i] + carrybit;
+            digits[i] = sum % 10;
+            carrybit = sum >= 10;
         }
-        
-        if (carry_bit)
-        {
-            vector<int> res(1, 1);
-            for (int i = 0; i < digits.size(); i++)
-                res.push_back(digits[i]);
-            return res;
-        }
-        
+        if (carrybit)
+            digits.push_back(1);
+        reverse(digits.begin(), digits.end());
         return digits;
     }
 };
