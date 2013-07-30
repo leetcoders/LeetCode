@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 9, 2013
+ Update:     Jul 30, 2013
  Problem:    Partition List
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_86
@@ -25,32 +26,34 @@
 class Solution {
 public:
     ListNode *partition(ListNode *head, int x) {
-        if (!head) return head;
-        
-        ListNode *headptr = new ListNode(0);
-        headptr->next = head;
-        ListNode *cur = headptr;
-        ListNode *ins = headptr;  // insert position
-        
+        if (!head) return head;   
+        ListNode headptr(0);
+        headptr.next = head;
+        ListNode *cur = &headptr;
+        ListNode *ins = &headptr;  // insert position
         while (cur->next) 
         {
-            ListNode *del = cur->next;
-            if (del->val >= x){
+            ListNode *move = cur->next;
+            if (move->val >= x)
+            {
                 cur = cur->next;
-            } else {
-                if (cur == ins) {
+            } 
+            else 
+            {
+                if (cur == ins) 
+                {
                     cur = cur->next;
-                } else {
-                    cur->next = del->next;
-                    del->next = ins->next;
-                    ins->next = del;
+                    ins = ins->next;
+                } 
+                else 
+                {
+                    cur->next = move->next;
+                    move->next = ins->next;
+                    ins->next = move;
+                    ins = ins->next;
                 }
-                ins = ins->next;
             }
         }
-        
-        head = headptr->next;
-        delete headptr;
-        return head;
+        return headptr.next;
     }
 };
