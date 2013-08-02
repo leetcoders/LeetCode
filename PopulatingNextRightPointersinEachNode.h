@@ -51,7 +51,6 @@ public:
     }
     
     void connect_1(TreeLinkNode *root) {
-        if (!root) return;
         while (root)
         {
             TreeLinkNode *level = root;
@@ -68,7 +67,6 @@ public:
     }
 
     void connect_2(TreeLinkNode *root) {
-        if (!root) return;
         connectRe(root);
     }
 
