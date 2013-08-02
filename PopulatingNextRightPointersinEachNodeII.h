@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 23, 2013
+ Update:     Aug 8, 2013
  Problem:    Populating Next Right Pointers in Each Node II
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_117
@@ -23,7 +24,7 @@
   / \    \
  4-> 5 -> 7 -> NULL
 
- Solution: Extend level-order traversal (queue).
+ Solution: From root->leaf, left->right.
  */
 
 /**
@@ -37,27 +38,27 @@
 class Solution {
 public:
     void connect(TreeLinkNode *root) {
-        if (!root) return;
-        root->next = NULL;
-        queue<TreeLinkNode *> q;
-        q.push(root);
-        q.push(root->next);
-        while (!q.empty())
+        while (root)
         {
-            TreeLinkNode *cur = q.front();
-            TreeLinkNode *bef = NULL;
-            q.pop();
-            while (cur)
+            TreeLinkNode *level = root;
+            TreeLinkNode *last = NULL;
+            root = NULL;
+            while (level)
             {
-                if (bef) bef->next = cur;
-                if (cur->left) q.push(cur->left);
-                if (cur->right) q.push(cur->right);
-                bef = cur;
-                cur = q.front();
-                q.pop();
+                if (!level->left && !level->right)
+                {
+                    level = level->next;
+                    continue;
+                }
+                if (last) 
+                    last->next = level->left ? level->left : level->right;
+                if (level->left)
+                    level->left->next = level->right ? level->right : NULL;
+                if (!root)
+                    root = level->left ? level->left : level->right;
+                last = level->right ? level->right : level->left;
+                level = level->next;
             }
-            if (cur) cur->next = NULL;
-            if (!q.empty()) q.push(NULL);
         }
     }
 };
