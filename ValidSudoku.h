@@ -15,13 +15,12 @@
 class Solution {
 public:
     bool isValidSudoku(vector<vector<char>> &board) {
-        int row, col[9], box[9];
-        memset(col, 0, sizeof(col));
-        memset(box, 0, sizeof(box));
-        for (int i = 0; i < 9; ++i)
+        const int N = 9;
+        int row, col[N] = {0}, box[N] = {0};
+        for (int i = 0; i < N; ++i)
         {
             row = 0;
-            for (int j = 0; j < 9; ++j)
+            for (int j = 0; j < N; ++j)
             {
                 if (board[i][j] == '.')
                     continue;
