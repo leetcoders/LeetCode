@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 10, 2013
+ Update:     Aug 7, 2013
  Problem:    Merge Sorted Array
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_88
@@ -22,8 +23,6 @@ public:
         while (i >= 0 && j >= 0)
             if (A[i] >= B[j]) A[x--] = A[i--];
             else A[x--] = B[j--];
-        
-        while (i >= 0) A[x--] = A[i--];
         while (j >= 0) A[x--] = B[j--];
     }
 };
