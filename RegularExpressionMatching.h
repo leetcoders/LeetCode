@@ -1,8 +1,9 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 26, 2013
+ Update:     Aug 10, 2013
  Problem:    Regular Expression Matching
- Difficulty: Easy
+ Difficulty: Hard
  Source:     http://leetcode.com/onlinejudge#question_10
  Notes:
  Implement regular expression matching with support for '.' and '*'.
@@ -26,32 +27,20 @@
 class Solution {
 public:
     bool isMatch(const char *s, const char *p) {
-        if (*p == '\0') 
-            return (*s == '\0');
-
-        if (*p == '.')
+        if (*p == '\0') return *s == '\0';
+        
+        if (*(p+1) == '*') // next is '*'
         {
-            if (*(p+1) != '*')
-                return (*s != '\0') && isMatch(s+1, p+1);
-
-            while (true) {
-                if (isMatch(s, p+2))
-                    return true;
-                if (*s == '\0')
-                    return false;
-                s++;
-            }
-        }
-        else if (*(p+1) == '*')
-        {
-            while (*s == *p) {
+            while ((*s == *p || *p == '.') && *s != '\0')
+            {
                 if (isMatch(s, p+2))
                     return true;
                 s++;
             }
             return isMatch(s, p+2);
         }
-
-        return (*p == *s) && isMatch(s+1, p+1);
+        
+        if (*s == '\0') return false;
+        return (*s == *p || *p == '.') && isMatch(s+1, p+1);
     }
 };
