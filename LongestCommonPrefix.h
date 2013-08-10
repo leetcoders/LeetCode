@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 16, 2013
+ Update:     Aug 10, 2013
  Problem:    Longest Common Prefix
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_14
@@ -13,8 +14,8 @@
 class Solution {
 public:
     string longestCommonPrefix(vector<string> &strs) {
-        if (strs.size() == 0) return string();
         string res;
+        if (strs.empty()) return res;
         for (int i = 0; i < strs[0].size(); ++i)
         {
             char ch = strs[0][i];
