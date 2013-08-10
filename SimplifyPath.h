@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 13, 2013
+ Update:     Aug 11, 2013
  Problem:    Simplify Path
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_71
@@ -23,33 +24,29 @@
 class Solution {
 public:
     string simplifyPath(string path) {
-        vector<string> res_paths;
-        int start = 0;
-        path += "/";
-        for (int i = 0; i < path.size(); ++i)
-        {
-            if (path[i] != '/')
-                continue;
-            
-            if (start == i) {
-                start = i + 1;
-                continue;
-            }
-
-            string s = string(path.begin()+start, path.begin()+i);
-            if (s == "..") {
-                if (!res_paths.empty())
-                    res_paths.pop_back();
-            } else if (s != ".") {
-                res_paths.push_back(s);
-            }
-            start = i + 1;
-        }
-
         string res;
-        for (int i = 0; i < res_paths.size(); ++i)
-            res = res + "/" + res_paths[i];
-        if (res.empty()) res += "/";
-        return res;
+        path += "/";
+        size_t pos = path.find_first_of("/"), last = 0;
+        while (pos != string::npos)
+        {
+            PushPath(res, path.substr(last, pos - last));
+            last = pos + 1;
+            pos = path.find_first_of("/", last);
+        }
+        return res.empty() ? "/" : res;
+    }
+
+    void PushPath(string &res, string s)
+    {
+        if (s.empty() || s == ".")
+            return;
+        if (s == "..") 
+        {
+            size_t index = res.find_last_of("/");
+            if (index != string::npos)
+                res.resize(index);
+            return;
+        }
+        res = res + "/" + s;
     }
 };
