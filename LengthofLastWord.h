@@ -19,12 +19,10 @@ class Solution {
 public:
     int lengthOfLastWord(const char *s) {
         int res = 0;
-        int i = strlen(s) - 1;
-        while (s[i] == ' ') 
-            i--;
-        for (; i >= 0; --i)
+        int length = strlen(s);
+        for (int i = length - 1; i >= 0; --i)
             if (s[i] != ' ') res++;
-            else break;
+            else if(res > 0) break;
         return res;
     }
 };
