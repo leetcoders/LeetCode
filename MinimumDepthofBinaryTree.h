@@ -29,8 +29,7 @@ public:
         
         if (!root->left && !root->right)
             return 1;
-        
-        if (!root->left)
+        else if (!root->left)
             return 1 + minDepth(root->right);
         else if (!root->right)
             return 1 + minDepth(root->left);
