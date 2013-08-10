@@ -14,20 +14,19 @@
  You should return the indices: [0,9].
  (order does not matter).
 
- Solution: Take it easy!
+ Solution: ...
 */
 
 class Solution {
 public:
     vector<int> findSubstring(string S, vector<string> &L) {
-        if (S.empty() || L.empty() || S.size() < L[0].size())
-            return vector<int>();
+        vector<int> res;
+        if (S.empty() || L.empty()) return res;
         int N = S.size(), M = L.size(), Len = L[0].size();
         map<string, int> need;
         map<string, int> found;
         for (int i = 0; i < M; ++i)
             need[L[i]]++;
-        vector<int> res;
         for (int i = 0; i <= N - M * Len; ++i)
         {
             found.clear();
