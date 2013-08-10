@@ -29,14 +29,14 @@ public:
         size_t pos = path.find_first_of("/"), last = 0;
         while (pos != string::npos)
         {
-            PushPath(res, path.substr(last, pos - last));
+            addPath(res, path.substr(last, pos - last));
             last = pos + 1;
             pos = path.find_first_of("/", last);
         }
         return res.empty() ? "/" : res;
     }
 
-    void PushPath(string &res, string s)
+    void addPath(string &res, string s)
     {
         if (s.empty() || s == ".")
             return;
