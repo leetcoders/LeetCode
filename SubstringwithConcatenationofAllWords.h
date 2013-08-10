@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 26, 2013
+ Update:     Aug 10, 2013
  Problem:    Substring with Concatenation of All Words
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_30
@@ -22,26 +23,27 @@ public:
     vector<int> findSubstring(string S, vector<string> &L) {
         vector<int> res;
         if (S.empty() || L.empty()) return res;
-        int N = S.size(), M = L.size(), Len = L[0].size();
-        map<string, int> need;
-        map<string, int> found;
-        for (int i = 0; i < M; ++i)
+        int M = S.size(), N = L.size();
+        int K = L[0].size();
+        unordered_map<string, int> need;
+        unordered_map<string, int> found;
+        for (int i = 0; i < N; ++i)
             need[L[i]]++;
-        for (int i = 0; i <= N - M * Len; ++i)
+        for (int i = 0; i <= M - N * K; ++i)
         {
             found.clear();
-            int j = 0;
-            for (j = 0; j < M; ++j)
+            int j;
+            for (j = 0; j < N; ++j)
             {
-                string w = S.substr(i + j * Len, Len);
-                if (need.find(w) == need.end())
+                string s = S.substr(i + j * K, K);
+                auto it = need.find(s);
+                if (it == need.end())
                     break;
-                if (found[w] >= need[w])
+                if (it->second <= found[s])
                     break;
-                found[w]++;
+                found[s]++;
             }
-            if (j == M)    
-                res.push_back(i);
+            if (j == N) res.push_back(i);
         }
         return res;
     }
