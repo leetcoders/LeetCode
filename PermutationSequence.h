@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 8, 2013
+ Update:     Aug 12, 2013
  Problem:    Permutation Sequence
  Difficulty: Medium
  Source:     http://leetcode.com/onlinejudge#question_60
@@ -17,31 +18,28 @@
  Given n and k, return the kth permutation sequence.
  Note: Given n will be between 1 and 9 inclusive.
 
- Solution: Quite fast..Finish 'Large Test' in less than 16ms.
-           If we fix the first m digits, there'll be (n-m)! different permutations for the latter m digits.
-           Decide the digits from left to right...
+ Solution: ...
  */
 
 class Solution {
 public:
     string getPermutation(int n, int k) {
-        string res;
-        list<int> nums;
-        int count = 1, digits = n - 1;
+        string num, res;
+        int total = 1;
         for (int i = 1; i <= n; ++i)
         {
-            if (i < n) count *= i;
-            nums.push_back(i);
+            num.push_back(i + '0');
+            total *= i;
         }
-        while (res.size() < n)
+        k--;
+        while (n)
         {
-            list<int>::iterator it = nums.begin();
-            for (int m = 1; m < (int)ceil(k*1.0 / count); ++m)
-                it++;
-            res += char(*it + '0');
-            nums.erase(it);
-            k = (k % count == 0) ? count : k % count;
-            count = (count == 1) ? 1 : count / digits--;
+            total /= n;
+            int i = k / total;
+            k %= total;
+            res.push_back(num[i]);
+            num.erase(i, 1);
+            n--;
         }
         return res;
     }
