@@ -1,8 +1,9 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 25, 2013
+ Update:     Aug 13, 2013
  Problem:    Valid Number
- Difficulty: Easy
+ Difficulty: Hard
  Source:     http://leetcode.com/onlinejudge#question_65
  Notes:
  Validate if a given string is numeric.
@@ -15,59 +16,62 @@
  Note: It is intended for the problem statement to be ambiguous. You should gather all 
  requirements up front before implementing one.
 
- Solution: The most annoying problem that I've ever met:)
+ Solution: This finite-state machine solution is from fuwutu. Perfect solution!
+ Link: https://github.com/fuwutu/LeetCode/blob/master/Valid%20Number.cpp
 */
 
-class Solution {
+class Solution
+{
 public:
-    bool isNumber(const char *s) {
-        int i = 0;
-        while (s[i] == ' ')
-            i++;
-        if (s[i] == '+' || s[i] == '-')
-            i++;
-        if (s[i] == '\0')
-            return false;
-
-        bool isE = false;
-        bool isFloat = false;
-        bool isNum = false;
-        while (s[i] != '\0' && s[i] != ' ')
+    bool isNumber(const char *s)
+    {
+        enum InputType
         {
-            if (s[i] == '.')
-            {
-                if (isFloat || isE)
-                    return false;
-                if (!isNum && !isdigit(s[i+1]))
-                    return false;
-                isFloat = true;
-            }
-            else if (s[i] == 'e')
-            {
-                if (isE || !isNum)
-                    return false;
-                if (!isdigit(s[i+1]) && s[i+1] != '+' &&  s[i+1] != '-')
-                    return false;
-                isE = true;
-            }
-            else if (s[i] == '+' || s[i] == '-')
-            {
-                if (s[i-1] != 'e' || s[i+1] == '\0')
-                    return false;
-            }
-            else if (isdigit(s[i]))
-            {
-                isNum = true;
-            }
-            else
-            {
+            INVALID,    // 0
+            SPACE,      // 1
+            SIGN,       // 2
+            DIGIT,      // 3
+            DOT,        // 4
+            EXPONENT,   // 5
+            NUM_INPUTS  // 6
+        };
+        
+        int transitionTable[][NUM_INPUTS] =
+        {
+            -1,  0,  3,  1,  2, -1,     // next states for state 0
+            -1,  8, -1,  1,  4,  5,     // next states for state 1
+            -1, -1, -1,  4, -1, -1,     // next states for state 2
+            -1, -1, -1,  1,  2, -1,     // next states for state 3
+            -1,  8, -1,  4, -1,  5,     // next states for state 4
+            -1, -1,  6,  7, -1, -1,     // next states for state 5
+            -1, -1, -1,  7, -1, -1,     // next states for state 6
+            -1,  8, -1,  7, -1, -1,     // next states for state 7
+            -1,  8, -1, -1, -1, -1,     // next states for state 8
+        };
+        
+        int state = 0;
+        while (*s != '\0')
+        {
+            InputType inputType = INVALID;
+            if (isspace(*s))
+                inputType = SPACE;
+            else if (*s == '+' || *s == '-')
+                inputType = SIGN;
+            else if (isdigit(*s))
+                inputType = DIGIT;
+            else if (*s == '.')
+                inputType = DOT;
+            else if (*s == 'e' || *s == 'E')
+                inputType = EXPONENT;
+            
+            state = transitionTable[state][inputType];
+            
+            if (state == -1)
                 return false;
-            }
-
-            i++;
+            else
+                ++s;
         }
-        while (s[i] == ' ')
-            i++;
-        return s[i] == '\0';
+        
+        return state == 1 || state == 4 || state == 7 || state == 8;
     }
 };
