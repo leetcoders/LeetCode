@@ -1,7 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 23, 2013
- Update:     Aug 8, 2013
+ Update:     Aug 15, 2013
  Problem:    Populating Next Right Pointers in Each Node II
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_117
@@ -24,7 +24,7 @@
   / \    \
  4-> 5 -> 7 -> NULL
 
- Solution: From root->leaf, left->right.
+ Solution: 1. iterative way. 2. tail recursive solution.
  */
 
 /**
@@ -38,27 +38,51 @@
 class Solution {
 public:
     void connect(TreeLinkNode *root) {
+        connect_1(root);
+    }
+    
+    void connect_1(TreeLinkNode *root) {
         while (root)
         {
-            TreeLinkNode *level = root;
+            TreeLinkNode *node = root;
             TreeLinkNode *last = NULL;
             root = NULL;
-            while (level)
+            while (node)
             {
-                if (!level->left && !level->right)
+                if (node->left || node->right)
                 {
-                    level = level->next;
-                    continue;
+                    if (last)
+                        last->next = node->left ? node->left : node->right;
+                    if (node->left && node->right)
+                        node->left->next = node->right;
+                    if (!root)
+                        root = node->left ? node->left : node->right;
+                    last = node->right ? node->right : node->left;
                 }
-                if (last) 
-                    last->next = level->left ? level->left : level->right;
-                if (level->left)
-                    level->left->next = level->right ? level->right : NULL;
-                if (!root)
-                    root = level->left ? level->left : level->right;
-                last = level->right ? level->right : level->left;
-                level = level->next;
+                node = node->next;
             }
         }
+    }
+    
+    void connect_2(TreeLinkNode *root) {
+        if (!root) return;
+        TreeLinkNode *node = root;
+        TreeLinkNode *last = NULL;
+        TreeLinkNode *first = NULL;
+        while (node)
+        {
+            if (node->left || node->right) {
+                if (last) 
+                    last->next = node->left ? node->left : node->right;
+                if (node->left && node->right)
+                    node->left->next = node->right;
+                if (!first) 
+                    first = node->left ? node->left : node->right;
+                last = node->right ? node->right : node->left;
+                
+            }
+            node = node->next;
+        }
+        connect_2(first);
     }
 };
