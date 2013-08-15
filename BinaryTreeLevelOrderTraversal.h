@@ -1,7 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 6, 2013
- Update:     Jul 23, 2013
+ Update:     Aug 15, 2013
  Problem:    Binary Tree Level Order Traversal
  Difficulty: easy
  Source:     http://leetcode.com/onlinejudge#question_102
@@ -23,8 +23,8 @@
   [15,7]
  ]
  
- Solution: Use queue. In order to seperate the levels, use 'NULL' as the 
-           end indicator of one level.
+ Solution: 1. Use queue. In order to seperate the levels, use 'NULL' as the end indicator of one level.
+           2. DFS.
  */
 
 /**
@@ -38,7 +38,11 @@
  */
 class Solution {
 public:
-    vector<vector<int> > levelOrder(TreeNode *root) {
+    vector<vector<int>> levelOrder(TreeNode *root) {
+        return levelOrder_1(root);
+    }
+    
+    vector<vector<int>> levelOrder_1(TreeNode *root) {
         vector<vector<int>> res;
         if (!root) return res;
         
@@ -68,5 +72,20 @@ public:
         }
         
         return res;
+    }
+    
+    vector<vector<int>> levelOrder_2(TreeNode *root) {
+        vector<vector<int>> res;
+        levelOrderRe(root, 0, res);
+        return res;
+    }
+
+    void levelOrderRe(TreeNode *node, int level, vector<vector<int>> &res)
+    {
+        if (!node) return;
+        if (res.size() <= level) res.push_back(vector<int>());
+        res[level].push_back(node->val);
+        levelOrderRe(node->left, level + 1, res);
+        levelOrderRe(node->right, level + 1, res);
     }
 };
