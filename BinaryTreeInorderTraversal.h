@@ -1,7 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 22, 2013
- Update:     Jul 29, 2013
+ Update:     Aug 18, 2013
  Problem:    Binary Tree Inorder Traversal
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_94
@@ -17,8 +17,9 @@
  return [1,3,2].
  Note: Recursive solution is trivial, could you do it iteratively?
 
- Solution: 1.2. Iterative way (stack). 
-           3.   Recursive solution.
+ Solution: 1. Iterative way (stack).   Time: O(n), Space: O(n).
+           2. Recursive solution.      Time: O(n), Space: O(n).
+           3. Threaded tree (Morris).  Time: O(n), Space: O(1).
  */
 /**
  * Definition for binary tree
@@ -36,29 +37,6 @@ public:
     }
     
     vector<int> inorderTraversal_1(TreeNode *root) {
-        vector<int> res;
-        if (!root) return res;
-        stack<pair<TreeNode *, bool>> stk;
-        stk.push(make_pair(root, false));
-        while (!stk.empty())
-        {
-            pair<TreeNode *, bool> p = stk.top();
-            stk.pop();
-            if (p.second) 
-            {
-                res.push_back(p.first->val);
-            } 
-            else if (p.first)
-            {
-                stk.push(make_pair(p.first->right, false));
-                stk.push(make_pair(p.first, true));
-                stk.push(make_pair(p.first->left, false));
-            }
-        }
-        return res;
-    }
-    
-    vector<int> inorderTraversal_2(TreeNode *root) {
         vector<int> res;
         stack<TreeNode *> stk;
         TreeNode *cur = root;
@@ -79,7 +57,7 @@ public:
         return res;
     }
     
-    vector<int> inorderTraversal_3(TreeNode *root) {
+    vector<int> inorderTraversal_2(TreeNode *root) {
         vector<int> res;
         inorderTraversalRe(root, res);
         return res;
@@ -90,5 +68,37 @@ public:
         inorderTraversalRe(node->left, res);
         res.push_back(node->val);
         inorderTraversalRe(node->right, res);
+    }
+    
+    vector<int> inorderTraversal_3(TreeNode *root) {
+        vector<int> res;
+        TreeNode *cur = root;
+        while (cur)
+        {
+            if (cur->left)
+            {
+                TreeNode *prev = cur->left;
+                while (prev->right && prev->right != cur)
+                    prev = prev->right;
+                    
+                if (prev->right == cur)
+                {
+                    res.push_back(cur->val);
+                    cur = cur->right;
+                    prev->right = NULL;
+                }
+                else
+                {
+                    prev->right = cur;
+                    cur = cur->left;
+                }
+            }
+            else
+            {
+                res.push_back(cur->val);
+                cur = cur->right;
+            }
+        }
+        return res;
     }
 };
