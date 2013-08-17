@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 16, 2013
+ Update:     Aug 17, 2013
  Problem:    Binary Tree Zigzag Level Order Traversal
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_103
@@ -21,7 +22,8 @@
   [15,7]
  ]
 
- Solution: In top of 'Binary Tree Level Order Traversal', reverse the elements in 'level' if necessary.
+ Solution: 1. BFS(queue) + reverse vector.
+           2. Two stack.
  */
 
 /**
@@ -37,23 +39,26 @@
 class Solution {
 public:
     vector<vector<int>> zigzagLevelOrder(TreeNode *root) {
-        queue<TreeNode *> q;
-        if (root)
-        {
-            q.push(root);
-            q.push(NULL);   // end indicator of one level
-        }
-
+        return zigzagLevelOrder_2(root);
+    }
+    
+    vector<vector<int>> zigzagLevelOrder_1(TreeNode *root) {
         vector<vector<int>> res;
-        vector<int> level;
+        if (!root) return res;
+        queue<TreeNode *> q;
+        q.push(root);
+        q.push(NULL);   // end indicator of one level
         bool left2right = true;
-        while (q.size() > 0)
+        int level = 0;
+        while (!q.empty())
         {
             TreeNode *front = q.front();
             q.pop();
             if (front)
             {
-                level.push_back(front->val);
+                if (res.size() == level)
+                    res.push_back(vector<int>());
+                res[level].push_back(front->val);
                 if (front->left)
                     q.push(front->left);
                 if (front->right)
@@ -61,13 +66,51 @@ public:
             }
             else
             {
-                if (q.size() > 0)    // CAUTIOUS! infinite loop
+                if (!q.empty())    // CAUTIOUS! infinite loop
                     q.push(NULL);
                 if (!left2right)
-                    reverse(level.begin(), level.end());
+                    reverse(res[level].begin(), res[level].end());
                 left2right = !left2right;
-                res.push_back(level);
-                level.clear();
+                level++;
+            }
+        }
+        return res;
+    }
+    
+    vector<vector<int>> zigzagLevelOrder_2(TreeNode *root) {
+        vector<vector<int>> res;
+        if (!root) return res;
+        stack<TreeNode *> stk[2];
+        bool left2right = false;
+        int cur = 1, last = 0;
+        stk[last].push(root);
+        int level = 0;
+        while (!stk[last].empty())
+        {
+            TreeNode *node = stk[last].top();
+            stk[last].pop();
+            if (node)
+            {
+                if (res.size() == level)
+                    res.push_back(vector<int>());
+                res[level].push_back(node->val);
+                if (left2right)
+                {
+                    stk[cur].push(node->right);
+                    stk[cur].push(node->left);
+                }
+                else
+                {
+                    stk[cur].push(node->left);
+                    stk[cur].push(node->right);
+                }
+            }
+            if (stk[last].empty())
+            {
+                cur = !cur;
+                last = !last;
+                left2right = !left2right;
+                level++;
             }
         }
         return res;
