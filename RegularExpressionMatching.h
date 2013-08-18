@@ -1,7 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 26, 2013
- Update:     Aug 10, 2013
+ Update:     Aug 19, 2013
  Problem:    Regular Expression Matching
  Difficulty: Hard
  Source:     http://leetcode.com/onlinejudge#question_10
@@ -48,13 +48,9 @@ public:
         if (*p == '\0') return *s == '\0';
         
         if (*s == *p || *p == '.' && *s != '\0')
-        {
             return *(p+1) != '*' ? isMatch(s+1, p+1) : 
                                    isMatch(s+1, p) || isMatch(s, p+2);
-        }
         else
-        {
             return *(p+1) == '*' && isMatch(s, p+2);
-        }
     }
 };
