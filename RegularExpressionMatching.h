@@ -21,7 +21,7 @@
  isMatch("ab", ".*") ? true
  isMatch("aab", "c*a*b") ? true
 
- Solution: ...
+ Solution: Both of the two solutions are from http://leetcode.com/2011/09/regular-expression-matching.html .
 */
 
 class Solution {
@@ -42,5 +42,19 @@ public:
         
         if (*s == '\0') return false;
         return (*s == *p || *p == '.') && isMatch(s+1, p+1);
+    }
+    
+    bool isMatch_2(const char *s, const char *p) {
+        if (*p == '\0') return *s == '\0';
+        
+        if (*s == *p || *p == '.' && *s != '\0')
+        {
+            return *(p+1) != '*' ? isMatch(s+1, p+1) : 
+                                   isMatch(s+1, p) || isMatch(s, p+2);
+        }
+        else
+        {
+            return *(p+1) == '*' && isMatch(s, p+2);
+        }
     }
 };
