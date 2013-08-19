@@ -27,21 +27,21 @@ public:
         res.clear();
         sort(candidates.begin(), candidates.end());
         vector<int> com;
-        combinationSumRe(candidates, target, com, 0, 0);
+        combinationSumRe(candidates, target, 0, com);
         return res;
     }
 
-    void combinationSumRe(const vector<int> &num, int target, vector<int> &com, int sum, int start)
+    void combinationSumRe(const vector<int> &num, int target, int start, vector<int> &com)
     {
-        if (sum == target)
+        if (target == 0)
         {
             res.push_back(com);
             return;
         }
-        for (int i = start; i < num.size() && sum + num[i] <= target; ++i)
+        for (int i = start; i < num.size() && target >= num[i]; ++i)
         {
             com.push_back(num[i]);
-            combinationSumRe(num, target, com, sum + num[i], i);
+            combinationSumRe(num, target - num[i], i, com);
             com.pop_back();
         }
     }
