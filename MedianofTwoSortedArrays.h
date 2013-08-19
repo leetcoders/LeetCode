@@ -75,10 +75,10 @@ public:
         int i = (l + r) / 2;
         int j = (m + n) / 2 - i;
 
-        int Ai_1 = ((i == 0) ? INT_MIN : A[i-1]);
-        int Bj_1 = ((j == 0) ? INT_MIN : B[j-1]);
-        int Ai = ((i == m) ? INT_MAX : A[i]);
-        int Bj = ((j == n) ? INT_MAX : B[j]);
+        int Ai_1 = (i == 0) ? INT_MIN : A[i-1];
+        int Bj_1 = (j == 0) ? INT_MIN : B[j-1];
+        int Ai = (i == m) ? INT_MAX : A[i];
+        int Bj = (j == n) ? INT_MAX : B[j];
 
         if (Ai < Bj_1) return findMedian(A, m, B, n, i+1, r);
         if (Ai > Bj) return findMedian(A, m, B, n, l, i-1);
