@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Jun 19, 2013
+ Update:     Aug 20, 2013
  Problem:    Sudoku Solver
  Difficulty: Medium
  Source:     http://leetcode.com/onlinejudge#question_37
@@ -15,77 +16,48 @@
 class Solution {
 public:
     void solveSudoku(vector<vector<char>> &board) {
-        solveSudokuRe(board, 0, 0);
+        pair<int, int> next = (board[0][0] == '.') ? make_pair(0, 0) : 
+                                                     getNextMissing(board, 0, 0);
+        solveSudokuRe(board, next.first, next.second);
     }
 
     bool solveSudokuRe(vector<vector<char>> &board, int row, int col) {
-        getNextMissing(board, row, col);
-        if (row >= 9)
-            return true;
-        for (char c = '1'; c <= '9'; ++c)
+        if (row == 9) return true;
+        pair<int, int> next = getNextMissing(board, row, col);
+        vector<char> possible;
+        getPossibleValues(board, row, col, possible);
+        for (int i = 0; i < possible.size(); ++i)
         {
-            board[row][col] = c;
-            if (isValidSudoku(board, row, col))
-                if (solveSudokuRe(board, row, col + 1))
-                    return true;
+            board[row][col] = possible[i];
+            if (solveSudokuRe(board, next.first, next.second))
+                return true;
         }
         board[row][col] = '.';
         return false;
     }
 
-    void getNextMissing(vector<vector<char>> &board, int &row, int &col)
+    pair<int, int> getNextMissing(vector<vector<char>> &board, int row, int col)
     {
-        while (row < 9) {
-            while (col < 9) {
-                if (board[row][col] == '.')
-                    return;
-                col++;
-            }
-            if (col == 9)
-                col = 0;
-            row++;
+        while (true)
+        {
+            row = (col == 8) ? row + 1 : row;
+            col = (col + 1) % 9;
+            if (row == 9 || board[row][col] == '.')
+                return make_pair(row, col);
         }
     }
 
-    // here, check board[r][c] only for efficiency
-    // may use code from 'Valid Sudoku' problem instead..
-    bool isValidSudoku(const vector<vector<char>> &board, int r, int c) {
-        int row = 0, col = 0, box = 0;
-        // row
-        for (int j = 0; j < 9; ++j)
-        {
-            if (board[r][j] == '.')
-                continue;
-            int bit = 1 << (board[r][j] - '0');
-            if (row & bit)
-                return false;
-            row |= bit;
-        }
-        // col
+    void getPossibleValues(vector<vector<char>> &board, int row, int col, vector<char> &possible)
+    {
+        bool value[9] = {false};
         for (int i = 0; i < 9; ++i)
         {
-            if (board[i][c] == '.')
-                continue;
-            int bit = 1 << (board[i][c] - '0');
-            if (col & bit)
-                return false;
-            col |= bit;
+            if (board[i][col] != '.') value[board[i][col]-'1'] = true;
+            if (board[row][i] != '.') value[board[row][i]-'1'] = true;
+            char c = board[row/3*3+i/3][col/3*3+i%3];
+            if (c != '.') value[c-'1'] = true;
         }
-        // box
-        int box_i_start = r / 3 * 3;
-        int box_j_start = c / 3 * 3;
-        for (int i = box_i_start; i < box_i_start + 3; ++i)
-        {
-            for (int j = box_j_start; j < box_j_start + 3; ++j)
-            {
-                if (board[i][j] == '.')
-                    continue;
-                int bit = 1 << (board[i][j] - '0');
-                if (box & bit)
-                    return false;
-                box |= bit;
-            }
-        }
-        return true;
+        for (int i = 0; i < 9; ++i)
+            if (!value[i]) possible.push_back(i+'1');
     }
 };
