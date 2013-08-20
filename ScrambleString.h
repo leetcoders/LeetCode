@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Jul 12, 2013
+ Update:     Aug 21, 2013
  Problem:    Scramble String
  Difficulty: Medium
  Source:     http://leetcode.com/onlinejudge#question_87
@@ -47,8 +48,7 @@ public:
     bool isScrambleRe(const string &s1, int b1, int e1, const string &s2, int b2, int e2) {
         if (!hasSameLetters(s1, b1, e1, s2, b2, e2)) return false;
         int length = e1 - b1 + 1;
-        if (length == 0) return true;
-        if (length == 1) return s1[b1] == s2[b2];
+        if (length == 0 || length == 1) return true;
 
         for (int i = 0; i < length - 1; ++i)  // highlight
             if (isScrambleRe(s1, b1, b1 + i, s2, b2, b2 + i) && isScrambleRe(s1, b1 + i + 1, e1, s2, b2 + i + 1, e2) ||
@@ -58,14 +58,12 @@ public:
     }
 
     bool hasSameLetters(const string &s1, int b1, int e1, const string &s2, int b2, int e2) {
-        if (e1 - b1 != e2 - b2)
-            return false;
+        if (e1 - b1 != e2 - b2) return false;
         int count[256] = {0};
         for (int i = b1; i <= e1; ++i) count[s1[i]]++;
         for (int i = b2; i <= e2; ++i) count[s2[i]]--;
         for (int i = 0; i < 256; ++i) 
-            if (count[i] != 0)
-                return false;
+            if (count[i] != 0) return false;
         return true;
     }
 };
