@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 23, 2013
+ Update:     Aug 20, 2013
  Problem:    Multiply Strings
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_43
@@ -14,21 +15,22 @@
 class Solution {
 public:
     string multiply(string num1, string num2) {
-        string res;
-        int m = num1.size(), n = num2.size();
-        int i, sum = 0, carry = 0;
-        for (i = 0; i < m + n - 1 || carry > 0; ++i)
+        int N = num1.size(), M = num2.size();
+        string res(N+M, '0');
+        for (int i = N - 1; i >= 0; --i)
         {
-            sum = carry;
-            for (int j = max(i - n + 1, 0); j <= min(m - 1, i); ++j)
-                sum += (num1[m-j-1] - '0') * (num2[n-(i-j)-1] - '0');
-            carry = sum / 10;
-            res.push_back(sum % 10 + '0');
+            int carry = 0;
+            for (int j = M - 1; j >= 0; --j)
+            {
+                int sum = carry + (res[i+j+1] - '0') + 
+                          (num1[i] - '0') * (num2[j] - '0');
+                res[i+j+1] = sum % 10 + '0';
+                carry = sum / 10;
+            }
+            res[i] += carry;
         }
-        while (i > 1 && res[i-1] == '0')
-            i--;
-        res.resize(i);
-        reverse(res.begin(), res.end());
+        while (res.size() > 1 && res[0] == '0')
+            res.erase(res.begin());
         return res;
     }
 };
