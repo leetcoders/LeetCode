@@ -1,7 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 16, 2013
- Update:     May 7, 2013
+ Update:     Aug 22, 2013
  Problem:    Palindrome Number
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_9
@@ -14,8 +14,9 @@
  you know that the reversed integer might overflow. How would you handle such case?
  There is a more generic way of solving this problem.
 
- Solution: 1. Count the number of digits first (traverse once) then check the digits from both sides to center (traverse once again).
-           2. Reverse the number, then check to see if x == reverse(x) (traverse once).
+ Solution: 1. Count the number of digits first (traverse once) then check the digits from both sides to center.
+           2. Reverse the number, then check to see if x == reverse(x).
+           3. Recursion (interesting but a little hard to understand).
  */
 
 class Solution {
@@ -23,7 +24,8 @@ public:
     bool isPalindrome(int x) {
         return isPalindrome1(x);
     }
-
+    
+    // solution 1
     bool isPalindrome1(int x) {
         if (x < 0) return false;
         int d = 1;
@@ -38,6 +40,7 @@ public:
         return true;
     }
 
+    // solution 2
     bool isPalindrome2(int x) {
         if (x < 0) return false;
         return x == reverse(x);
@@ -51,5 +54,21 @@ public:
             x /= 10;
         }
         return rev;
+    }
+    
+    // solution 3
+    bool isPalindrome3(int x) {
+        return isPalindromeRe(x, x);
+    }
+    
+    bool isPalindromeRe(int x, int &y) {
+        if (x < 0) return false;
+        if (x == 0) return true;
+        if (isPalindromeRe(x / 10, y) && x % 10 == y % 10)
+        {
+            y /= 10;
+            return true;
+        }
+        return false;
     }
 };
