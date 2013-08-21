@@ -21,8 +21,7 @@ public:
         {
             if (prices[i] < prices[imin])
                 imin = i;
-            if (prices[i] - prices[imin] > res)
-                res = prices[i] - prices[imin];
+            res = max(res, prices[i] - prices[imin]);
         }
         return res;
     }
