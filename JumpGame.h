@@ -13,24 +13,19 @@
  A = [2,3,1,1,4], return true.
  A = [3,2,1,0,4], return false.
 
- Solution: Updated solution: try every reachable index. Thank to Wenxin Xing for kindly feedback:)
+ Solution: Updated solution: try every reachable index. 
+           Thank to Wenxin Xing for kindly feedback and pointing out my big mistake:)
  */
 
 class Solution {
 public:
     bool canJump(int A[], int n) {
-        int reachable = 0;
-        for (int i = 0; i <= reachable && reachable < n-1; ++i)
-            reachable = max(reachable, i + A[i]);
-        return reachable >= n-1;
-    }
-
-    // My first solution, which is totally wrong but still able to pass OJ --|
-    // Wrong answer for test cases: {3,4,0,0,1,1} & {2,2,2,3,0,0}
-    bool canJump_Wrong(int A[], int n) {
-        int i = 0;
-        while (i < n && A[i] > 0)
-            i += A[i];
-        return (i >= n-1);
+        int start = 0, end = 0;
+        while (start <= end && end < n-1)
+        {
+            end = max(end, start + A[start]);
+            start++;
+        }
+        return end >= (n-1);
     }
 };
