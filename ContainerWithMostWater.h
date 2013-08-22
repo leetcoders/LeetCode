@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 16, 2013
+ Update:     Aug 22, 2013
  Problem:    Container With Most Water
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_11
@@ -10,25 +11,25 @@
  Find two lines, which together with x-axis forms a container, such that the container contains the most water.
  Note: You may not slant the container.
 
- Solution: Search from both sides. When searching towards center, the new height 
-           cannot be less than the current minimum height.
- */
+ Solution: From both sides to the center.
+*/
 
 class Solution {
 public:
     int maxArea(vector<int> &height) {
         int res = 0;
-        int l = 0, r = height.size() - 1;
-        while (l < r) 
+        int l = 0, r = height.size()-1;
+        while (l < r)
         {
-            int h = min(height[l], height[r]);
-            res = max(res, h * (r-l));
-            if (height[l] <= height[r]) {
+            if (height[l] <= height[r])
+            {
+                res = max(res, (r-l) * height[l]);
                 l++;
-                while (height[l] < h) l++;
-            } else {
+            }
+            else
+            {
+                res = max(res, (r-l) * height[r]);
                 r--;
-                while (height[r] < h) r--;
             }
         }
         return res;
