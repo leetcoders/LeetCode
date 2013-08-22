@@ -1,7 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 24, 2013
- Update:     Jul 24, 2013
+ Update:     Aug 23, 2013
  Problem:    N-Queens II
  Difficulty: Medium
  Source:     http://leetcode.com/onlinejudge#question_52
@@ -23,9 +23,11 @@
  ".Q.."]
  ]
 
- Solution: Recursion (DFS). 
-           The second solution is 'bit' verstion. The idea is from http://www.matrix67.com/blog/archives/266 (in chinese).
- */
+ Solution: 1. Recursion.
+           2. Recursion + bit version. (fast)
+              The idea is from http://www.matrix67.com/blog/archives/266 (in chinese).
+           3. Iteration.
+*/
 
 class Solution {
 public:
@@ -33,39 +35,39 @@ public:
         return totalNQueens_2(n);
     }
     
-    // solution 1
-    int totalNQueens_1(int n) {
+    // solution 1: recursion
+    int totalNQueens_1(int n) 
+    {
+        int board[n];
+        memset(board, -1, sizeof(board));
         int res = 0;
-        int column[n];
-        memset(column, -1, n*sizeof(int));
-        solveNQueensRe_1(n, 0, column, res);
+        totalNQueensRe(n, 0, board, res);
         return res;
     }
-
-    void solveNQueensRe_1(int n, int row, int *column, int &res)
+    
+    void totalNQueensRe(int n, int row, int board[], int &res)
     {
-        if (row == n) {
+        if (row  == n)
+        {
             res++;
             return;
         }
-        for (int j = 0; j < n; ++j)
-        {
-            if (!isValid(n, row, j, column)) continue;
-            column[j] = row;
-            solveNQueensRe_1(n, row + 1, column, res);
-            column[j] = -1;
-        }
-    }
-
-    bool isValid(int n, int row, int col, int *column)
-    {
-        if (column[col] != -1) return false;
         for (int i = 0; i < n; ++i)
         {
-            if (column[i] == -1) continue;
-            if (column[i] + i == row + col) return false;
-            if (column[i] - row == i - col) return false;
+            if (isValid(board, row, i))
+            {
+                board[row] = i;
+                totalNQueensRe(n, row + 1, board, res);
+                board[row] = -1;
+            }
         }
+    }
+    
+    bool isValid(int board[], int row, int col)
+    {
+        for (int i = 0; i < row; ++i)
+            if (board[i] == col || row - i == abs(col - board[i]))
+                return false;
         return true;
     }
     
@@ -90,5 +92,38 @@ public:
             if (avail & pos)
                 totalNQueensRe_2(n, row | pos, (ld | pos) << 1, (rd | pos) >> 1, res);
         }
+    }
+    
+    // solution 3: iterative solution
+    int totalNQueens_3(int n) 
+    {
+        int board[n];
+        memset(board, -1, sizeof(board));
+        int row = 0;
+        int res = 0;
+        while (row != -1)
+        {
+            if (row == n)
+            {
+                res++;
+                row--;
+            }
+            int i = board[row] == -1 ? 0 : board[row] + 1;
+            for (; i < n; ++i)
+            {
+                if (isValid(board, row, i))
+                {
+                    board[row] = i;
+                    row++;
+                    break;
+                }
+            }
+            if (i == n)
+            {
+                board[row] = -1;
+                row--;
+            }
+        }
+        return res;
     }
 };
