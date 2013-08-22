@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 21, 2013
+ Update:     Aug 22, 2013
  Problem:    Jump Game II
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_45
@@ -18,21 +19,18 @@
 class Solution {
 public:
     int jump(int A[], int n) {
-        if (n <= 1) return 0;
+        int start = 0;
         int res = 0;
-        int i = 0;
-        while (i < n - 1)
+        while (start < n-1)
         {
-            int max_jump = i + A[i];
-            if (i + A[i] < n - 1) 
-            {
-                for (int j = i + 1; j < min(i + A[i], n - 1); ++j)
-                    if (j + A[j] > max_jump + A[max_jump])
-                        max_jump = j;
-            }
-            i = max_jump;
             res++;
+            if (start + A[start] >= n-1)
+                return res;
+            int mx = start;
+            for (int i = start + 1; i <= start + A[start]; ++i)
+                if (i + A[i] >= mx + A[mx])
+                    mx = i;
+            start = mx;
         }
-        return res;
     }
 };
