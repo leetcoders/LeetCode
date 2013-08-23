@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 13, 2013
+ Update:     Aug 24, 2013
  Problem:    Spiral Matrix II
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_59
@@ -15,63 +16,34 @@
  [ 7, 6, 5 ]
  ]
 
- Solution: Spirally traverse the matrix (right->down->left->up->right.....).
-           Update the min and max values of x/y at each turning point.
+ Solution: ...
  */
 
 class Solution {
 public:
-    enum DIR {RIGHT, LEFT, UP, DOWN};
     vector<vector<int>> generateMatrix(int n) {
-        vector<vector<int>> res(n, vector<int>(n, 0));
-        DIR dir = RIGHT;
-        int x = 0, y = 0;
-        int x_min = 0, x_max = n - 1;
-        int y_min = 0, y_max = n - 1;
+        vector<vector<int>> matrix(n, vector<int>(n));
+        int imin = 0, imax = n-1, jmin = 0, jmax = n-1;
+        int i = 0, j = -1;
         int num = 1;
-        while (x_min <= x_max && y_min <= y_max)
+        while (true)
         {
-            res[x][y] = num++;
-            switch (dir)
-            {
-            case RIGHT:
-                if (y == y_max) {
-                    x_min++;
-                    dir = DOWN;
-                    x++;
-                } else {
-                    y++;
-                }
-                break;
-            case LEFT:
-                if (y == y_min) {
-                    x_max--;
-                    dir = UP;
-                    x--;
-                } else {
-                    y--;
-                }
-                break;
-            case UP:
-                if (x == x_min) {
-                    y_min++;
-                    dir = RIGHT;
-                    y++;
-                } else {
-                    x--;
-                }
-                break;
-            case DOWN:
-                if (x == x_max) {
-                    y_max--;
-                    dir = LEFT;
-                    y--;
-                } else {
-                    x++;
-                }
-                break;
-            }
+            while (j < jmax) matrix[i][++j] = num++;
+            imin++;
+            if (imin > imax) break;
+            
+            while (i < imax) matrix[++i][j] = num++;
+            jmax--;
+            if (jmin > jmax) break;
+            
+            while (j > jmin) matrix[i][--j] = num++;
+            imax--;
+            if (imin > imax) break;
+            
+            while (i > imin) matrix[--i][j] = num++;
+            jmin++;
+            if (jmin > jmax) break;
         }
-        return res;
+        return matrix;
     }
 };
