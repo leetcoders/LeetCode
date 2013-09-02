@@ -1,7 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 17, 2013
- Update:     Jul 15, 2013
+ Update:     Sep 2, 2013
  Problem:    Merge Two Sorted Lists
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_21
@@ -24,36 +24,16 @@
 class Solution {
 public:
     ListNode *mergeTwoLists(ListNode *l1, ListNode *l2) {
-        if (!l1) return l2;
-        if (!l2) return l1;
-        ListNode *head = NULL, *cur = NULL;
-        while (l1 && l2)
+        ListNode head(0), *cur = &head;
+        while (l1 && l2) 
         {
-            if (l1->val < l2->val)
-            {
-                if (!head) {
-                    head = l1;
-                    cur = head;
-                } else {
-                    cur->next = l1;
-                    cur = cur->next;
-                }
-                l1 = l1->next;
-            }
-            else
-            {
-                if (!head) {
-                    head = l2;
-                    cur = head;
-                } else {
-                    cur->next = l2;
-                    cur = cur->next;
-                }
-                l2 = l2->next;
-            }
+            ListNode **min = l1->val < l2->val ? &l1 : &l2;
+            cur->next = *min;
+            cur = cur->next;
+            *min = (*min)->next;
         }
         if (l1) cur->next = l1;
         if (l2) cur->next = l2;
-        return head;
+        return head.next;
     }
 };
