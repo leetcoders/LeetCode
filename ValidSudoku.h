@@ -22,15 +22,14 @@ public:
             row = 0;
             for (int j = 0; j < N; ++j)
             {
-                if (board[i][j] == '.')
-                    continue;
-
-                int bit = 1 << (board[i][j] - '0');
-                int box_index = j / 3 + i / 3 * 3;
-
+                if (board[i][j] == '.') continue;
+                
+                int bit = 1 << (board[i][j] - '1');
+                int box_index = i/3*3 + j/3;
+                
                 if (row & bit || col[j] & bit || box[box_index] & bit)
                     return false;
-
+                
                 row |= bit;
                 col[j] |= bit;
                 box[box_index] |= bit;
