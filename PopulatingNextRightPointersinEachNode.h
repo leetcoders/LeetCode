@@ -1,7 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 22, 2013
- Update:     Aug 2, 2013
+ Update:     Sep 8, 2013
  Problem:    Populating Next Right Pointers in Each Node
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_116
@@ -19,20 +19,21 @@
  You may assume that it is a perfect binary tree (ie, all leaves are at the same level, and every parent has two children).
  For example,
  Given the following perfect binary tree,
-     1
+      1
     /  \
    2    3
   / \  / \
  4  5  6  7
  After calling your function, the tree should look like:
-     1 -> NULL
+      1 -> NULL
     /  \
    2 -> 3 -> NULL
   / \  / \
  4->5->6->7 -> NULL
 
  Solution: 1. Iterative: Two 'while' loops: root->leaf and left->right.
-           2. Recursive: DFS. Defect: Use extra stack space for recursion.
+           2. Iterative: Queue. Use extra space.
+           3. Recursive: DFS. Defect: Use extra stack space for recursion.
  */
 
 /**
@@ -65,16 +66,35 @@ public:
             root = root->left;
         }
     }
-
+    
     void connect_2(TreeLinkNode *root) {
-        connectRe(root);
+        if (!root) return;
+        queue<TreeLinkNode *> q;
+        q.push(root);
+        q.push(NULL);
+        TreeLinkNode *last = NULL;
+        while (true)
+        {
+            TreeLinkNode *node = q.front();
+            q.pop();
+            if (!node) {
+                last = NULL;
+                if (q.empty()) break;
+                q.push(NULL);
+            } else {
+                if (last) last->next = node;
+                last = node;
+                if (node->left) q.push(node->left);
+                if (node->right) q.push(node->right);
+            }
+        }
     }
-
-    void connectRe(TreeLinkNode *node) {
+    
+    void connect_3(TreeLinkNode *node) {
         if (!node || !node->left) return;
         node->left->next = node->right;
         node->right->next = node->next ? node->next->left : NULL;
-        connectRe(node->left);
-        connectRe(node->right);
+        connect_3(node->left);
+        connect_3(node->right);
     }
 };
