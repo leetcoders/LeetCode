@@ -1,7 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 23, 2013
- Update:     Aug 15, 2013
+ Update:     Sep 8, 2013
  Problem:    Populating Next Right Pointers in Each Node II
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_117
@@ -24,7 +24,9 @@
   / \    \
  4-> 5 -> 7 -> NULL
 
- Solution: 1. iterative way. 2. tail recursive solution.
+ Solution: 1. iterative way with CONSTANT extra space.
+           2. iterative way + queue. Contributed by SUN Mian(孙冕).
+           3. tail recursive solution.
  */
 
 /**
@@ -41,6 +43,7 @@ public:
         connect_1(root);
     }
     
+    // solution 1
     void connect_1(TreeLinkNode *root) {
         while (root)
         {
@@ -64,7 +67,32 @@ public:
         }
     }
     
+    // solution 2
     void connect_2(TreeLinkNode *root) {
+        if (!root) return;
+        queue<TreeLinkNode *> q;
+        q.push(root);
+        q.push(NULL);
+        TreeLinkNode *last = NULL;
+        while (true)
+        {
+            TreeLinkNode *node = q.front();
+            q.pop();
+            if (!node) {
+                last = NULL;
+                if (q.empty()) break;
+                q.push(NULL);
+            } else {
+                if (last) last->next = node;
+                last = node;
+                if (node->left) q.push(node->left);
+                if (node->right) q.push(node->right);
+            }
+        }
+    }
+    
+    // solution 3
+    void connect_3(TreeLinkNode *root) {
         if (!root) return;
         TreeLinkNode *node = root;
         TreeLinkNode *last = NULL;
@@ -83,6 +111,6 @@ public:
             }
             node = node->next;
         }
-        connect_2(first);
+        connect_3(first);
     }
 };
