@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 13, 2013
+ Update:     Sep 20, 2013
  Problem:    Word Search
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_79
@@ -24,48 +25,31 @@
 
 class Solution {
 public:
-    bool exist(vector<vector<char>> &board, string word) {
+    bool exist(vector<vector<char> > &board, string word) {
         int N = board.size(), M = board[0].size();
-
-        bool **visited = new bool*[N];
-        for (int i = 0; i < N; ++i) {
-            visited[i] = new bool[M];
-            memset(visited[i], 0, M * sizeof(bool));
-        }
-
-        bool found = false;
+        vector<vector<bool> > visited(N, vector<bool>(M, false));
         for (int i = 0; i < N; ++i)
             for (int j = 0; j < M; ++j)
-                if (!found && board[i][j] == word[0] && existRe(board, word, 1, visited, make_pair(i, j)))
-                    found = true;
-
-        for (int i = 0; i < N; ++i)
-            delete [] visited[i];
-        delete [] visited;
-
-        return found;
+                if (existRe(board, word, 0, i, j, visited))
+                    return true;
+        return false;
     }
 
-    bool existRe(const vector<vector<char>> &board, const string &word, int deep, bool **visited, pair<int, int> last)
+    bool existRe(const vector<vector<char> > &board, const string &word, int deep, 
+                 int i, int j, vector<vector<bool> > &visited)
     {
-        if (deep == word.size())
-            return true;
-
-        int x = last.first, y = last.second;
         int N = board.size(), M = board[0].size();
-        visited[x][y] = true;
-
-        bool found = false;
-        if (x > 0 && !visited[x-1][y] && board[x-1][y] == word[deep])
-            found = existRe(board, word, deep + 1, visited, make_pair(x-1, y));
-        if (!found && x < N-1 && !visited[x+1][y] && board[x+1][y] == word[deep])
-            found = existRe(board, word, deep + 1, visited, make_pair(x+1, y));
-        if (!found && y > 0 && !visited[x][y-1] && board[x][y-1] == word[deep])
-            found = existRe(board, word, deep + 1, visited, make_pair(x, y-1));
-        if (!found && y < M-1 && !visited[x][y+1] && board[x][y+1] == word[deep])
-            found = existRe(board, word, deep + 1, visited, make_pair(x, y+1));
-
-        visited[x][y] = false;
-        return found;
+        if (deep == word.size()) return true;
+        if (i < 0 || i >= N || j < 0 || j >= M) return false;
+        if (board[i][j] != word[deep] || visited[i][j]) return false;
+        
+        visited[i][j] = true;
+        if (existRe(board, word, deep + 1, i-1, j, visited)) return true;
+        if (existRe(board, word, deep + 1, i+1, j, visited)) return true;
+        if (existRe(board, word, deep + 1, i, j-1, visited)) return true;
+        if (existRe(board, word, deep + 1, i, j+1, visited)) return true;
+        visited[i][j] = false;
+        
+        return false;
     }
 };
