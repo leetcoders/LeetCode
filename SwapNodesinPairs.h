@@ -30,20 +30,17 @@ public:
     }
     
     ListNode *swapPairs_1(ListNode *head) {
-        if (!head || !head->next) return head;
-        ListNode *first = head, *second = head->next;
-        ListNode *last = NULL;
-        head = head->next;
-        while (first && second)
+        ListNode dummy(0), *cur = &dummy;
+        cur->next = head;
+        while (cur->next && cur->next->next)
         {
-            first->next = second->next;
-            second->next = first;
-            if (last) last->next = second;
-            last = first;
-            first = first->next;
-            second = first ? first->next : NULL;
+            ListNode *move = cur->next->next;
+            cur->next->next = move->next;
+            move->next = cur->next;
+            cur->next = move;
+            cur = move->next;
         }
-        return head;
+        return dummy.next;
     }
     
     ListNode *swapPairs_2(ListNode *head) {
