@@ -38,21 +38,21 @@ public:
         sort(S.begin(), S.end());
         vector<int> set;
         int N = S.size();
-        for (int i = 1; i <= N; ++i)
-            subsetsRe(S, i, 0, set, res);
+        for (int l = 1; l <= N; ++l)
+            subsetsRe(S, l, 0, set, res);
         return res;
     }
     
-    void subsetsRe(vector<int> &S, int size, int start, vector<int> &set, vector<vector<int> > &res)
+    void subsetsRe(vector<int> &S, int L, int start, vector<int> &set, vector<vector<int> > &res)
     {
         int N = S.size(), M = set.size();
-        if (M == size) {
+        if (M == L) {
             res.push_back(set);
             return;
         }
-        for (int i = start; i < N && N - i >= size - M; ++i) {
+        for (int i = start; i <= N - (L - M); ++i) {
             set.push_back(S[i]);
-            subsetsRe(S, size, i + 1, set, res);
+            subsetsRe(S, L, i + 1, set, res);
             set.pop_back();
         }
     }
@@ -61,9 +61,9 @@ public:
         vector<vector<int> > res(1, vector<int>());
         sort(S.begin(), S.end());
         int N = S.size();
-        for (int size = 1; size <= N; ++size)
+        for (int L = 1; L <= N; ++L)
         {
-            int stk[size];
+            int stk[L];
             stk[0] = 0;
             int top = 0;
             while (true)
@@ -74,10 +74,10 @@ public:
                     if (top < 0) break;
                     stk[top]++;
                 }
-                else if (top == size - 1) 
+                else if (top == L - 1) 
                 {
                     vector<int> set;
-                    for (int i = 0; i < size; ++i)
+                    for (int i = 0; i < L; ++i)
                         set.push_back(S[stk[i]]);
                     res.push_back(set);
                     stk[top]++;

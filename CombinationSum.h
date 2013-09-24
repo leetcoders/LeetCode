@@ -22,26 +22,23 @@
 
 class Solution {
 public:
-    vector<vector<int>> res;
     vector<vector<int>> combinationSum(vector<int> &candidates, int target) {
-        res.clear();
+        vector<vector<int>> res;
         sort(candidates.begin(), candidates.end());
         vector<int> com;
-        combinationSumRe(candidates, target, 0, com);
+        combinationSumRe(candidates, target, 0, com, res);
         return res;
     }
 
-    void combinationSumRe(const vector<int> &num, int target, int start, vector<int> &com)
+    void combinationSumRe(const vector<int> &num, int target, int start, vector<int> &com, vector<vector<int>> &res)
     {
-        if (target == 0)
-        {
+        if (target == 0) {
             res.push_back(com);
             return;
         }
-        for (int i = start; i < num.size() && target >= num[i]; ++i)
-        {
+        for (int i = start; i < num.size() && target >= num[i]; ++i) {
             com.push_back(num[i]);
-            combinationSumRe(num, target - num[i], i, com);
+            combinationSumRe(num, target-num[i], i, com, res);
             com.pop_back();
         }
     }

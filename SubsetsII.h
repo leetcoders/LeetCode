@@ -20,35 +20,32 @@
   []
  ]
 
- Solution: Use <set> to avoid duplicates.
+ Solution: ..Similar to Subset I, except for line 45.
  */
 class Solution {
 public:
-    vector<vector<int>> res;
     vector<vector<int>> subsetsWithDup(vector<int> &S) {
-        res.clear();
-        res.push_back(vector<int>());
+        vector<vector<int> > res(1, vector<int>());
         sort(S.begin(), S.end());
-        for (int setSize = 1; setSize <= S.size(); ++setSize) {
-            vector<int> r;
-            subsetsWithDupRe(S, r, setSize, 0, -1);
-        }
+        vector<int> set;
+        int N = S.size();
+        for (int l = 1; l <= N; ++l)
+            subsetsWithDupRe(S, l, 0, set, res);
         return res;
     }
 
-    void subsetsWithDupRe(vector<int> &s, vector<int> &r, int setSize, int deep, int lastIndex)
+    void subsetsWithDupRe(vector<int> &S, int L, int start, vector<int> &set, vector<vector<int>> &res)
     {
-        if (deep == setSize) {
-            res.push_back(r);
+        int N = S.size(), M = set.size();
+        if (M == L) {
+            res.push_back(set);
             return;
         }
-        for (int i = lastIndex + 1; i <= s.size() - (setSize - deep); ++i) {
-            if (!binary_search(s.begin()+lastIndex+1, s.begin()+i, s[i]))
-            {
-                r.push_back(s[i]);
-                subsetsWithDupRe(s, r, setSize, deep + 1, i);
-                r.pop_back();
-            }
+        for (int i = start; i <= N - (L - M); ++i) {
+            if (i > start && S[i] == S[i-1]) continue;
+            set.push_back(S[i]);
+            subsetsWithDupRe(S, L, i + 1, set, res);
+            set.pop_back();
         }
     }
 };
