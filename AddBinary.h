@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 17, 2013
+ Update:     Sep 25, 2013
  Problem:    Add Binary
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_67
@@ -17,22 +18,20 @@
 class Solution {
 public:
     string addBinary(string a, string b) {
-        string res;
-        int i = a.size() - 1, j = b.size() - 1;
+        int N = a.size(), M = b.size(), K = max(N, M);
+        string res(K, ' ');
         int carry = 0;
-        while (true)
+        int i = N-1, j = M-1, k = K-1;
+        while (i >= 0 || j >= 0)
         {
-            int aa = 0, bb = 0;
-            if (i >= 0) aa = a[i] - '0';
-            if (j >= 0) bb = b[j] - '0';
-            res.push_back(char((aa + bb + carry) % 2 + '0'));
-            carry = (aa + bb + carry) / 2;
-            i--; j--;
-            if (i < 0 && j < 0) break;
+            int sum = carry;
+            if (i >= 0) sum += a[i--] - '0';
+            if (j >= 0) sum += b[j--] - '0';
+            carry = sum / 2;
+            res[k--] = sum % 2 + '0';
         }
-        if (carry)
-            res.push_back('1');
-        reverse(res.begin(), res.end());
+        if (carry == 1)
+            res.insert(res.begin(), '1');
         return res;
     }
 };

@@ -11,12 +11,8 @@
  Given [1,3],[2,6],[8,10],[15,18],
  return [1,6],[8,10],[15,18].
 
- Solution: 1. Sort first.
-              - sort according to increasing sequence of 'start'.
-           2. Traverse the 'intervals'.
-              - if 'it' interval intersects with 'last' interval, merge them (modify 'last').
-              - else push 'last' into final result.
-              - At last, DO NOT forget push the last 'last' into result.
+ Solution: 1. Sort in ascending order of 'start'.
+           2. Traverse the 'intervals', merge or push...
 */
 
 /**
@@ -36,24 +32,21 @@ bool compare(Interval a, Interval b)
 class Solution {
 public:
     vector<Interval> merge(vector<Interval> &intervals) {
-        if (intervals.empty()) return intervals;
-        sort(intervals.begin(), intervals.end(), compare);
+        int N = intervals.size();
+        if (N <= 1) return intervals;
+        sort(intervals.begin(), intervals.end(), mycompare);
         vector<Interval> res;
-        vector<Interval>::iterator last = intervals.begin(), it = last + 1;
-        while (it != intervals.end())
+        Interval last = intervals[0];
+        for (int i = 1; i < N; ++i) 
         {
-            if (last->end < it->start)
-            {
-                res.push_back((*last));
-                last = it;
+            if (intervals[i].start > last.end) {
+                res.push_back(last);
+                last = intervals[i];
+            } else {
+                last.end = max(last.end, intervals[i].end);
             }
-            else
-            {
-                last->end = max(last->end, it->end);
-            }
-            it++;
         }
-        res.push_back((*last));
+        res.push_back(last);
         return res;
     }
 };

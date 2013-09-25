@@ -38,17 +38,15 @@ public:
         bool inserted = false;
         for (; it != intervals.end(); ++it)
         {
-            if (it->end < newInterval.start)
+            if (inserted || it->end < newInterval.start) // non-overlaping
             {
                 res.push_back(*it);
             }
-            else if (it->start > newInterval.end)
+            else if (newInterval.end < it->start)
             {
-                inserted = true;
                 res.push_back(newInterval);
-                while (it != intervals.end())
-                    res.push_back(*(it++));
-                break;
+                res.push_back(*it);
+                inserted = true;
             }
             else
             {

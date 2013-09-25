@@ -14,8 +14,8 @@
 class Solution {
 public:
     vector<int> plusOne(vector<int> &digits) {
-        int carry = 1;
-        for (int i = digits.size()-1; i >= 0 && carry; --i)
+        int carry = 1, N = digits.size();
+        for (int i = N-1; i >= 0 && carry; --i)
         {
             int sum = carry + digits[i];
             carry = sum / 10;
