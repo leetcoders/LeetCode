@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 7, 2013
+ Update:     Sep 26, 2013
  Problem:    ZigZag Conversion
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_6
@@ -16,33 +17,29 @@
  string convert(string text, int nRows);
  convert("PAYPALISHIRING", 3) should return "PAHNAPLSIIGYIR".
 
- Solution: It's done if you find the rule!
+ Solution: ...
  */
 
 class Solution {
 public:
     string convert(string s, int nRows) {
-        if (nRows == 1) return s; 
+        if (nRows == 1) return s;
         string res;
-        int offset = 2 * (nRows - 1);
-        for (int i = 0; i < nRows; i++)
+        int inc = (nRows - 1) * 2, N = s.size();
+        for (int i = 0; i < nRows; ++i)
         {
-            if (i == 0 || i == nRows-1) {
-                for (int j = i; j < s.size(); j += offset)
-                    res.push_back(s[j]);
-            } else {
-                int j_1 = i;
-                int j_2 = j_1 + offset - i * 2;
-                bool use_1 = true;
-                while (use_1 ? j_1 < s.size() : j_2 < s.size())
-                {
-                    res.push_back(use_1 ? s[j_1] : s[j_2]);
-                    j_1 = use_1? j_1 + offset : j_1;
-                    j_2 = use_1? j_2 : j_2 + offset;
-                    use_1 = !use_1;
-                }
+            int j = 0;
+            while (true)
+            {
+                if (i > 0 && i < nRows-1 && j-i >= 0 && j-i < N)
+                    res.push_back(s[j-i]);
+                if (j+i < N)
+                    res.push_back(s[j+i]);
+                if (j+i >= N)
+                    break;
+                j += inc;
             }
-        } 
+        }
         return res;
     }
 };

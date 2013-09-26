@@ -26,7 +26,7 @@ public:
             res = res * 10 + (x % 10);
             x /= 10;
         }
-        assert(res > INT_MIN && res < INT_MAX);
+        assert(res >= INT_MIN && res <= INT_MAX);
         return res;
     }
 };

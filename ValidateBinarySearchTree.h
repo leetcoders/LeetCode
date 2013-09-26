@@ -13,7 +13,7 @@
  Both the left and right subtrees must also be binary search trees.
 
  Solution: Recursion. 1. Add lower & upper bound. O(n)
-                      2. Inorder traversal with one addition parameter (value of predecessor). O(n)
+                      2. Inorder traversal with one additional parameter (value of predecessor). O(n)
  */
 
 /**
