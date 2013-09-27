@@ -54,16 +54,18 @@ public:
         ListNode *last = head, *cur = head->next;
         while (cur)
         {
-            if (last->val != cur->val)
-            {
+            if (last->val != cur->val) {
                 last = last->next;
                 last->val = cur->val;
             }
             cur = cur->next;
         }
-        cur = last;
-        while (cur = cur->next)
-            delete cur;
+        cur = last->next;
+        while (cur) {
+            ListNode *del = cur;
+            cur = cur->next;
+            delete del;
+        }
         last->next = NULL;
         return head;
     }

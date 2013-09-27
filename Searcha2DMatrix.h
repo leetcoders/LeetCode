@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 16, 2013
+ Update:     Sep 27, 2013
  Problem:    Search a 2D Matrix
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_74
@@ -20,39 +21,52 @@
  ]
  Given target = 3, return true.
 
- Solution: Binary-search in both row and column.
+ Solution: Binary-search.
  */
 
 class Solution {
 public:
     bool searchMatrix(vector<vector<int> > &matrix, int target) {
-        if (matrix.size() == 0) return false;
-
-        int row = matrix.size();
-        int col = matrix[0].size();
-        // for deciding row
-        int f = 0, l = row - 1;
-        while (f <= l) {
-            int mid = (f + l) / 2;
-            if (matrix[mid][0] == target)
-                return true;
-            if (matrix[mid][0] > target)
-                l = mid - 1;
-            if (matrix[mid][0] < target)
-                f = mid + 1;
+        return searchMatrix_2(matrix, target);
+    }
+    
+    // Solution 1.
+    bool searchMatrix_1(vector<vector<int> > &matrix, int target) {
+        if (matrix.empty() || matrix[0].empty()) return false;
+        int N = matrix.size(), M = matrix[0].size();
+        int i = 0, j = N-1;
+        while (i <= j)
+        {
+            int mid = (i + j) / 2;
+            if (matrix[mid][0] == target) return true;
+            else if (matrix[mid][0] < target) i++;
+            else j--;
         }
-        if (l < 0) return false;
-        int r = l;
-        // search in row
-        f = 0; l = col - 1;
-        while (f <= l) {
-            int mid = (f + l) / 2;
-            if (matrix[r][mid] == target)
-                return true;
-            if (matrix[r][mid] > target)
-                l = mid - 1;
-            if (matrix[r][mid] < target)
-                f = mid + 1;
+        int row = j;
+        if (row < 0) return false;
+        i = 0, j = M - 1;
+        while (i <= j)
+        {
+            int mid = (i + j) / 2;
+            if (matrix[row][mid] == target) return true;
+            else if (matrix[row][mid] < target) i++;
+            else j--;
+        }
+        return false;
+    }
+    
+    // Solution 2.
+    bool searchMatrix_2(vector<vector<int> > &matrix, int target) {
+        if (matrix.empty() || matrix[0].empty()) return false;
+        int N = matrix.size(), M = matrix[0].size();
+        int i = 0, j = M * N - 1;
+        while (i <= j)
+        {
+            int mid = (i + j) / 2;
+            int row = mid / M, col = mid % M;
+            if (matrix[row][col] == target) return true;
+            else if (matrix[row][col] < target) i = mid + 1;
+            else j = mid - 1;
         }
         return false;
     }

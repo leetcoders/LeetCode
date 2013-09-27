@@ -35,26 +35,25 @@ class Solution {
 public:
     vector<string> fullJustify(vector<string> &words, int L) {
         vector<string> res;
-        int i = 0;
-        while (i < words.size())
+        int i = 0, N = words.size();
+        while (i < N)
         {
             int length = words[i].size();
             int j = i + 1;
-            while (j < words.size() && length + words[j].size() + (j-i) <= L)
+            while (j < N && length + words[j].size() + (j-i) <= L)
                 length += words[j++].size();
             // build line
             string s(words[i]);
-            bool isLastLine = (j == words.size());
+            bool isLastLine = (j == N);
             bool oneWord = (j == i + 1);
-            int even = isLastLine || oneWord ? 1 : (L - length) / (j - i - 1);
+            int average = isLastLine || oneWord ? 1 : (L - length) / (j - i - 1);
             int extra = isLastLine || oneWord ? 0 : (L - length) % (j - i - 1);
-            for (int k = i + 1; k < j; ++k)
-            {
-                int space = even + ((extra-- > 0) ? 1 : 0);
-                while (space--) s += " ";
-                s += words[k];
+            for (int k = i + 1; k < j; ++k) {
+                s.append(extra > 0 ? average + 1 : average, ' ');
+                s.append(words[k]);
+                extra--;
             }
-            while (s.size() < L) s += " ";
+            s.append(L - s.size(), ' ');
             // push line
             res.push_back(s);
             i = j;

@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 10, 2013
+ Update:     Sep 27, 2013
  Problem:    Remove Nth Node From End of List
  Difficulty: Medium
  Source:     http://leetcode.com/onlinejudge#question_19
@@ -29,27 +30,16 @@
 class Solution {
 public:
     ListNode *removeNthFromEnd(ListNode *head, int n) {
-        ListNode *front = head;
-        ListNode *back = head;
-        for (int i = 0; i < n; i++)
-        {
-            front = front->next;
-        }
-        if (!front) // delete head
-        {
-            head = head->next;
-            delete back;
-            return head;
-        }
-        while (front->next)
-        {
+        ListNode dummy(0), *back = &dummy, *front = &dummy;
+        dummy.next = head;
+        while (n--) front = front->next;
+        while (front->next) {
             front = front->next;
             back = back->next;
         }
         ListNode *del = back->next;
         back->next = del->next;
         delete del;
-        
-        return head;
+        return dummy.next;
     }
 };

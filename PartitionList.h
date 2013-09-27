@@ -26,15 +26,11 @@
 class Solution {
 public:
     ListNode *partition(ListNode *head, int x) {
-        if (!head) return head;   
-        ListNode headptr(0);
-        headptr.next = head;
-        ListNode *cur = &headptr;
-        ListNode *ins = &headptr;  // insert position
+        ListNode dummy(0), *ins = &dummy, *cur = &dummy;
+        dummy.next = head;
         while (cur->next) 
         {
-            ListNode *move = cur->next;
-            if (move->val >= x)
+            if (cur->next->val >= x)
             {
                 cur = cur->next;
             } 
@@ -47,13 +43,14 @@ public:
                 } 
                 else 
                 {
+                    ListNode *move = cur->next;
                     cur->next = move->next;
                     move->next = ins->next;
                     ins->next = move;
-                    ins = ins->next;
+                    ins = move;
                 }
             }
         }
-        return headptr.next;
+        return dummy.next;
     }
 };

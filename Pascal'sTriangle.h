@@ -22,17 +22,14 @@
 class Solution {
 public:
     vector<vector<int> > generate(int numRows) {
-        vector<vector<int>> pascal;
+        vector<vector<int> > res(numRows);
         for (int i = 0; i < numRows; ++i)
         {
-            vector<int> row;
-            row.push_back(1); // first 1
+            res[i].push_back(1);
             for (int j = 1; j < i; ++j)
-                row.push_back(pascal[i-1][j-1] + pascal[i-1][j]);
-            if (i > 0)
-                row.push_back(1); // last 1
-            pascal.push_back(row);
+                res[i].push_back(res[i-1][j-1] + res[i-1][j]);
+            if (i >= 1) res[i].push_back(1);
         }
-        return pascal;
+        return res;
     }
 };

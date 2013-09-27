@@ -14,7 +14,7 @@
  Given m, n satisfy the following condition:
  1 <= m <= n <= length of list.
 
- Solution: Insert and delete node iteratively. (in-place & one-pass)
+ Solution: in-place & one-pass.
  */
 
 /**
@@ -28,24 +28,17 @@
 class Solution {
 public:
     ListNode *reverseBetween(ListNode *head, int m, int n) {
-        ListNode headptr(0);
-        headptr.next = head;
-        ListNode *ins = &headptr, *cur = head;
-        for (int i = 1; i < n; ++i)
-        {
-            if (i < m)
-            {
-                ins = ins->next;
-                cur = cur->next;
-            }
-            else if (i >= m && i < n)
-            {
-                ListNode *move = cur->next;
-                cur->next = move->next;
-                move->next = ins->next;
-                ins->next = move;
-            }
+        ListNode dummy(0), *ins = &dummy;
+        dummy.next = head;
+        for (int i = 0; i < m-1; ++i)
+            ins = ins->next;
+        ListNode *cur = ins->next;
+        for (int i = 0; i < n-m; ++i) {
+            ListNode *move = cur->next;
+            cur->next = move->next;
+            move->next = ins->next;
+            ins->next = move;
         }
-        return headptr.next;
+        return dummy.next;
     }
 };

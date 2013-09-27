@@ -1,7 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 10, 2013
- Update:     Jul 26, 2013
+ Update:     Sep 27, 2013
  Problem:    Remove Duplicates from Sorted List II
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_82
@@ -29,51 +29,38 @@ public:
     }
     
     ListNode *deleteDuplicates_1(ListNode *head) {
-        if (!head) return head;
-        ListNode headptr(0);
-        headptr.next = head;
-        int duplicate = INT_MAX;
-        ListNode *last = &headptr;
-        ListNode *cur = head;
-        while (cur)
+        ListNode dummy(0), *cur = &dummy;
+        dummy.next = head;
+        while (cur->next)
         {
-            if (cur->next && cur->val == cur->next->val || cur->val == duplicate)
-            {
-                duplicate = cur->val;
-                last->next = cur->next;
-                delete cur;
-                cur = last->next;
-            }
-            else
-            {
-                last = cur;
+            ListNode *node = cur->next;
+            int val = node->val;
+            if (!node->next || node->next->val != val) {
                 cur = cur->next;
+                continue;
             }
+            while (node && node->val == val) {
+                ListNode *del = node;
+                node = node->next;
+                delete del;
+            }
+            cur->next = node;
         }
-        return headptr.next;
+        return dummy.next;
     }
     
     ListNode *deleteDuplicates_2(ListNode *head) {
-        if (!head) return head;
-        ListNode headptr(0);
-        headptr.next = head;
-        
-        if (!head->next || head->val != head->next->val)
-        {
-            head->next = deleteDuplicates_2(head->next);
+        if (!head) return NULL;
+        if (!head->next || head->val != head->next->val) {
+            head->next = deleteDuplicates(head->next);
             return head;
         }
-        else
-        {
-            int duplicate = head->val;
-            ListNode *cur = head;
-            while (cur && cur->val == duplicate)
-            {
-                headptr.next = cur->next;
-                delete cur;
-                cur = headptr.next;
-            }
-            return deleteDuplicates_2(headptr.next);
+        int val = head->val;
+        while(head && head->val == val) {
+            ListNode *del = head;
+            head = head->next;
+            delete del;
         }
+        return deleteDuplicates(head);
     }
 };

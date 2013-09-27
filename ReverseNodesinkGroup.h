@@ -29,34 +29,30 @@
 class Solution {
 public:
     ListNode *reverseKGroup(ListNode *head, int k) {
-        int len = GetLength(head);
-        int reverseTimes = len / k;
-        if (reverseTimes == 0) return head;
-
-        ListNode headptr(0);
-        headptr.next = head;
-        ListNode *insptr = &headptr;   // insert the reversed nodes after insptr
-        ListNode *cur = insptr->next;
-        for (int i = 0; i < reverseTimes; ++i) {
-            for (int j = 0; j < k - 1; ++j) {
-                ListNode *rev = cur->next;
-                cur->next = rev->next;
-                rev->next = insptr->next;
-                insptr->next = rev;
+        if (k <= 1) return head;
+        int reverseTimes = GetLength(head) / k;
+        ListNode dummy(0); dummy.next = head;
+        ListNode *ins = &dummy, *cur = ins->next;
+        while (reverseTimes--) 
+        {
+            for (int i = 0; i < k - 1; ++i) {
+                ListNode *move = cur->next;
+                cur->next = move->next;
+                move->next = ins->next;
+                ins->next = move;
             }
-            insptr = cur;
-            cur = insptr->next;
+            ins = cur;
+            cur = ins->next;
         }
-        return headptr.next;
+        return dummy.next;
     }
 
-    int GetLength(ListNode *head)
-    {
-        int len = 0;
+    int GetLength(ListNode *head) {
+        int length = 0;
         while (head) {
             head = head->next;
-            len++;
+            length++;
         }
-        return len;
+        return length;
     }
 };

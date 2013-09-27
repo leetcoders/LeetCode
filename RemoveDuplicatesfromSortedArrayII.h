@@ -19,15 +19,10 @@ class Solution {
 public:
     int removeDuplicates(int A[], int n) {
         if (n <= 2) return n;
-        int lastlast = 0, last = 1;
-        for (int cur = 2; cur < n; ++cur)
-        {
-            if (A[lastlast] != A[cur] || A[last] != A[cur])
-            {
-                A[++last] = A[cur];
-                lastlast++;
-            }
-        }
-        return last + 1;
+        int j = 2;
+        for (int i = 2; i < n; ++i)
+            if (A[i] != A[j-1] || A[i] != A[j-2])
+                A[j++] = A[i];
+        return j;
     }
 };

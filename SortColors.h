@@ -17,16 +17,16 @@
  total number of 0's, then 1's and followed by 2's.
  Could you come up with an one-pass algorithm using only constant space?
 
- Solution: 0 0 0 1 1 1 1   ......   2 2 2 2
-               |       |   |        |
-             zero     one  i       two
-              ->      ->   ->       <-  
+ Solution: 0 0 0 1 1 1 1 ...... 2 2 2 2
+               |         |      |
+             zero        i     two
+              ->        ->     <-  
  */
 
 class Solution {
 public:
     void sortColors(int A[], int n) {
-        int zero = -1, one = -1, two = n;
+        int zero = -1, two = n;
         int i = 0;
         while (i < two)
         {
@@ -34,10 +34,8 @@ public:
             {
             case 0:
                 swap(A[i++], A[++zero]);
-                one++;
                 break;
             case 1:
-                one++;
                 i++;
                 break;
             case 2:

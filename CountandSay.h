@@ -25,16 +25,14 @@ public:
         for (int i = 2; i <= n; ++i)
         {
             stringstream ss;
-            int k = 0;
-            for (int j = 1; j < res.size(); ++j)
-            {
-                if (res[j] != res[k])
-                {
-                    ss << (j - k) << res[k];
-                    k = j;
-                }
+            int j = 0, N = res.size();
+            while (j < N) {
+                int k = j + 1;
+                while (k < N && res[k] == res[j])
+                    k++;
+                ss << (k - j) << res[j];
+                j = k;
             }
-            ss << (res.size() - k) << res[k];
             ss >> res;
         }
         return res;
