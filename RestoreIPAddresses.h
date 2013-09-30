@@ -25,25 +25,20 @@ public:
     
     void restoreIpAddressRe(string &s, vector<string> &res, string &ip, int deep, int start)
     {
-        if (deep == 4 || start == s.size())
-        {
-            if (start == s.size() && deep == 4)
-                res.push_back(ip);
-            return;
-        }
-        int num = 0;
-        for (int i = start; i <= start + 2 && i < s.size(); ++i)
+        if (deep == 4 && start == s.size())
+            res.push_back(ip);
+        if (deep == 4) return;
+        
+        int num = 0, origSize = ip.size();
+        if (origSize != 0) ip.push_back('.');
+        for (int i = start; i < s.size(); ++i)
         {
             num = num * 10 + s[i] - '0';
-            if (num >= 0 && num <= 255)
-            {
-                int orig = ip.size();
-                if (orig != 0) ip.push_back('.');
-                ip += s.substr(start, i - start + 1);
-                restoreIpAddressRe(s, res, ip, deep + 1, i + 1);
-                ip.resize(orig);
-                if (num == 0) break;
-            }
+            if (num > 255) break;
+            ip.push_back(s[i]);
+            restoreIpAddressRe(s, res, ip, deep + 1, i + 1);
+            if (num == 0) break;
         }
+        ip.resize(origSize);
     }
 };

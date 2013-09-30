@@ -32,42 +32,27 @@ public:
         for (int i = 0; i < M; ++i)
             need[T[i]]++;
 
-        int count = 0;
-        int res_start = -1, res_end = N;
+        int count = 0, resStart = -1, resEnd = N;
         for (int start = 0, end = 0; end < N; ++end)
         {
             if (need[S[end]] == 0)
                 continue;
-            
             if (find[S[end]] < need[S[end]])
                 count++;
             find[S[end]]++;
-
-            if (count != M)
-                continue;
+            if (count != M) continue;
             // move 'start'
-            start = getNextIndex(S, find, need, start);
+            for (; start < end; ++start) {
+                if (need[S[start]] == 0) continue;
+                if (find[S[start]] <= need[S[start]]) break;
+                find[S[start]]--;
+            }
             // update result
-            if (end - start < res_end - res_start)
-            {
-                res_start = start;
-                res_end = end;
+            if (end - start < resEnd - resStart) {
+                resStart = start;
+                resEnd = end;
             }
         }
-        return (res_start == -1) ? "" : S.substr(res_start, res_end - res_start + 1);
-    }
-    
-    int getNextIndex(string &S, int *find, int *need, int start)
-    {
-        int i = start, N = S.size();
-        for (; i < N; ++i)
-        {
-            if (need[S[i]] == 0)
-                continue;
-            if (find[S[i]] <= need[S[i]])
-                break;
-            find[S[i]]--;
-        }
-        return i;
+        return (resStart == -1) ? "" : S.substr(resStart, resEnd - resStart + 1);
     }
 };

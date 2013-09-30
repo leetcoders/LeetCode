@@ -1,7 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 13, 2013
- Update:     Aug 24, 2013
+ Update:     Sep 30, 2013
  Problem:    Spiral Matrix
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_54
@@ -24,26 +24,18 @@ public:
     vector<int> spiralOrder(vector<vector<int> > &matrix) {
         vector<int> res;
         if (matrix.empty() || matrix[0].empty()) return res;
-        int M = matrix.size(), N = matrix[0].size();
-        int imin = 0, imax = M-1, jmin = 0, jmax = N-1;
-        int i = 0, j = -1;
+        int imin = 0, imax = matrix.size()-1;
+        int jmin = 0, jmax = matrix[0].size()-1;
         while (true)
         {
-            while (j < jmax) res.push_back(matrix[i][++j]);
-            imin++;
-            if (imin > imax) break;
-            
-            while (i < imax) res.push_back(matrix[++i][j]);
-            jmax--;
-            if (jmin > jmax) break;
-            
-            while (j > jmin) res.push_back(matrix[i][--j]);
-            imax--;
-            if (imin > imax) break;
-            
-            while (i > imin) res.push_back(matrix[--i][j]);
-            jmin++;
-            if (jmin > jmax) break;
+            for (int j = jmin; j <= jmax; ++j) res.push_back(matrix[imin][j]);
+            if (++imin > imax) break;
+            for (int i = imin; i <= imax; ++i) res.push_back(matrix[i][jmax]);
+            if (jmin > --jmax) break;
+            for (int j = jmax; j >= jmin; --j) res.push_back(matrix[imax][j]);
+            if (imin > --imax) break;
+            for (int i = imax; i >= imin; --i) res.push_back(matrix[i][jmin]);
+            if (++jmin > jmax) break;
         }
         return res;
     }

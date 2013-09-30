@@ -29,24 +29,20 @@ public:
         size_t pos = path.find_first_of("/"), last = 0;
         while (pos != string::npos)
         {
-            addPath(res, path.substr(last, pos - last));
+            string s = path.substr(last, pos - last);
+            if (s == "..") 
+            {
+                if (!res.empty())
+                    res.resize(res.find_last_of("/"));
+            }
+            else if (!s.empty() && s != ".")
+            {
+                res += "/";
+                res += s;
+            }
             last = pos + 1;
             pos = path.find_first_of("/", last);
         }
         return res.empty() ? "/" : res;
-    }
-
-    void addPath(string &res, string s)
-    {
-        if (s.empty() || s == ".")
-            return;
-        if (s == "..") 
-        {
-            size_t index = res.find_last_of("/");
-            if (index != string::npos)
-                res.resize(index);
-            return;
-        }
-        res = res + "/" + s;
     }
 };

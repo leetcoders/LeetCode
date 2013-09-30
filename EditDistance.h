@@ -1,7 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 7, 2013
- Update:     Jul 24, 2013
+ Update:     Sep 28, 2013
  Problem:    Edit Distance
  Difficulty: Medium
  Source:     http://leetcode.com/onlinejudge#question_72
@@ -24,15 +24,12 @@ public:
     }
     
     int minDistance_1(string word1, string word2) {
-        size_t M = word1.size();
-        size_t N = word2.size();
-        
+        int M = word1.size(), N = word2.size();
         int dp[N+1][M+1];
         for (int j = 0; j <= M; j++)
             dp[0][j] = j;
         for (int i = 0; i <= N; i++)
             dp[i][0] = i;
-        
         for (int i = 1; i <= N; i++)
             for (int j = 1; j <= M; j++)
                 if (word2[i-1] == word1[j-1])
@@ -44,32 +41,23 @@ public:
     }
     
     int minDistance_2(string word1, string word2) {
-        int M = word1.size();
-        int N = word2.size();
-        if (M == 0) return N;
-        if (N == 0) return M;
-        
+        int M = word1.size(), N = word2.size();
         int dp[N+1];
         for (int j = 0; j <= N; ++j)
             dp[j] = j;
-        
         for (int i = 1; i <= M; ++i)
         {
-            int left = 0;
-            int cur = 0;
-            for (int j = 0; j <= N; ++j)
+            int upperLeftBackup = dp[0];
+            dp[0] = i;
+            for (int j = 1; j <= N; ++j)
             {
-                if (j == 0)
-                    cur = i;
-                else if (word1[i-1] == word2[j-1])
-                    cur = dp[j-1];
+                int upperLeft = upperLeftBackup;
+                upperLeftBackup = dp[j];
+                if (word1[i-1] == word2[j-1])
+                    dp[j] = upperLeft;
                 else
-                    cur = min(min(dp[j-1], dp[j]), left) + 1;
-                
-                if (j >= 1) dp[j-1] = left;
-                left = cur;
+                    dp[j] = min(min(dp[j-1], dp[j]), upperLeft) + 1;
             }
-            dp[N] = cur;
         }
         return dp[N];
     }

@@ -45,22 +45,19 @@ public:
     
     // solution 1
     void connect_1(TreeLinkNode *root) {
-        while (root)
+        TreeLinkNode *cur = root;
+        while (cur)
         {
-            TreeLinkNode *node = root;
-            TreeLinkNode *last = NULL;
-            root = NULL;
+            TreeLinkNode *node = cur, *last = NULL;
+            cur = NULL;
             while (node)
             {
-                if (node->left || node->right)
-                {
-                    if (last)
-                        last->next = node->left ? node->left : node->right;
-                    if (node->left && node->right)
-                        node->left->next = node->right;
-                    if (!root)
-                        root = node->left ? node->left : node->right;
-                    last = node->right ? node->right : node->left;
+                TreeLinkNode *left = node->left, *right = node->right;
+                if (left || right) {
+                    if (last) last->next = left ? left : right;
+                    if (left) left->next = right;
+                    if (!cur) cur = left ? left : right;
+                    last = right ? right : left;
                 }
                 node = node->next;
             }

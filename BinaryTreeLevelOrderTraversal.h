@@ -42,35 +42,30 @@ public:
         return levelOrder_1(root);
     }
     
-    vector<vector<int>> levelOrder_1(TreeNode *root) {
-        vector<vector<int>> res;
+    vector<vector<int> > levelOrder_1(TreeNode *root) {
+        vector<vector<int> > res;
         if (!root) return res;
-        
         queue<TreeNode *> q;
         q.push(root);
-        q.push(NULL);   // end indicator of one level
+        q.push(NULL);
         vector<int> level;
-        while (q.size() > 0)
+        while (true)
         {
-            TreeNode *front = q.front();
-            q.pop();
-            if (front)
+            TreeNode *node = q.front(); q.pop();
+            if (!node)
             {
-                level.push_back(front->val);
-                if (front->left)
-                    q.push(front->left);
-                if (front->right)
-                    q.push(front->right);
+                res.push_back(level);
+                level.clear();
+                if (q.empty()) break; // end
+                q.push(NULL);
             }
             else
             {
-                if (q.size() > 0)    // CAUTIOUS! infinite loop
-                    q.push(NULL);
-                res.push_back(level);
-                level.clear();
+                level.push_back(node->val);
+                if (node->left) q.push(node->left);
+                if (node->right) q.push(node->right);
             }
         }
-        
         return res;
     }
     

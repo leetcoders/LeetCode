@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 28, 2013
+ Update:     Sep 29, 2013
  Problem:    Flatten Binary Tree to Linked List
  Difficulty: Medium
  Source:     http://leetcode.com/onlinejudge#question_114
@@ -44,30 +45,20 @@
 class Solution {
 public:
     void flatten(TreeNode *root) {
-        TreeNode *r;
-        flattenRe(root, r);
+        TreeNode *end = NULL;
+        flattenRe(root, end);
     }
-
-    void flattenRe(TreeNode *node, TreeNode *&back)
-    {
-        back = node;
-        if (!node || (!node->left && !node->right)) return;
-
-        TreeNode *leftOrig = node->left;
-        TreeNode *rightOrig = node->right;
-        node->right = leftOrig ? leftOrig : rightOrig;
-        node->left = NULL;
-
-        TreeNode *lr, *rr;
-        flattenRe(leftOrig, lr);
-        flattenRe(rightOrig, rr);
-        back = lr;
-        if (lr) {
-            lr->right = rightOrig;
+    
+    void flattenRe(TreeNode *node, TreeNode *&end) {
+        if (!node) return;
+        TreeNode *lend = NULL, *rend = NULL;
+        flattenRe(node->left, lend);
+        flattenRe(node->right, rend);
+        if (node->left) {
+            lend->right = node->right;
+            node->right = node->left;
+            node->left = NULL;
         }
-        if (rr) {
-            back = rr;
-        }
+        end = rend ? rend : (lend ? lend : node);
     }
 };
-

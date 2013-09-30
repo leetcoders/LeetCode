@@ -19,85 +19,54 @@
  X X X X
  X O X X
 
- Solution: Traverse from the boarder to the inside and mark all the 'O's that are not surrounded by
-           'X' as 'V' (visited).
+ Solution: Traverse from the boarder to the inside and mark all the 'O's that are not surrounded by 'X' as 'V' (visited).
            1. DFS.
            2. BFS (queue).
  */
 
 class Solution {
 public:
-    void solve(vector<vector<char>> &board) {
-        solve_1(board);
-    }
-
-    void solve_1(vector<vector<char>> &board) {
-        if (board.empty() || board[0].empty()) return; 
+    typedef vector<vector<char> > BOARDTYPE;
+    
+    void solve(BOARDTYPE &board) {
+        if (board.empty() || board[0].empty()) return;
         int N = board.size(), M = board[0].size();
         for (int i = 0; i < N; ++i)
             for (int j = 0; j < M; ++j)
-                if (i == 0 || i == N-1 || j == 0 || j == M-1)
-                    dfs(board, i, j);
-
+                if (i == 0 || j == 0 || i == N-1 || j == M-1)
+                    dfs(board, i, j); // you may call dfs or bfs here!
         for (int i = 0; i < N; ++i)
             for (int j = 0; j < M; ++j)
-                if (board[i][j] == 'O')
-                    board[i][j] = 'X';
-                else if (board[i][j] == 'V')
-                    board[i][j] = 'O';
+                board[i][j] = (board[i][j] == 'V') ? 'O' : 'X';
     }
-
-    void dfs(vector<vector<char>> &board, int i, int j)
-    {
-        if (board[i][j] != 'O')
-            return;
-        board[i][j] = 'V';
+    
+    void dfs(BOARDTYPE &board, int row, int col) {
         int N = board.size(), M = board[0].size();
-        if (i > 1) dfs(board, i-1, j);
-        if (i < N-2) dfs(board, i+1, j);
-        if (j > 1) dfs(board, i, j-1);
-        if (j < M-2) dfs(board, i, j+1);
+        if (row < 0 || row >= N || col < 0 || col >= M) return;
+        if (board[row][col] != 'O') return;
+        board[row][col] = 'V';
+        dfs(board, row+1, col);
+        dfs(board, row-1, col);
+        dfs(board, row, col+1);
+        dfs(board, row, col-1);
     }
 
-    void solve_2(vector<vector<char>> &board) {
-        if (board.empty() || board[0].empty()) return; 
+    void bfs(BOARDTYPE &board, int row, int col) {
+        if (board[row][col] != 'O') return;
         int N = board.size(), M = board[0].size();
-        for (int i = 0; i < N; ++i)
-            for (int j = 0; j < M; ++j)
-                if (i == 0 || i == N-1 || j == 0 || j == M-1)
-                    bfs(board, i, j);
-
-        for (int i = 0; i < N; ++i)
-            for (int j = 0; j < M; ++j)
-                if (board[i][j] == 'O') 
-                    board[i][j] = 'X';
-                else if (board[i][j] == 'V') 
-                    board[i][j] = 'O';
-    }
-
-    void bfs(vector<vector<char>> &board, int i, int j)
-    {
-        if (board[i][j] != 'O')
-            return;
         queue<pair<int, int>> q;
-        q.push(make_pair(i, j));
-        int N = board.size(), M = board[0].size();
+        q.push(make_pair(row, col));
         while (!q.empty())
         {
-            i = q.front().first;
-            j = q.front().second;
+            int i = q.front().first, j = q.front().second;
             q.pop();
-            if (board[i][j] != 'O') // important to recheck!
-                continue;
+            if (i < 0 || i >= N || j < 0 || j >= M) continue;
+            if (board[i][j] != 'O') continue;// important to recheck!
             board[i][j] = 'V';
-            if (i > 1 && board[i-1][j] == 'O')
-                q.push(make_pair(i-1, j));
-            if (i < N-2 && board[i+1][j] == 'O')
-                q.push(make_pair(i+1, j));
-            if (j > 1 && board[i][j-1] == 'O')
-                q.push(make_pair(i, j-1));
-            if (j < M-2&& board[i][j+1] == 'O')
-                q.push(make_pair(i, j+1));
+            q.push(make_pair(i-1, j));
+            q.push(make_pair(i+1, j));
+            q.push(make_pair(i, j-1));
+            q.push(make_pair(i, j+1));
         }
     }
 };

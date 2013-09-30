@@ -22,9 +22,7 @@
   [3],
  ]
  
- Solution: 
- 1. Queue version. On the basis of 'Binary Tree Level Order Traversal', reverse the final vector.
- 2. Stack version. Store each level in the vector and then push the vector into stack.
+ Solution: Queue version. On the basis of 'Binary Tree Level Order Traversal', reverse the final vector.
  */
 
 /**
@@ -38,82 +36,32 @@
  */
 class Solution {
 public:
-    vector<vector<int> > levelOrderBottom_1(TreeNode *root) {
+    vector<vector<int> > levelOrderBottom(TreeNode *root) {
         vector<vector<int>> root2leaf;
-        
         queue<TreeNode *> q;
-        if (root)
-        {
-            q.push(root);
-            q.push(NULL);   // end indicator of one level
-        }
-        
+        if (!root) return root2leaf;
+        q.push(root);
+        q.push(NULL);   // end indicator of one level
         vector<int> level;
-        while (q.size() > 0)
+        while (true)
         {
-            TreeNode *front = q.front();
-            q.pop();
-            if (front)
+            TreeNode *node = q.front(); q.pop();
+            if (node)
             {
-                level.push_back(front->val);
-                if (front->left)
-                    q.push(front->left);
-                if (front->right)
-                    q.push(front->right);
+                level.push_back(node->val);
+                if (node->left) q.push(node->left);
+                if (node->right) q.push(node->right);
             }
             else
             {
-                if (q.size() > 0)    // CAUTIOUS! infinite loop
-                    q.push(NULL);
                 root2leaf.push_back(level);
                 level.clear();
+                if (q.empty()) break;    // CAUTIOUS! infinite loop
+                q.push(NULL);
             }
         }
-        
     	// reverse
         reverse(root2leaf.begin(), root2leaf.end());
         return root2leaf;
-    }
-
-    vector<vector<int> > levelOrderBottom_2(TreeNode *root) {
-        vector<vector<int>> res;
-        
-        if (!root)
-            return res;
-        
-        stack<vector<TreeNode *>> stk;
-        vector<TreeNode *> level;
-        level.push_back(root);
-        stk.push(level);
-        
-        while (true)
-        {
-            level.clear();
-            for (size_t i = 0; i < stk.top().size(); i++)
-            {
-                if (stk.top()[i]->left)
-                    level.push_back(stk.top()[i]->left);
-                if (stk.top()[i]->right)
-                    level.push_back(stk.top()[i]->right);
-            }
-            
-            if (level.size() == 0)
-                break;
-            
-            stk.push(level);
-        }
-        
-        while (stk.size() > 0)
-        {
-            vector<int> level_val;
-            for (size_t i = 0; i < stk.top().size(); i++)
-            {
-                level_val.push_back(stk.top()[i]->val);
-            }
-            res.push_back(level_val);
-            stk.pop();
-        }
-        
-        return res;
     }
 };

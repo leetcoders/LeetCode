@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 5, 2013
+ Update:     Sep 28, 2013
  Problem:    Combinations
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_77
@@ -22,25 +23,22 @@
 
 class Solution {
 public:
-    vector<vector<int>> res;
-    vector<vector<int>> combine(int n, int k) {
-        res.clear();
+    vector<vector<int> > combine(int n, int k) {
+        vector<vector<int> > res;
         vector<int> com;
-        combineRe(n, k, com, -1, 0);
+        combineRe(n, k, 1, com, res);
         return res;
     }
-
-    void combineRe(int n, int k, vector<int> &com, int last, int deep)
-    {
-        if (deep == k)
-        {
+    
+    void combineRe(int n, int k, int start, vector<int> &com, vector<vector<int> > &res){
+        int m = com.size();
+        if (m == k) {
             res.push_back(com);
             return;
         }
-        for (int i = last + 1; i < n; ++i)
-        {
-            com.push_back(i+1);
-            combineRe(n, k, com, i, deep + 1);
+        for (int i = start; i <= n-(k-m)+1; ++i) {
+            com.push_back(i);
+            combineRe(n, k, i+1, com, res);
             com.pop_back();
         }
     }
