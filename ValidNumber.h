@@ -1,7 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 25, 2013
- Update:     Aug 13, 2013
+ Update:     Sep 30, 2013
  Problem:    Valid Number
  Difficulty: Hard
  Source:     http://leetcode.com/onlinejudge#question_65
@@ -16,62 +16,45 @@
  Note: It is intended for the problem statement to be ambiguous. You should gather all 
  requirements up front before implementing one.
 
- Solution: This finite-state machine solution is from fuwutu. Perfect solution!
- Link: https://github.com/fuwutu/LeetCode/blob/master/Valid%20Number.cpp
+ Solution: This finite-state machine solution. Learn from fuwutu & snakeDling.
 */
 
-class Solution
-{
+class Solution {
 public:
-    bool isNumber(const char *s)
-    {
-        enum InputType
-        {
-            INVALID,    // 0
-            SPACE,      // 1
-            SIGN,       // 2
-            DIGIT,      // 3
-            DOT,        // 4
-            EXPONENT,   // 5
-            NUM_INPUTS  // 6
+    bool isNumber(const char *s) {
+        enum InputType {INVALID, SPACE, SIGN, DIGIT, DOT, EXPONENT};
+        int transitionTable[][SPACEEND] = 
+        { /* 0   1   2   3   4   5  */
+             0,  1,  2,  3,  4,  0, // 0: INVALID
+             0,  1,  2,  3,  4,  0, // 1: SPACE
+             0,  0,  0,  3,  4,  0, // 2: SIGN
+             0,  6,  0,  3,  7,  5, // 3: DIGIT
+             0,  0,  0,  7,  0,  0, // 4: DOT
+             0,  0,  2,  8,  0,  0, // 5: EXPONENT
+             0,  6,  0,  0,  0,  0, // 6: END WITH SPACE
+             0,  6,  0,  7,  0,  5, // 7: DOT AND DIGIT
+             0,  6,  0,  8,  0,  0, // 8: END WITH SPACE OR DIGIT
         };
         
-        int transitionTable[][NUM_INPUTS] =
-        {
-            -1,  0,  3,  1,  2, -1,     // next states for state 0
-            -1,  8, -1,  1,  4,  5,     // next states for state 1
-            -1, -1, -1,  4, -1, -1,     // next states for state 2
-            -1, -1, -1,  1,  2, -1,     // next states for state 3
-            -1,  8, -1,  4, -1,  5,     // next states for state 4
-            -1, -1,  6,  7, -1, -1,     // next states for state 5
-            -1, -1, -1,  7, -1, -1,     // next states for state 6
-            -1,  8, -1,  7, -1, -1,     // next states for state 7
-            -1,  8, -1, -1, -1, -1,     // next states for state 8
-        };
-        
-        int state = 0;
+        InputType last = INVALID;
         while (*s != '\0')
         {
-            InputType inputType = INVALID;
-            if (isspace(*s))
-                inputType = SPACE;
-            else if (*s == '+' || *s == '-')
-                inputType = SIGN;
+            InputType state = INVALID;
+            if (*s == ' ')
+                state = SPACE;
             else if (isdigit(*s))
-                inputType = DIGIT;
+                state = DIGIT;
+            else if (*s == '+' || *s == '-')
+                state = SIGN;
+            else if (*s == 'e')
+                state = EXPONENT;
             else if (*s == '.')
-                inputType = DOT;
-            else if (*s == 'e' || *s == 'E')
-                inputType = EXPONENT;
-            
-            state = transitionTable[state][inputType];
-            
-            if (state == -1)
-                return false;
-            else
-                ++s;
+                state = DOT;
+            last = (InputType) transitionTable[last][state];
+            if (last == INVALID) return false;
+            s++;
         }
-        
-        return state == 1 || state == 4 || state == 7 || state == 8;
+        bool validFinal[] = {0, 0, 0, 1, 0, 0, 1, 1, 1};
+        return validFinal[last];
     }
 };

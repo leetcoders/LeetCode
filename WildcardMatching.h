@@ -26,32 +26,23 @@
 class Solution {
 public:
     bool isMatch(const char *s, const char *p) {
-        const char *ss = NULL, *pp = NULL;
-        while (*s)
-        {
-            if (*p == '?' || *s == *p)
-            {
+        const char *sBackup = NULL, *pBackup = NULL;
+        while (*s != '\0') {
+            if (*p == '?' || *s == *p) {
                 s++;
                 p++;
-            }
-            else if (*p == '*')
-            {
+            } else if (*p == '*') {
                 while (*p == '*') p++;
-                if (!*p) return true;
-                ss = s;
-                pp = p;
-            }
-            else if ((!*p || *s != *p) && ss)
-            {
-                s = ++ss;
-                p = pp;
-            }
-            else
-            {
-                return false;
+                if (*p == '\0') return true;
+                sBackup = s;
+                pBackup = p;
+            } else {
+                if (!sBackup) return false;
+                s = ++sBackup;
+                p = pBackup;
             }
         }
         while (*p == '*') p++;
-        return !*s && !*p;
+        return *s == '\0' && *p == '\0';
     }
 };

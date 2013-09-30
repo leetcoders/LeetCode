@@ -22,37 +22,33 @@ public:
     vector<vector<string>> res;
     vector<vector<string>> partition(string s) {
         res.clear();
-        vector<string> v;
-        partitionRe(s, 0, v);
+        vector<string> part;
+        partitionRe(s, 0, part);
         return res;
     }
 
-    void partitionRe(const string &s, int start, vector<string> &v)
-    {
+    void partitionRe(const string &s, int start, vector<string> &part) {
         if (start == s.size())
         {
-            res.push_back(v);
+            res.push_back(part);
             return;
         }
         string palindrom;
-        for (int i = start; i < s.size(); ++i)
-        {
+        for (int i = start; i < s.size(); ++i) {
             palindrom.push_back(s[i]);
-            if (isPalindrome(palindrom))
-            {
-                v.push_back(palindrom);
-                partitionRe(s, i + 1, v);
-                v.pop_back();
-            }
+            if (!isPalindrome(palindrom)) continue;
+            part.push_back(palindrom);
+            partitionRe(s, i + 1, part);
+            part.pop_back();
         }
     }
 
-    bool isPalindrome(const string &s)
-    {
-        int N = s.size();
-        for (int i = 0; i < N / 2; ++i)
-            if (s[i] != s[N-i-1])
-                return false;
+    bool isPalindrome(const string &s) {
+        int i = 0, j = s.size()-1;
+        while (i < j) {
+            if (s[i] != s[j]) return false;
+            i++; j--;
+        }
         return true;
     }
 };
