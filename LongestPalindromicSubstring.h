@@ -22,79 +22,59 @@ public:
     string longestPalindrome_1(string s) {
         int N = s.size();
         bool dp[N][N];
-        pair<int, int> res = make_pair(0, 0);
-
-        for (int i = N-1; i >= 0; --i)
+        pair<int, int> res = make_pair(0, 0); // start pos and length
+        for (int k = 0; k < N; ++k) // length
         {
-            for (int j = i; j < N; ++j)
+            for (int i = 0; i < N-k; ++i) // start pos
             {
-                if (j == i)
-                    dp[i][j] = true;
-                else if (j == i + 1)
-                    dp[i][j] = s[i] == s[j];
-                else
-                    dp[i][j] = s[i] == s[j] && dp[i+1][j-1];
-
-                if (dp[i][j] && j - i > res.second - res.first)
-                    res = make_pair(i, j);
+                if (k == 0 || k == 1) 
+                    dp[i][i+k] = s[i] == s[i+k];
+                else 
+                    dp[i][i+k] = (s[i] == s[i+k]) ? dp[i+1][i+k-1] : false;
+                
+                if (dp[i][i+k] && k+1 > res.second)
+                    res = make_pair(i, k+1);
             }
         }
-
-        return s.substr(res.first, res.second - res.first + 1);
+        return s.substr(res.first, res.second);
     }
 
     string longestPalindrome_2(string s) {
         int N = s.size();
-        bool dp_1[N], dp_2[N];
-        pair<int, int> res = make_pair(N-1, N-1);
-
-        for (int i = N-1; i >= 0; --i)
+        bool dp[2][N];
+        pair<int, int> res = make_pair(0, 0);
+        int cur = 1, last = 0;
+        for (int i = 0; i < N; ++i)
         {
-            bool *last = (i % 2 == 0) ? dp_1 : dp_2;
-            bool *cur = (i % 2 == 0) ? dp_2 : dp_1;
-
-            for (int j = i; j < N; ++j)
+            cur = !cur; last = !last;
+            for (int j = i; j >= 0; --j)
             {
-                if (j == i)
-                    cur[j] = true;
-                else if (j == i + 1)
-                    cur[j] = s[i] == s[j];
+                if (j == i || j == i-1)
+                    dp[cur][j] = s[j] == s[i];
                 else
-                    cur[j] = s[i] == s[j] && last[j-1];
+                    dp[cur][j] = s[j] == s[i] && dp[last][j+1];
 
-                if (cur[j] && j - i > res.second - res.first)
-                    res = make_pair(i, j);
+                if (dp[cur][j] && i-j+1 > res.second)
+                    res = make_pair(j, i-j+1);
             }
         }
-
-        return s.substr(res.first, res.second - res.first + 1);
+        return s.substr(res.first, res.second);
     }
 
     string longestPalindrome_3(string s) {
         int N = s.size();
-        pair<int, int> res = make_pair(N-1, N-1);
-
-        for (int i = N-1; i >= 0; --i)
-        {
-            for (int j = 0; j <= 1; ++j)
-            {
-                bool dp = s[i] == s[i+j];
-                if (dp && j > res.second - res.first)
-                    res = make_pair(i, i+j);
-
-                for (int k = 1; dp && i - k >= 0; ++k)  // check 'dp' for efficiency
-                {
-                    dp = s[i-k] == s[i+j+k];
-                    if (dp && k * 2 + j > res.second - res.first)
-                        res = make_pair(i-k, i+j+k);
+        pair<int, int> res = make_pair(0, 0); // start pos and length
+        for (int i = 0; i < N; ++i) {
+            for (int j = 0; j <= 1; ++j) {
+                bool isP = true;
+                for (int k = 0; i-k >= 0 && i+k < N && isP; ++k) {
+                    isP = s[i-k] == s[i+j+k];
+                    if (isP && j+1+k*2 > res.second)
+                        res = make_pair(i-k, j+1+k*2);
                 }
             }
-
-            if (res.second - res.first + 1 == N)  // check result
-                break;
         }
-
-        return string(s.begin() + res.first, s.begin() + res.second + 1);
+        return s.substr(res.first, res.second);
     }
 
     string longestPalindrome_4(string s) {
