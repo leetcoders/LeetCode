@@ -24,13 +24,13 @@ class Solution {
 public:
     bool hasCycle(ListNode *head) {
         if (!head || !head->next) return false;
-        ListNode *back = head, *front = head->next->next;
+        ListNode *slow = head, *fast = head->next->next;
         while (true) 
         {
-            if (front == back) return true;
-            if (!front || !front->next) return false;
-            front = front->next->next;
-            back = back->next;
+            if (fast == slow) return true;
+            if (!fast || !fast->next) return false;
+            fast = fast->next->next;
+            slow = slow->next;
         }
     }
 };
