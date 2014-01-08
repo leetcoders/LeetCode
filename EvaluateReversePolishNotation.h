@@ -22,13 +22,13 @@ public:
                 int op2 = s.top();s.pop();
                 int op1 = s.top();s.pop();
                 int result = 0;
-                if(tokens[i]=="+")
+                if(tokens[i] == "+")
                     result = op1 + op2;
-                else if(tokens[i]=="-")
+                else if(tokens[i] == "-")
                     result = op1 - op2;
-                else if(tokens[i]=="*")
+                else if(tokens[i] == "*")
                     result = op1 * op2;
-                else if(tokens[i]=="/")
+                else if(tokens[i] == "/")
                     result = op1 / op2;
                 s.push(result);
             }
