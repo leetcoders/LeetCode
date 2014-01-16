@@ -1,10 +1,10 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Jan 17, 2013
- Update:     Sep 10, 2013
+ Update:     Jan 16, 2014
  Problem:    Two Sum
  Difficulty: easy
- Source:     http://leetcode.com/onlinejudge#question_1
+ Source:     http://oj.leetcode.com/problems/two-sum/
  Notes:
  Given an array of integers, find two numbers such that they add up to a specific target number.
 
@@ -18,6 +18,9 @@
 
  Solution: 1. Sort first. O(nlgn)
            2. Hash table. O(n)
+           
+ Note:  Hash Table solution has been updated.  In case that the two elements are the same, 
+        all the indices should be stored in the map.
  */
 
 bool compare(pair<int, int> a, pair<int, int> b) {
@@ -51,17 +54,28 @@ public:
         return res;
     }
     
+    typedef unordered_map<int, vector<int> > MAP;
+    
     vector<int> twoSum_2(vector<int> &numbers, int target) {
-        unordered_map<int, int> map;
+        MAP map;
         for (int i = 0; i < numbers.size(); ++i)
-            map[numbers[i]] = i + 1;
+            map[numbers[i]].push_back(i+1);
+        
         for (int i = 0; i < numbers.size(); ++i)
         {
-            unordered_map<int, int>::iterator it = map.find(target - numbers[i]);
+            MAP::iterator it = map.find(target - numbers[i]);
             if (it == map.end()) continue;
+            
+            int index1 = it->second[0], index2 = i + 1;
+            
+            if (numbers[i] == target - numbers[i]) { // two elements are the same
+                if (it->second.size() == 1) continue;
+                index2 = it->second[1];
+            }
+            
             vector<int> res;
-            res.push_back(min(i+1, it->second));
-            res.push_back(max(i+1, it->second));
+            res.push_back(min(index1, index2));
+            res.push_back(max(index1, index2));
             return res;
         }
     }
