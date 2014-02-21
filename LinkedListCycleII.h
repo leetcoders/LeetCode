@@ -1,6 +1,6 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
- Date:       Nov 15, 2013
+ Author:     Matthew Jin, marthew777@gmail.com
+ Date:       Feb 21, 2014
  Problem:    Linked List Cycle II
  Difficulty: Easy
  Source:     http://oj.leetcode.com/problems/linked-list-cycle-ii/
@@ -9,7 +9,7 @@
  Follow up:
  Can you solve it without using extra space?
 
- Solution: two pointers. 1. check cycle. 2. get cycle length. 3. find entry.
+ Solution: From Matthew. Simpler.
 */
 
 /**
@@ -24,28 +24,21 @@ class Solution {
 public:
     ListNode *detectCycle(ListNode *head) {
         if (!head || !head->next) return NULL;
-        ListNode *slow = head, *fast = head->next->next;
-        while (true) {
-            if (fast == slow) break;
-            if (!fast || !fast->next) return NULL;
+        ListNode *slow = head, *fast = head;
+        while (fast && fast->next) {
             fast = fast->next->next;
             slow = slow->next;
+            if (fast == slow) break;
         }
         
-        int cycleLength = 1;
-        slow = slow->next;
-        while (slow != fast) {
+        if (slow != fast) return NULL;
+        
+        fast = head;
+        while (fast != slow) {
+            fast = fast->next;
             slow = slow->next;
-            cycleLength++;
         }
         
-        slow = fast = head;
-        while (cycleLength--)
-            fast = fast->next;
-        while (slow != fast) {
-            slow = slow->next;
-            fast = fast->next;
-        }
         return slow;
     }
 };
