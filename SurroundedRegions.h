@@ -34,7 +34,7 @@ public:
         for (int i = 0; i < N; ++i)
             for (int j = 0; j < M; ++j)
                 if (i == 0 || j == 0 || i == N-1 || j == M-1)
-                    dfs(board, i, j); // you may call dfs or bfs here!
+                    bfs(board, i, j); // you may call dfs or bfs here!
         for (int i = 0; i < N; ++i)
             for (int j = 0; j < M; ++j)
                 board[i][j] = (board[i][j] == 'V') ? 'O' : 'X';
