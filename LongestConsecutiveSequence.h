@@ -1,10 +1,10 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 24, 2013
- Update:     Aug 8, 2013
+ Update:     Jun 18, 2014
  Problem:    Longest Consecutive Sequence
  Difficulty: Hard
- Source:     http://leetcode.com/onlinejudge#question_128
+ Source:     https://oj.leetcode.com/problems/longest-consecutive-sequence/
  Notes:
  Given an unsorted array of integers, find the length of the longest consecutive 
  elements sequence.
@@ -26,11 +26,15 @@ public:
             s.insert(num[i]);
         for (int i = 0; i < num.size() && !s.empty(); ++i)
         {
+            if (s.find(num[i]) == s.end())
+                continue;
             int upper = num[i], lower = num[i];
             while (s.find(upper+1) != s.end())
                 s.erase(++upper);
             while (s.find(lower-1) != s.end())
                 s.erase(--lower);
+            if (upper != lower)
+                s.erase(num[i]);
             res = max(res, upper - lower + 1);
         }
         return res;
