@@ -43,7 +43,6 @@ public:
     int longestConsecutive2(vector<int> &num) {
         int longest = 0;
         unordered_map<int, int> table;
-        
         for(int i = 0, count = num.size(); i < count; ++i) 
             if(table.find(num[i]) == table.end()) {
                 int val = num[i], update;
@@ -57,7 +56,6 @@ public:
                     update = table[val] = 1;
                 longest = longest >= update ? longest : update;
             }
-        
         return longest;
     }
 };
