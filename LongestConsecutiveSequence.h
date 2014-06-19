@@ -13,13 +13,18 @@
  The longest consecutive elements sequence is [1, 2, 3, 4]. Return its length: 4.
  Your algorithm should run in O(n) complexity.
 
- Solution: Update solution. This solution is from Peking2 (http://blog.sina.com.cn/s/blog_b9285de20101iqar.html).
-           This solution is much easier to understand.
+ Solution 1: Update solution. This solution is from Peking2 (http://blog.sina.com.cn/s/blog_b9285de20101iqar.html).
+             This solution is much easier to understand.
+ Solution 2: by Yao Liu.
 */
 
 class Solution {
 public:
     int longestConsecutive(vector<int> &num) {
+        return longestConsecutive1(num);
+    }
+    
+    int longestConsecutive1(vector<int> &num) {
         unordered_set<int> s;
         int res = 0;
         for (int i = 0; i < num.size(); ++i)
@@ -47,14 +52,18 @@ public:
             if(table.find(num[i]) == table.end()) {
                 int val = num[i], update;
                 if(table.find(val - 1) != table.end() && table.find(val + 1) != table.end())
-                    update = table[val] = table[val - table[val - 1]] = table[val + table[val + 1]] = table[val - 1] + table[val + 1] + 1; // assigning to table[val] here only to add val as key to hashtable
+                    // assigning to table[val] here is only for adding val as a key of the hashtable.
+                    update = table[val] = 
+                             table[val - table[val - 1]] = 
+                             table[val + table[val + 1]] = 
+                             table[val - 1] + table[val + 1] + 1; 
                 else if(table.find(val - 1) != table.end())
                     update = table[val] = ++table[val - table[val - 1]];
                 else if(table.find(val + 1) != table.end())
                     update = table[val] = ++table[val + table[val + 1]];
                 else 
                     update = table[val] = 1;
-                longest = longest >= update ? longest : update;
+                longest = max(longest, update);
             }
         return longest;
     }
