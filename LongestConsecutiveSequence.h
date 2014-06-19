@@ -39,4 +39,23 @@ public:
         }
         return res;
     }
+    
+    int longestConsecutive2(vector<int> &num) {
+        int longest = 0;
+        unordered_map<int, int> table;
+        for(int i = 0, count = num.size(); i < count; ++i) 
+            if(table.find(num[i]) == table.end()) {
+                int val = num[i], update;
+                if(table.find(val - 1) != table.end() && table.find(val + 1) != table.end())
+                    update = table[val] = table[val - table[val - 1]] = table[val + table[val + 1]] = table[val - 1] + table[val + 1] + 1; // assigning to table[val] here only to add val as key to hashtable
+                else if(table.find(val - 1) != table.end())
+                    update = table[val] = ++table[val - table[val - 1]];
+                else if(table.find(val + 1) != table.end())
+                    update = table[val] = ++table[val + table[val + 1]];
+                else 
+                    update = table[val] = 1;
+                longest = longest >= update ? longest : update;
+            }
+        return longest;
+    }
 };
