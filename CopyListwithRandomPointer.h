@@ -21,6 +21,7 @@
  * };
  */
 class Solution {
+    typedef unordered_map<RandomListNode*, RandomListNode*> nodemap;
 public:
     RandomListNode *copyRandomList(RandomListNode *head) {
         return copyRandomList_1(head);
@@ -62,5 +63,21 @@ public:
             cur = cur->next;
         }
         return dummy.next;
+    }
+    RandomListNode *copyRandomList_3(RandomListNode *head) {
+        nodemap m;
+        return copy(head, m);
+    }
+    RandomListNode *copy(RandomListNode *root, nodemap &m) {
+        if (root == nullptr) return nullptr;
+        nodemap::iterator iter = m.find(root);
+        if (iter != m.end()) {
+            return m[root];
+        }
+        RandomListNode *node = new RandomListNode(root->label);
+        m[root] = node;
+        node->next = copy(root->next, m);
+        node->random = copy(root->random, m);
+        return node;   
     }
 };
