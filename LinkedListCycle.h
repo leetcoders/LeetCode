@@ -1,6 +1,7 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com : King, higuige@gmail.com
  Date:       Nov 9, 2013
+ Update:     Oct 5, 2014
  Problem:    Linked List Cycle
  Difficulty: Easy
  Source:     http://oj.leetcode.com/problems/linked-list-cycle/
@@ -23,14 +24,13 @@
 class Solution {
 public:
     bool hasCycle(ListNode *head) {
-        if (!head || !head->next) return false;
-        ListNode *slow = head, *fast = head->next->next;
-        while (true) 
-        {
-            if (fast == slow) return true;
-            if (!fast || !fast->next) return false;
+        ListNode *slow = head, *fast = head;
+        while (fast && fast->next) 
+        {   
             fast = fast->next->next;
             slow = slow->next;
+            if (fast == slow) return true;
         }
+        return false;
     }
 };
