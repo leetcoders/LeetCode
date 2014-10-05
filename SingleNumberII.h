@@ -1,6 +1,7 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     King, higuige@gmail.com : Annie Kim, anniekim.pku@gmail.com
  Date:       Oct 5, 2013
+ Update:     Oct 5, 2014
  Problem:    Single Number II
  Difficulty: Easy
  Source:     http://oj.leetcode.com/problems/single-number-ii/
@@ -16,16 +17,15 @@
 class Solution {
 public:
     int singleNumber(int A[], int n) {
-        int res = 0;
-        for (int i = 0; i < 32; ++i) 
-        {
-            int count = 0, bit = 1 << i;
-            for (int j = 0; j < n; ++j)
-                if (A[j] & bit)
-                    count++;
-            if (count % 3 != 0)
-                res |= bit;
+        int twice = 0;
+        int once = 0;
+        for (int i = 0; i < n; ++i) {
+            twice |= once & A[i];
+            once ^= A[i];
+            int notthree = ~ (twice & once);
+            twice = twice & notthree;
+            once  = once & notthree;
         }
-        return res;
+        return once;
     }
 };
