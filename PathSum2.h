@@ -1,7 +1,7 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com : King, higuige@gmail.com
  Date:       Apr 6, 2013
- Update:     Jul 26, 2013
+ Update:     Oct 7, 2014
  Problem:    Path Sum 2
  Difficulty: easy
  Source:     http://leetcode.com/onlinejudge#question_113
@@ -46,17 +46,11 @@ public:
     void pathSumRe(TreeNode *root, int sum, vector<vector<int>> &res, vector<int> &path)
     {
         if (!root) return;
-        if (!root->left && !root->right)
-        {
-            if (sum == root->val)
-            {
-                path.push_back(root->val);
-                res.push_back(path);
-                path.pop_back();
-            }
-            return;
-        }
         path.push_back(root->val);
+        if (!root->left && !root->right && root->val == sum)
+        {
+            res.push_back(path);
+        }
         pathSumRe(root->left, sum - root->val, res, path);
         pathSumRe(root->right, sum - root->val, res, path);
         path.pop_back();
