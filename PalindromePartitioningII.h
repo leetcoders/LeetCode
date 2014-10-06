@@ -17,22 +17,20 @@
 class Solution {
 public:
     int minCut(string s) {
-        int N = s.size();
-        bool isP[N];
-        int dp[N];
-        dp[0] = 0;
-        for (int i = 1; i < N; ++i) 
-        {
-            isP[i] = true;
-            dp[i] = dp[i-1] + 1;
-            for (int j = 0; j < i; ++j) 
-            {
-                isP[j] = (s[i] == s[j]) ? isP[j+1] : false; // isP[j] == true   -> [j...i] is a palindrome
-                                                            // isP[j+1] == true -> [j+1...i-1] is a palindrome
-                if (isP[j])
-                    dp[i] = (j == 0) ? 0 : min(dp[i], dp[j-1] + 1);  // dp[i] -> minCount for [0...i]
+        int size = s.size();
+        vector<int> dp(size + 1);
+        vector<bool> isP(size, true);
+        dp[size] = -1;
+        for (int i = size -1; i >= 0; --i) {
+            dp[i] = dp[i + 1] + 1;
+            for (int j = size - 1; j >= i; --j) {
+                isP[j] = false;
+                if (s[i] == s[j] && ( j - i < 2 || isP[j-1])) {
+                    isP[j] = true;
+                    dp[i] = min(dp[i], dp[j + 1] + 1);
+                }
             }
         }
-        return dp[N-1];
+        return dp[0];
     }
 };
