@@ -1,7 +1,7 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com : King, higuige@gmail.com
  Date:       Apr 28, 2013
- Update:     Jul 30, 2013
+ Update:     Oct 07, 2014
  Problem:    Binary Tree Maximum Path Sum
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_124
@@ -41,8 +41,7 @@ public:
         int l = maxPathSumRe(node->left, res);
         int r = maxPathSumRe(node->right, res);
         int sum = max(node->val, max(l, r) + node->val);
-        res = max(res, sum);
-        res = max(res, l + r + node->val);
+        res = max(res, max(0, l) + max(0, r) + node->val);
         return sum;
     }
 };

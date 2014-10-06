@@ -1,6 +1,7 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com : King, higuige@gmail.com
  Date:       Apr 28, 2013
+ Update:     Oct 07, 2014
  Problem:    Best Time to Buy and Sell Stock
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_121
@@ -15,13 +16,13 @@
 class Solution {
 public:
     int maxProfit(vector<int> &prices) {
-        int imin = 0;
-        int res = 0;
-        for (int i = 1; i < prices.size(); ++i)
+        int size = prices.size();
+        if (prices.empty()) return 0;
+        int minVal = prices[0], res = 0;
+        for (int i = 1; i < size; ++i)
         {
-            if (prices[i] < prices[imin])
-                imin = i;
-            res = max(res, prices[i] - prices[imin]);
+            minVal = min(minVal, prices[i]);
+            res = max(res, prices[i] - minVal);
         }
         return res;
     }

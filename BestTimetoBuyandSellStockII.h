@@ -18,6 +18,9 @@
 
 class Solution {
 public:
+    int maxProfit(vector<int> &prices) {
+        return maxProfit_2(prices);
+    }
     int maxProfit_1(vector<int> &prices) {
         int res = 0;
         int buy_i = -1;
