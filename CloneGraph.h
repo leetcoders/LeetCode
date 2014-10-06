@@ -62,29 +62,27 @@ public:
     }
     
     // BFS
-    GraphNode *cloneGraph_2(GraphNode *node) {
-        if (!node) return NULL;
-        queue<GraphNode*> q;
+    UndirectedGraphNode *cloneGraph_2(UndirectedGraphNode *node) {
+        if (node == nullptr) {
+            return nullptr;
+        }
+        unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> nodesMap;
+        nodesMap[node] = new UndirectedGraphNode(node->label);
+        queue<UndirectedGraphNode*> q;
         q.push(node);
-        MAP map;
-        map[node] = new GraphNode(node->label);
-        while (!q.empty())
-        {
-            GraphNode *oriNode = q.front(); q.pop();
-            GraphNode *newNode = map[oriNode];
-            for (int i = 0; i < oriNode->neighbors.size(); ++i)
-            {
-                GraphNode *oriNeighbor = oriNode->neighbors[i];
-                if (map.find(oriNeighbor) != map.end()) {
-                    newNode->neighbors.push_back(map[oriNeighbor]);
-                    continue;
+        while (!q.empty()) {
+            UndirectedGraphNode* tmp = q.front();
+            q.pop();
+            for (int i = 0; i < tmp->neighbors.size(); ++i) {
+                UndirectedGraphNode* neighbor = tmp->neighbors[i];
+                if (nodesMap.find(neighbor) == nodesMap.end()) {
+                    UndirectedGraphNode* newNode = new UndirectedGraphNode(neighbor->label);
+                    nodesMap[neighbor] = newNode;
+                    q.push(neighbor);
                 }
-                GraphNode *newNeighbor = new GraphNode(oriNeighbor->label);
-                newNode->neighbors.push_back(newNeighbor);
-                map[oriNeighbor] = newNeighbor;
-                q.push(oriNeighbor);
+                nodesMap[tmp]->neighbors.push_back(nodesMap[neighbor]);
             }
         }
-        return map[node];
+        return nodesMap[node];
     }
 };
