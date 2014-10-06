@@ -1,7 +1,7 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com : King, higuige@gmail.com
  Date:       Apr 22, 2013
- Update:     Sep 8, 2013
+ Update:     Oct 7, 2014
  Problem:    Populating Next Right Pointers in Each Node
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_116
@@ -31,7 +31,7 @@
   / \  / \
  4->5->6->7 -> NULL
 
- Solution: 1. Iterative: Two 'while' loops: root->leaf and left->right.
+ Solution: 1. Iterative: Two 'while' loops.
            2. Iterative: Queue. Use extra space.
            3. Recursive: DFS. Defect: Use extra stack space for recursion.
  */
@@ -44,57 +44,72 @@
  *  TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) {}
  * };
  */
-
 class Solution {
 public:
     void connect(TreeLinkNode *root) {
-        connect_1(root);
+        connect_2(root);
     }
-    
     void connect_1(TreeLinkNode *root) {
-        while (root)
-        {
-            TreeLinkNode *level = root;
-            TreeLinkNode *last = NULL;
-            while (level && level->left)
-            {
-                if (last) last->next = level->left;
-                level->left->next = level->right;
-                last = level->right;
-                level = level->next;
+        if (root == nullptr) return;
+        TreeLinkNode *cur = root;
+        TreeLinkNode dummy(-1);
+        TreeLinkNode *pre = &dummy;
+        while (cur) {
+            pre = &dummy;
+            pre->next = nullptr;
+            while (cur) {
+                if (cur->left) {
+                    pre->next = cur->left;
+                    pre = pre->next;
+                }
+                if (cur->right) {
+                    pre->next = cur->right;
+                    pre = pre->next;
+                }
+                cur = cur->next;
             }
-            root = root->left;
+            cur = dummy.next;
         }
     }
-    
     void connect_2(TreeLinkNode *root) {
-        if (!root) return;
+        if (root == NULL) return;
         queue<TreeLinkNode *> q;
         q.push(root);
         q.push(NULL);
         TreeLinkNode *last = NULL;
-        while (true)
-        {
+        TreeLinkNode dummy(-1);
+        TreeLinkNode *pre = &dummy;
+        while (!q.empty()) {
             TreeLinkNode *node = q.front();
             q.pop();
-            if (!node) {
-                last = NULL;
-                if (q.empty()) break;
-                q.push(NULL);
+            if (node == NULL) {
+                if (dummy.next) q.push(NULL);
+                pre = &dummy;
+                pre->next = NULL;
             } else {
-                if (last) last->next = node;
-                last = node;
+                pre->next = node;
+                pre = pre->next;
                 if (node->left) q.push(node->left);
                 if (node->right) q.push(node->right);
             }
         }
     }
-    
-    void connect_3(TreeLinkNode *node) {
-        if (!node || !node->left) return;
-        node->left->next = node->right;
-        node->right->next = node->next ? node->next->left : NULL;
-        connect_3(node->left);
-        connect_3(node->right);
+    void connect_3(TreeLinkNode *root) {
+        if (root == nullptr) return;
+        TreeLinkNode dummy(-1);
+        TreeLinkNode *pre = &dummy;
+        TreeLinkNode *cur = root;
+        while (cur) {
+            if (cur->left) {
+                pre->next = cur->left;
+                pre = pre->next;
+            }
+            if (cur->right) {
+                pre->next = cur->right;
+                pre = pre->next;
+            }
+            cur = cur->next;
+        }
+        connect(dummy.next);
     }
 };

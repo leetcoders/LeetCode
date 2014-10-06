@@ -1,7 +1,7 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com : King, higuige@gmail.com
  Date:       Apr 23, 2013
- Update:     Sep 8, 2013
+ Update:     Oct 7, 2014
  Problem:    Populating Next Right Pointers in Each Node II
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_117
@@ -26,7 +26,7 @@
 
  Solution: 1. iterative way with CONSTANT extra space.
            2. iterative way + queue. Contributed by SUN Mian(孙冕).
-           3. tail recursive solution.
+           3. recursive solution.
  */
 
 /**
@@ -40,74 +40,69 @@
 class Solution {
 public:
     void connect(TreeLinkNode *root) {
-        connect_1(root);
+        connect_2(root);
     }
-    
-    // solution 1
     void connect_1(TreeLinkNode *root) {
+        if (root == nullptr) return;
         TreeLinkNode *cur = root;
-        while (cur)
-        {
-            TreeLinkNode *node = cur, *last = NULL;
-            cur = NULL;
-            while (node)
-            {
-                TreeLinkNode *left = node->left, *right = node->right;
-                if (left || right) {
-                    if (last) last->next = left ? left : right;
-                    if (left) left->next = right;
-                    if (!cur) cur = left ? left : right;
-                    last = right ? right : left;
+        TreeLinkNode dummy(-1);
+        TreeLinkNode *pre = &dummy;
+        while (cur) {
+            pre = &dummy;
+            pre->next = nullptr;
+            while (cur) {
+                if (cur->left) {
+                    pre->next = cur->left;
+                    pre = pre->next;
                 }
-                node = node->next;
+                if (cur->right) {
+                    pre->next = cur->right;
+                    pre = pre->next;
+                }
+                cur = cur->next;
             }
+            cur = dummy.next;
         }
     }
-    
-    // solution 2
     void connect_2(TreeLinkNode *root) {
-        if (!root) return;
+        if (root == NULL) return;
         queue<TreeLinkNode *> q;
         q.push(root);
         q.push(NULL);
         TreeLinkNode *last = NULL;
-        while (true)
-        {
+        TreeLinkNode dummy(-1);
+        TreeLinkNode *pre = &dummy;
+        while (!q.empty()) {
             TreeLinkNode *node = q.front();
             q.pop();
-            if (!node) {
-                last = NULL;
-                if (q.empty()) break;
-                q.push(NULL);
+            if (node == NULL) {
+                if (dummy.next) q.push(NULL);
+                pre = &dummy;
+                pre->next = NULL;
             } else {
-                if (last) last->next = node;
-                last = node;
+                pre->next = node;
+                pre = pre->next;
                 if (node->left) q.push(node->left);
                 if (node->right) q.push(node->right);
             }
         }
     }
-    
-    // solution 3
     void connect_3(TreeLinkNode *root) {
-        if (!root) return;
-        TreeLinkNode *node = root;
-        TreeLinkNode *last = NULL;
-        TreeLinkNode *first = NULL;
-        while (node)
-        {
-            if (node->left || node->right) {
-                if (last) 
-                    last->next = node->left ? node->left : node->right;
-                if (node->left && node->right)
-                    node->left->next = node->right;
-                if (!first) 
-                    first = node->left ? node->left : node->right;
-                last = node->right ? node->right : node->left;
-                
+        if (root == nullptr) return;
+        TreeLinkNode dummy(-1);
+        TreeLinkNode *pre = &dummy;
+        TreeLinkNode *cur = root;
+        while (cur) {
+            if (cur->left) {
+                pre->next = cur->left;
+                pre = pre->next;
             }
-            node = node->next;
+            if (cur->right) {
+                pre->next = cur->right;
+                pre = pre->next;
+            }
+            cur = cur->next;
         }
-        connect_3(first);
+        connect(dummy.next);
     }
 };
