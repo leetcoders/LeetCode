@@ -1,7 +1,7 @@
 /*
- Author:     Applewjg, higuige@gmail.com
+ Author:     King, higuige@gmail.com
  Date:       Sep 24, 2014
- Update:     Sep 24, 2014
+ Update:     Oct 06, 2014
  Problem:    Maximum Product Subarray
  Difficulty: Medium
  Source:     https://oj.leetcode.com/problems/maximum-product-subarray/
@@ -14,6 +14,20 @@
 class Solution {
 public:
     int maxProduct(int A[], int n) {
+        if (n <= 0) {
+            return 0;
+        }
+        int maxVal = A[0], minVal = A[0], res = A[0];
+        for (int i = 1; i < n; ++i) {
+            int tmpVal = maxVal;
+            maxVal = max(max(maxVal * A[i], minVal * A[i]), A[i]);
+            minVal = min(min(tmpVal * A[i], minVal * A[i]), A[i]);
+            res = max(res, maxVal);
+        }
+        return res;
+    }
+
+    int maxProduct_2(int A[], int n) {
         if(n==0) return 0;
         if(n==1) return A[0];
         int minVal = 0;
