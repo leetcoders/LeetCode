@@ -1,6 +1,7 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com : King, higuige@gmail.com
  Date:       May 25, 2013
+ Update:     Oct 07, 2014
  Problem:    Trapping Rain Water
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_42
@@ -17,27 +18,19 @@ class Solution {
 public:
     int trap(int A[], int n) {
         if (n == 0) return 0;
-        int left[n];
-        int right[n];
-
-        int lmax = A[0];
-        for (int i = 0; i < n; ++i)
-        {
-            lmax = max(lmax, A[i]);
-            left[i] = lmax;
+        vector<int> maxLeft(n,0);
+        vector<int> maxRight(n,0);
+        maxLeft[0] = A[0];
+        maxRight[n - 1] = A[n - 1];
+        for (int i = 1; i < n; ++i) {
+            maxLeft[i] = max(maxLeft[i - 1], A[i]);
+            maxRight[n - 1 - i] = max(maxRight[n - i], A[n - 1 - i]);
         }
-
-        int rmax = A[n-1];
-        for (int i = n - 1; i >= 0; --i)
-        {
-            rmax = max(rmax, A[i]);
-            right[i] = rmax;
-        }
-
+        
         int res = 0;
-        for (int i = 0; i < n; ++i)
-            res += min(left[i], right[i]) - A[i];
-
+        for (int i = 1; i < n; ++i) {
+            res += min(maxLeft[i], maxRight[i]) - A[i];
+        }
         return res;
     }
 };
