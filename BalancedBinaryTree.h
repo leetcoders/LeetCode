@@ -1,7 +1,7 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com : King, higuige@gmail.com
  Date:       Apr 10, 2013
- Update:     Aug 4, 2013
+ Update:     Oct 07, 2014
  Problem:    Balanced Binary Tree
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_110
@@ -25,19 +25,13 @@
 class Solution {
 public:
     bool isBalanced(TreeNode *root) {
-        int height = 0;
-        return isBalancedRe(root, height);
+        return solve(root) != -1;
     }
-    
-    bool isBalancedRe(TreeNode *root, int &height){
-        if (!root) return true;
-        
-        int leftHeight = 0, rightHeight = 0;
-        if (!isBalancedRe(root->left, leftHeight)) return false;
-        if (!isBalancedRe(root->right, rightHeight)) return false;
-        if (abs(leftHeight-rightHeight) > 1) return false;
-        
-        height = 1 + max(leftHeight, rightHeight);
-        return true;
+    int solve(TreeNode *root) {
+        if (root == NULL) return 0;
+        int left = solve(root->left);
+        int right = solve(root->right);
+        if (left == -1 || right == -1 || abs(left - right) > 1) return -1;
+        return max(left,right) + 1;
     }
 };

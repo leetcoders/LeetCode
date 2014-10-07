@@ -1,7 +1,7 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com : King, higuige@gmail.com
  Date:       Apr 22, 2013
- Update:     Jul 23, 2013
+ Update:     Oct 07, 2014
  Problem:    Symmetric Tree
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_101
@@ -36,34 +36,44 @@
 class Solution {
 public:
     bool isSymmetric(TreeNode *root) {
-        return isSymmetric_1(root);
+        return isSymmetric_2(root);
     }
-    
     bool isSymmetric_1(TreeNode *root) {
-        if (!root) return true;
-        return isSymmetricRe(root->left, root->right);
+        if (root == NULL) return true;
+        return solve (root->left, root->right);
     }
-
-    bool isSymmetricRe(TreeNode *t1, TreeNode *t2)
-    {
+    bool solve(TreeNode * t1, TreeNode * t2) {
         if (!t1 && !t2) return true;
-        if (!t1 || !t2 || t1->val != t2->val) return false;
-        return isSymmetricRe(t1->left, t2->right) &&
-               isSymmetricRe(t1->right, t2->left);
+        if (!t1 && t2 || t1 && !t2 || t1->val != t2->val) return false;
+        return solve(t1->left, t2->right) && solve(t1->right, t2->left);
     }
-
     bool isSymmetric_2(TreeNode *root) {
-        if (!root) return true;
+        if (root == NULL) return true;
+        stack<TreeNode *> s;
+        s.push(root->left);
+        s.push(root->right);
+        while (!s.empty()) {
+            TreeNode *t2 = s.top(); s.pop();
+            TreeNode *t1 = s.top(); s.pop();
+            if (!t1 && !t2) continue;
+            if (!t1 && t2 || t1 && !t2 || t1->val != t2->val) return false;
+            s.push(t1->right);
+            s.push(t2->left);
+            s.push(t1->left);
+            s.push(t2->right);
+        }
+        return true;
+    }
+    bool isSymmetric_3(TreeNode *root) {
+        if (root == NULL) return true;
         queue<TreeNode *> q;
         q.push(root->left);
         q.push(root->right);
-        while (!q.empty())
-        {
-            TreeNode *t1 = q.front(); q.pop();
+        while (!s.empty()) {
             TreeNode *t2 = q.front(); q.pop();
+            TreeNode *t1 = q.front(); q.pop();
             if (!t1 && !t2) continue;
-            if (!t1 || !t2 || t1->val != t2->val)
-                return false;
+            if (!t1 && t2 || t1 && !t2 || t1->val != t2->val) return false;
             q.push(t1->left);
             q.push(t2->right);
             q.push(t1->right);
