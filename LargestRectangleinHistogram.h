@@ -13,41 +13,62 @@
 
  Solution: 1. Only calucate area when reaching local maximum value.
            2. Keep a non-descending stack. O(n).
+           3. Keep a non-descending stack. O(n). if the vector height is not allowed to be changed.
 */
-
 class Solution {
 public:
     int largestRectangleArea(vector<int> &height) {
-        return largestRectangleArea_2(height);
+        return largestRectangleArea_1(height);
     }
-    
     int largestRectangleArea_1(vector<int> &height) {
-        int res = 0, N = height.size();
+        int res = 0;
+        int N = height.size();
         for (int i = 0; i < N; ++i) {
-            if (i < N-1 && height[i] <= height[i+1])
+            if (i < N - 1 && height[i] <= height[i + 1]) {
                 continue;
+            }
             int minHeight = height[i];
             for (int j = i; j >= 0; --j) {
                 minHeight = min(minHeight, height[j]);
-                res = max((i-j+1) * minHeight, res);
+                res = max(res, (i - j + 1) * minHeight);
+            }
+        }
+        return res;
+    }
+    int largestRectangleArea_2(vector<int> &height) {
+        height.push_back(0);
+        int N = height.size();
+        int res = 0, i = 0;
+        stack<int> s;
+        while (i < N) {
+            if (s.empty() || height[i] >= height[s.top()]) {
+                s.push(i++);
+            } else {
+                int idx = s.top(); s.pop();
+                int width = s.empty() ? i : (i - s.top() - 1);
+                res = max(res, height[idx] * width);
             }
         }
         return res;
     }
     
-    int largestRectangleArea_2(vector<int> &height) {
-        height.push_back(0);
-        int res = 0, i = 0, N = height.size();
-        stack<int> stk;
-        while (i < N) 
-        {
-            if (stk.empty() || height[stk.top()] <= height[i])
-                stk.push(i++);
-            else {
-                int index = stk.top(); stk.pop();
-                int width = stk.empty() ? i : i - stk.top() - 1;
-                res = max(res, width * height[index]);
+    int largestRectangleArea_3(vector<int> &height) {
+        int N = height.size();
+        int res = 0, i = 0;
+        stack<int> s;
+        while(i < N) {
+            if(s.empty() || height[s.top()] <= height[i]){
+                s.push(i++);
+            }else{
+                int idx = s.top(); s.pop();
+                int width = s.empty() ? i : (i - s.top() - 1);
+                res = max(res, height[idx] * width);
             }
+        }
+        while(!s.empty()){
+            int idx = s.top(); s.pop();
+            int width = s.empty() ? i : (i - s.top() - 1);
+            res = max(res, height[idx] * width);
         }
         return res;
     }
