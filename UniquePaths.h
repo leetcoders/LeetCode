@@ -1,7 +1,7 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com : King, higuige@gmail.com
  Date:       Apr 8, 2013
- Update:     Apr 9, 2013
+ Update:     Oct 9, 2014
  Problem:    Unique Paths
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_62
@@ -45,4 +45,12 @@ public:
         
         return dp[m-1][n-1];
     }
+    int uniquePaths_3(int m, int n) {
+        vector<int> dp(n, 1);
+        for (int i = 1; i < m; ++i) {
+            for (int j = 1; j < n; ++j) {
+                dp[j] += dp[j-1];    
+            }
+        }
+        return dp[n-1];
 };

@@ -1,6 +1,7 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com : King, higuige@gmail.com
  Date:       Oct 6, 2013
+ Update:     Oct 8, 2014
  Problem:    Largest Rectangle in Histogram
  Difficulty: Hard
  Source:     http://leetcode.com/onlinejudge#question_84
