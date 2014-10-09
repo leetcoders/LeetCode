@@ -1,7 +1,7 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com : King, higuige@gmail.com
  Date:       May 23, 2013
- Update:     Aug 20, 2013
+ Update:     Oct 09, 2014
  Problem:    Maximal Rectangle
  Difficulty: Medium
  Source:     http://leetcode.com/onlinejudge#question_85
@@ -12,12 +12,13 @@
               a) dp[i][j] records the number of consecutive '1' on the left and up of the element matrix[i][j].
               b) For each element(i,j), calculate the area of rectangle including the element itself.
            2. calculate 'Largest Rectangle in Histogram' for each row.
+           3. Time : O(n ^ 2), Space : O(n).
  */
 
 class Solution {
 public:
     int maximalRectangle(vector<vector<char>> &matrix) {
-        return maximalRectangle_1(matrix);
+        return maximalRectangle_3(matrix);
     }
     
     int maximalRectangle_1(vector<vector<char>> &matrix) {
@@ -83,4 +84,36 @@ public:
         }
         return res;
     }
+
+    int maximalRectangle_2(vector<vector<char> > &matrix) {
+        if (matrix.empty()) return 0;
+        int m = matrix.size();
+        int n = matrix[0].size();
+        std::vector<int> H(n);
+        std::vector<int> L(n);
+        std::vector<int> R(n);
+        int res = 0;
+        for (int i = 0; i < m; ++i) {
+            int left = 0, right = n;
+            for (int j = 0; j < n; ++j) {
+                if (matrix[i][j] == 1) {
+                    ++H[j];
+                    L[j] = max(left, L[j]);
+                } else {
+                    left = j + 1;
+                    H[j] = 0; L[j] = 0; R[j] = n;
+                }
+            }
+            for (int j = n - 1; j >= 0; --j) {
+                if (matrix[i][j] == '1') {
+                    R[j] = min(R[j], right);
+                    res =  max(res, (R[j] - L[j]) * H[j]);
+                } else {
+                    right = j;
+                }
+            }
+        }
+        return res;
+    }
+
 };
