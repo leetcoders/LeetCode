@@ -85,18 +85,18 @@ public:
         return res;
     }
 
-    int maximalRectangle_2(vector<vector<char> > &matrix) {
+    int maximalRectangle_3(vector<vector<char> > &matrix) {
         if (matrix.empty()) return 0;
         int m = matrix.size();
         int n = matrix[0].size();
-        std::vector<int> H(n);
-        std::vector<int> L(n);
-        std::vector<int> R(n);
+        std::vector<int> H(n, 0);
+        std::vector<int> L(n, 0);
+        std::vector<int> R(n, n);
         int res = 0;
         for (int i = 0; i < m; ++i) {
             int left = 0, right = n;
             for (int j = 0; j < n; ++j) {
-                if (matrix[i][j] == 1) {
+                if (matrix[i][j] == '1') {
                     ++H[j];
                     L[j] = max(left, L[j]);
                 } else {
