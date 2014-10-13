@@ -17,8 +17,9 @@
 class Solution {
 public:
     int threeSumClosest(vector<int> &num, int target) {
-        int res = INT_MAX;
         int N = num.size();
+        if (N < 3) return 0;
+        int res = num[0] + num[1] + num[2];
         sort(num.begin(), num.end());
         for (int i = 0; i < N-2; ++i)
         {
@@ -27,9 +28,9 @@ public:
             {
                 int threesum = num[i] + num[l] + num[r];
                 if (threesum == target) return target;
-                else if (threesum < target) l++;
-                else r--;
-                if (res == INT_MAX || abs(threesum - target) < abs(res - target))
+                else if (threesum < target) ++l;
+                else --r;
+                if (abs(threesum - target) < abs(res - target))
                     res = threesum;
             }
         }
