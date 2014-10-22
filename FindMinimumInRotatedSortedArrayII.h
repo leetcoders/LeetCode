@@ -2,7 +2,7 @@
  Author:     King, higuige@gmail.com
  Date:       Oct 22, 2014
  Problem:    Find Minimum in Rotated Sorted ArrayII
- Difficulty: Medium
+ Difficulty: Hard
  Source:     https://oj.leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/
  Notes:
  Suppose a sorted array is rotated at some pivot unknown to you beforehand.
