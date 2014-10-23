@@ -19,22 +19,16 @@ public:
         int size = num.size();
         int left = 0;
         int right = size - 1;
-        while (left < right) {
-            int mid = (left + right + 1) / 2;
-            if (num[mid] > num[left]) {
-                if (num[left] < num[right]) {
-                    right = mid - 1;
-                } else {
-                    left = mid;
-                }
+        while (left < right && num[left] >= num[right]) {
+            int mid = (left + right) / 2;
+            if (num[mid] > num[right]) {
+                left = mid + 1;
             } else if (num[mid] < num[left]) {
-                if (right == mid) left = mid;
-                else right = mid;
+                right = mid;
             } else {
-                if (num[left] == num[right]) ++left, --right;
-                else left = mid;
+                ++left;
             }
         }
-        return num[left];        
+        return num[left];
     }
 };
