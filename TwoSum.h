@@ -3,7 +3,7 @@
  Date:       Jan 17, 2013
  Update:     Jan 16, 2014
  Problem:    Two Sum
- Difficulty: easy
+ Difficulty: Medium
  Source:     http://oj.leetcode.com/problems/two-sum/
  Notes:
  Given an array of integers, find two numbers such that they add up to a specific target number.
@@ -54,29 +54,16 @@ public:
         return res;
     }
     
-    typedef unordered_map<int, vector<int> > MAP;
-    
     vector<int> twoSum_2(vector<int> &numbers, int target) {
-        MAP map;
-        for (int i = 0; i < numbers.size(); ++i)
-            map[numbers[i]].push_back(i+1);
-        
-        for (int i = 0; i < numbers.size(); ++i)
-        {
-            MAP::iterator it = map.find(target - numbers[i]);
-            if (it == map.end()) continue;
-            
-            int index1 = it->second[0], index2 = i + 1;
-            
-            if (numbers[i] == target - numbers[i]) { // two elements are the same
-                if (it->second.size() == 1) continue;
-                index2 = it->second[1];
+        unordered_map<int, int>  hash;
+        for (int i = 0; i < numbers.size(); ++i) {
+            int second = target - numbers[i];
+            if (hash.find(second) != hash.end()) {
+                return vector<int>{hash[res]+1, i+1};
+            } else {
+                hash.insert(pair<int, int>{numbers[i],i});
             }
-            
-            vector<int> res;
-            res.push_back(min(index1, index2));
-            res.push_back(max(index1, index2));
-            return res;
         }
+        return vector<int>();
     }
 };
