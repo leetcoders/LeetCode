@@ -1,6 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Jul 13, 2013
+ Update:      Nov 17, 2014 : By wangjingui@outlook.com
  Problem:    Longest Palindromic Substring
  Difficulty: Medium
  Source:     http://leetcode.com/onlinejudge#question_5
@@ -67,7 +68,7 @@ public:
         for (int i = 0; i < N; ++i) {
             for (int j = 0; j <= 1; ++j) {
                 bool isP = true;
-                for (int k = 0; i-k >= 0 && i+k < N && isP; ++k) {
+                for (int k = 0; i-k >= 0 && i+j+k < N && isP; ++k) {
                     isP = s[i-k] == s[i+j+k];
                     if (isP && j+1+k*2 > res.second)
                         res = make_pair(i-k, j+1+k*2);
