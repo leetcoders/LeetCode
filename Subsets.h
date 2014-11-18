@@ -1,7 +1,7 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com : King, higuige@gmail.com
  Date:       Apr 24, 2013
- Update:     Sep 16, 2013
+ Update:     Nov 18, 2014
  Problem:    Subsets
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_78
@@ -25,6 +25,8 @@
 
  Solution: 1. Recursive solution.
            2. Iterative solution. Contributed by yinlinglin.
+           3. Updated Recursive solution.
+           4. Updated Iterative solution.
  */
 
 class Solution {
@@ -90,5 +92,35 @@ public:
             }
         }
         return res;
+    }
+
+    vector<vector<int> > subsets_3(vector<int> &S) {
+        int sz = S.size();
+        vector<vector<int>> res(1);
+        sort(S.begin(), S.end());
+        for (int i = 0; i < S.size(); ++i) {
+            int sz = res.size();
+            for (int j = 0; j < sz; ++j) {
+                res.push_back(res[j]);
+                res.back().push_back(S[i]);
+            }
+        }
+        return res;
+    }
+
+    vector<vector<int> > subsets_4(vector<int> &S) {
+        vector<vector<int>> res;
+        sort(S.begin(), S.end());
+        vector<int> path;
+        dfs(S,res,path,0);
+        return res;
+    }
+    void dfs(vector<int> &S, vector<vector<int>>& res, vector<int>&path, size_t step) {
+        res.push_back(path);
+        for (int i = step; i < S.size(); ++i) {
+            path.push_back(S[i]);
+            dfs(S,res,path,i+1);
+            path.pop_back();
+        }
     }
 };
