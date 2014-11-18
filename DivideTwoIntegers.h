@@ -36,40 +36,25 @@ public:
     }
     // Solution 2. Top->Down
     int divide_2(int dividend, int divisor) {
-        if(dividend==0)return 0;
-        if(divisor==0){
-            if(dividend>0) return INT_MAX;
-            else return INT_MIN;
-        }
+        assert(divisor != 0);
+        bool flag = dividend > 0 && divisor < 0 || 
+                    dividend < 0 && divisor > 0;
+        long long dividendll = abs((long long)dividend);
+        long long divisorll = abs((long long)divisor);
         int res = 0;
-        long long a = dividend >= 0 ? dividend : -(long long)dividend;
-        long long b = divisor >= 0 ? divisor : -(long long)divisor;
-        int sign = (dividend<0)^(divisor<0);
-        int now = 1;
-        int upper = b;
-        while ((upper<<1)<=a) {
-            upper <<= 1;
-            now <<= 1;
+        long long d = divisorll, q = 1;
+        while ((d << 1) <= dividendll) {
+            d <<= 1;
+            q <<= 1;
         }
-        while(a>=b) {
-            if (a>=upper) {
-                a-=upper;
-                res+=now;
+        while (dividendll >= divisorll) {
+            if (dividendll >= d) {
+                dividendll -= d;
+                res += q;
             }
-            upper>>=1;
-            now>>=1;
+            d >>= 1;
+            q >>= 1;
         }
-        
-        /*while(a>=b){
-            long long c = b;
-            int q = 1;
-            while ((c <<1) <= a) {
-                c <<= 1;
-                q <<= 1;
-            }
-            a -= c;
-            res += q;
-        }*/
-        return sign?-res:res;
+        return flag ? -res : res;
     }
 };
