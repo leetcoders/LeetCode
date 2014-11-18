@@ -29,10 +29,9 @@ public:
         const char *sBackup = NULL, *pBackup = NULL;
         while (*s != '\0') {
             if (*p == '?' || *s == *p) {
-                s++;
-                p++;
+                ++s, ++p;
             } else if (*p == '*') {
-                while (*p == '*') p++;
+                while (*p == '*') ++p;
                 if (*p == '\0') return true;
                 sBackup = s;
                 pBackup = p;
@@ -42,7 +41,7 @@ public:
                 p = pBackup;
             }
         }
-        while (*p == '*') p++;
+        while (*p == '*') ++p;
         return *s == '\0' && *p == '\0';
     }
 };
