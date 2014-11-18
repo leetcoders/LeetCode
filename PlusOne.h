@@ -4,7 +4,7 @@
  Update:     Aug 29, 2013
  Problem:    Plus One
  Difficulty: Easy
- Source:     http://leetcode.com/onlinejudge#question_66
+ Source:     https://oj.leetcode.com/problems/plus-one/
  Notes:
  Given a number represented as an array of digits, plus one to the number.
 
@@ -21,8 +21,9 @@ public:
             carry = sum / 10;
             digits[i] = sum % 10;
         }
-        if (carry == 1)
-            digits.insert(digits.begin(), 1);
+        if (carry > 0) {
+            digits.insert(digits.begin(), carry);
+        }
         return digits;
     }
 };
