@@ -1,6 +1,7 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com : King, higuige@gmail.com
  Date:       Apr 30, 2013
+ Update:     Nov 18, 2014
  Problem:    Subsets II
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_90
@@ -20,32 +21,41 @@
   []
  ]
 
- Solution: ..Similar to Subset I, except for line 45.
+ Solution: ..Similar to Subset I.
  */
 class Solution {
 public:
-    vector<vector<int>> subsetsWithDup(vector<int> &S) {
-        vector<vector<int> > res(1, vector<int>());
+    vector<vector<int> > subsetsWithDup(vector<int> &S) {
+        vector<vector<int>> res;
         sort(S.begin(), S.end());
-        vector<int> set;
-        int N = S.size();
-        for (int l = 1; l <= N; ++l)
-            subsetsWithDupRe(S, l, 0, set, res);
+        vector<int> path;
+        dfs(S,res,path,0);
         return res;
     }
-
-    void subsetsWithDupRe(vector<int> &S, int L, int start, vector<int> &set, vector<vector<int>> &res)
-    {
-        int N = S.size(), M = set.size();
-        if (M == L) {
-            res.push_back(set);
-            return;
+    void dfs(vector<int> &S, vector<vector<int>>& res, vector<int>&path, size_t step) {
+        res.push_back(path);
+        for (int i = step; i < S.size(); ++i) {
+            if(i!=step&&S[i]==S[i-1]) continue;
+            path.push_back(S[i]);
+            dfs(S,res,path,i+1);
+            path.pop_back();
         }
-        for (int i = start; i <= N - (L - M); ++i) {
-            if (i > start && S[i] == S[i-1]) continue;
-            set.push_back(S[i]);
-            subsetsWithDupRe(S, L, i + 1, set, res);
-            set.pop_back();
+    }
+    // Solution 2. iterative solution.
+    vector<vector<int> > subsetsWithDup_2(vector<int> &S) {
+        vector<vector<int> > res(1);
+        sort(S.begin(),S.end());
+        size_t presz = 0;
+        for(int i=0;i<S.size();i++){
+            int sz = res.size();
+            for (int j = 0; j < sz; ++j) {
+                if(i==0||S[i]!=S[i-1]||j >= presz) {
+                    res.push_back(res[j]);
+                    res.back().push_back(S[i]);
+                }
+            }
+            presz = sz;
         }
+        return res;
     }
 };
