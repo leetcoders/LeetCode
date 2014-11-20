@@ -26,6 +26,7 @@
               You may refer to my blog for more detailed explanations: 
               http://www.cnblogs.com/AnnieKim/archive/2013/06/15/MorrisTraversal.html
            4. Recursive solution#2. transform into preorder traversal and reverse.
+           5. Threaded tree (Morris). Time: O(n), Space: O(logn);
 */
 
 /**
@@ -159,5 +160,44 @@ public:
         res.push_back(root->val);
         dfs(root->right, res);
         dfs(root->left, res);
+    }
+
+    vector<int> postorderTraversal_5(TreeNode *root) {
+        vector<int>res;
+        stack<TreeNode *> s;
+        if (root == NULL) return res;
+        TreeNode dummy(-1);
+        dummy.left = root;
+        TreeNode * cur = &dummy;
+        while (cur) {
+            if(cur->left == NULL) {
+                cur = cur->right;
+            } else {
+                TreeNode * node = cur->left;
+                while (node->right && node->right != cur) {
+                    node = node->right;
+                }
+                if (node->right == NULL) {
+                    node->right = cur;
+                    cur = cur->left;
+                } else {
+                    // reverse push into res
+                    vector<int> tmp;
+                    TreeNode * it = cur->left;
+                    while(it != node) {
+                        tmp.push_back(it->val);
+                        it = it->right;
+                    }
+                    tmp.push_back(node->val);
+                    for(vector<int>::reverse_iterator iter = tmp.rbegin(); iter != tmp.rend(); ++iter) {
+                        res.push_back(*iter);
+                    }
+                    node->right = NULL;
+                    cur = cur->right;
+                }
+            }
+        }
+        
+        return res;
     }
 };
