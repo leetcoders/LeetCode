@@ -1,7 +1,8 @@
 /*
  Author:     Matthew Jin, marthew777@gmail.com
- Co-author:  Annie Kim, anniekim.pku@gmail.com
+ Co-author:  Annie Kim, anniekim.pku@gmail.com : King, higuige@gmail.com
  Date:       Feb 21, 2014
+ Update:     Nov 20, 2014
  Problem:    Binary Tree Postorder Traversal 
  Difficulty: Easy
  Source:     http://oj.leetcode.com/problems/binary-tree-postorder-traversal/
@@ -24,6 +25,7 @@
            3. Threaded tree (Morris).  Time: O(n), Space: O(1). 
               You may refer to my blog for more detailed explanations: 
               http://www.cnblogs.com/AnnieKim/archive/2013/06/15/MorrisTraversal.html
+           4. Recursive solution#2. transform into preorder traversal and reverse.
 */
 
 /**
@@ -141,5 +143,21 @@ public:
             if (x == to)
                 break;
         }
+    }
+
+    vector<int> postorderTraversal_4(TreeNode *root) {
+        vector<int>res;
+        stack<TreeNode *> s;
+        if (root == NULL) return res;
+        
+        dfs(root, res);
+        reverse(res.begin(), res.end());
+        return res;
+    }
+    void dfs(TreeNode * root, vector<int> & res) {
+        if (root == NULL) return;
+        res.push_back(root->val);
+        dfs(root->right, res);
+        dfs(root->left, res);
     }
 };
