@@ -1,9 +1,9 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       May 12, 2013
- Update:     Jul 25, 2013
+ Update:     Dec 02, 2014
  Problem:    Letter Combinations of a Phone Number
- Difficulty: Easy
+ Difficulty: Medium
  Source:     http://leetcode.com/onlinejudge#question_17
  Notes:
  Given a digit string, return all possible letter combinations that the number could represent.
@@ -18,27 +18,22 @@
 
 class Solution {
 public:
-    vector<string> res;
     vector<string> letterCombinations(string digits) {
-        string mapping[] = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
-        res.clear();
+        vector<string> keyboard {" ","","abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        vector<string> res;
         string s;
-        letterCombinationsRe(digits, mapping, s);
+        letterCombinationsRe(keyboard,digits,s,res);
         return res;
     }
-
-    void letterCombinationsRe(const string &digits, string mapping[], string &s)
-    {
-        if (s.size() == digits.size())
-        {
+    void letterCombinationsRe(vector<string> &keyboard, string &digits, string &s, vector<string>&res){
+        if(s.size() == digits.size()){
             res.push_back(s);
             return;
         }
-        string &letters = mapping[digits[s.size()]-'2'];
-        for (int i = 0; i < letters.size(); ++i)
-        {
+        string &letters = keyboard[digits[s.size()]-'0'];
+        for(size_t i = 0; i < letters.size(); ++i){
             s.push_back(letters[i]);
-            letterCombinationsRe(digits, mapping, s);
+            letterCombinationsRe(keyboard, digits,s,res);
             s.pop_back();
         }
     }
