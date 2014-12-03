@@ -18,31 +18,33 @@
  *     Point(int a, int b) : x(a), y(b) {}
  * };
  */
-int gcd(int a, int b) {
-    if(b == 0) return a;
-    else return gcd(b, a%b);
-}
-struct pt {
-    int dx, dy;
-    pt(){dx = 0; dy = 0;}
-    pt(int x, int y) {
-        int g = gcd(abs(x), abs(y));
-        if (x==0 && y==0) dx=0,dy=0;
-        else if(x==0) dx=0,dy=1;
-        else if(y==0) dx=1,dy=0;
-        else if(y>0) dx=x/g,dy=y/g;
-        else if(y<0) dx=-x/g,dy=-y/g;
-    }
-};
-bool operator == (const pt &a, const pt &b) {
-    return a.dx == b.dx && a.dy == b.dy;
-}
-bool operator < (const pt &a,const pt &b) {
-    if(a.dx == b.dx) return a.dy < b.dy;
-    return a.dx < b.dx;
-}
+
 class Solution {
 public:
+    struct pt {
+        int dx, dy;
+        pt(){dx = 0; dy = 0;}
+        pt(int x, int y) {
+            int g = gcd(abs(x), abs(y));
+            if (x==0 && y==0) dx=0,dy=0;
+            else if(x==0) dx=0,dy=1;
+            else if(y==0) dx=1,dy=0;
+            else if(y>0) dx=x/g,dy=y/g;
+            else if(y<0) dx=-x/g,dy=-y/g;
+        }
+        int gcd(int a, int b) {
+            if(b == 0) return a;
+            else return gcd(b, a%b);
+        }
+        bool operator==(const pt &b) const {
+            return dx == b.dx && dy == b.dy;
+        }
+        bool operator<(const pt &b) const {
+            if(dx == b.dx) return dy < b.dy;
+            return dx < b.dx;
+        }
+    };
+
     int maxPoints_1(vector<Point> &points) {
         int N = points.size(), res(0);
         unordered_map<double, int> m;
