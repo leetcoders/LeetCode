@@ -15,12 +15,13 @@
  Given encoded message "12", it could be decoded as "AB" (1 2) or "L" (12).
  The number of ways decoding "12" is 2.
 
- Solution: dp. Note that '0' must be decoded in together with the number in front of it.
+ Solution: 1. dp. Note that '0' must be decoded in together with the number in front of it.
+           2. dp. Time : O(n); Space : O(1).
  */
 
 class Solution {
 public:
-    int numDecodings(string s) {
+    int numDecodings_1(string s) {
         if (s.empty() || s[0] == '0') 
             return 0;
         int N = s.size();
@@ -45,5 +46,21 @@ public:
             }
         }
         return dp[N];
+    }
+    int numDecodings_2(string s) {
+        if (s.empty() || s[0] == '0') return 0;
+        int N = s.size();
+        int f0 = 1, f1 = 1;
+        for (int i = 1; i < N; ++i) {
+            if (s[i] == '0') f1 = 0;
+            int num = s[i] - '0' + (s[i-1] - '0') * 10;
+            if (num < 10 || num > 26) {
+                f0 = 0;
+            }
+            int tmp = f1;
+            f1 = f1 + f0;
+            f0 = tmp;
+        }
+        return f1;
     }
 };
