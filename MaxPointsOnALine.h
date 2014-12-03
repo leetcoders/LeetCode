@@ -1,35 +1,86 @@
 /*
- Author:     Matthew Jin, marthew777@gmail.com
- Date:       
+ Author:     Matthew Jin, marthew777@gmail.com : King, higuige@gmail.com
+ Date:       Dec 03, 2014
  Problem:    Max Points On a Line
  Difficulty: Easy
  Notes:
  Given n points on a 2D plane, find the maximum number of points that lie on the same straight line.
- Solution: ...
+ Solution: 1. hashmap. Time: O(n^2), Space: O(n);
+           2. high precision.
 */
+
+/**
+ * Definition for a point.
+ * struct Point {
+ *     int x;
+ *     int y;
+ *     Point() : x(0), y(0) {}
+ *     Point(int a, int b) : x(a), y(b) {}
+ * };
+ */
+int gcd(int a, int b) {
+    if(b == 0) return a;
+    else return gcd(b, a%b);
+}
+struct pt {
+    int dx, dy;
+    pt(){dx = 0; dy = 0;}
+    pt(int x, int y) {
+        int g = gcd(abs(x), abs(y));
+        if (x==0 && y==0) dx=0,dy=0;
+        else if(x==0) dx=0,dy=1;
+        else if(y==0) dx=1,dy=0;
+        else if(y>0) dx=x/g,dy=y/g;
+        else if(y<0) dx=-x/g,dy=-y/g;
+    }
+};
+bool operator == (const pt &a, const pt &b) {
+    return a.dx == b.dx && a.dy == b.dy;
+}
+bool operator < (const pt &a,const pt &b) {
+    if(a.dx == b.dx) return a.dy < b.dy;
+    return a.dx < b.dx;
+}
 class Solution {
 public:
-    int maxPoints(vector<Point> &points) {
+    int maxPoints_1(vector<Point> &points) {
         int N = points.size(), res(0);
         unordered_map<double, int> m;
-        for(int i = 0;i < N; ++i){
+        for (int i =0; i < N; ++i) {
             m.clear();
-            int ss(1), sp(0);                        // ss:points with same slope,starts with 1, sp:same points, starts with 0
-            for(int j = i+1;j < N; ++j){
+            int ss(1), sp(0);// ss: points with same slope, sp: same points.
+            for (int j = i + 1; j < N; ++j) {
                 double slope = std::numeric_limits<double>::infinity();
-                if(points[i].x != points[j].x)
-                    slope = 1.0*(points[i].y - points[j].y)/(points[i].x - points[j].x);
-                else if(points[i].y == points[j].y){
-                    sp++; continue;
+                if (points[i].x != points[j].x) {
+                    slope = 1.0*(points[i].y-points[j].y)/(points[i].x-points[j].x);
+                } else if (points[i].y == points[j].y) {
+                    ++sp; continue;
                 }
                 int tmp = 0;
-                if(m.find(slope) != m.end())
-                    tmp = ++m[slope];
-                else
-                    tmp = m[slope] = 2;
-                ss = max(ss,tmp);
+                if(m.find(slope) != m.end()) tmp = ++m[slope];
+                else tmp = m[slope] = 2;
+                ss = max(ss, tmp);
             }
-            res = max(res,ss+sp );
+            res = max(res, ss + sp);
+        }
+        return res;
+    }
+
+    int maxPoints_2(vector<Point> &points) {
+        int N = points.size(), res(0);
+        pt zero(0,0);
+        map<pt, int> m;
+        for (int i=0; i < N; ++i) {
+            m.clear();
+            int ss(0), sp(0);
+            for (int j = 0; j < N; ++j) {
+                pt slope(points[i].x-points[j].x, points[i].y-points[j].y);
+                if (slope == zero) ++sp;
+                else {
+                    ss = max(ss, ++m[slope]);
+                }
+            }
+            res = max(res, ss + sp);
         }
         return res;
     }
