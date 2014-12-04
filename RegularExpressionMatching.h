@@ -24,6 +24,7 @@
 
  Solution: Both of the two solutions are from http://leetcode.com/2011/09/regular-expression-matching.html .
  Solution 3: DP.
+ Solution 4: DP. O(n^2) Time, O(n) Space.
 */
 
 class Solution {
@@ -73,5 +74,25 @@ public:
                 }
             }
          return f[l1][l2];
+    }
+    bool isMatch_4(const char *s, const char *p) {
+        int l1 = strlen(s), l2 = strlen(p), k;
+        char ch1, ch2;
+        vector<vector<bool> > f(2, vector<bool>(l2 + 1,false));
+        f[0][0] = true;
+        for (int i = 2; i <= l2; i ++)
+            if (*(p + i - 1) == '*') f[0][i] = f[0][i - 2];
+        for (int i = 1; i <= l1; i ++){
+            for (int j = 1; j <= l2; j ++) {
+                ch1 = *(s + i - 1); ch2 = *(p + j - 1);
+                if (ch2 != '*') f[1][j] = f[0][j - 1] && (ch1 == ch2 || ch2 == '.');
+                else {
+                    f[1][j] = f[1][j - 2];
+                    if (*(s + i - 1) == *(p + j - 2) || *(p + j - 2) == '.') f[1][j] = f[1][j] | f[0][j];
+                }
+            }
+            f[0] = f[1];
+        }
+        return f[0][l2];
     }
 };
