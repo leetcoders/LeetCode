@@ -34,8 +34,11 @@ public:
         ListNode * pre = &dummy;
         while(head!=NULL){
             if(head->next&&head->val==head->next->val){
-                while(head->next&&head->val==head->next->val)
+                while(head->next&&head->val==head->next->val) {
+                    ListNode *del = head;
                     head = head->next;
+                    delete del;
+                }
             }else{
                 pre->next = head;
                 pre = pre->next;
