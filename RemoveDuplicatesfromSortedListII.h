@@ -56,11 +56,11 @@ public:
             return head;
         }
         int val = head->val;
-        while(head && head->val == val) {
+        while(head->next&&head->val==head->next->val) {
             ListNode *del = head;
             head = head->next;
             delete del;
         }
-        return deleteDuplicates(head);
+        return deleteDuplicates(head->next);
     }
 };
