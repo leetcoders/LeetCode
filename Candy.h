@@ -1,9 +1,10 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com, King, wangjingui@outlook.com
  Date:       Oct 3, 2013
+ Update:     Dec 12, 2014
  Problem:    Candy
  Difficulty: Easy
- Source:     http://oj.leetcode.com/problems/candy/
+ Source:     https://oj.leetcode.com/problems/candy/
  Notes:
  There are N children standing in a line. Each child is assigned a rating value.
  You are giving candies to these children subjected to the following requirements:
@@ -13,6 +14,7 @@
 
  Solution: You may refer to https://github.com/AnnieKim/ITint5/blob/master/031_%E5%88%86%E9%85%8D%E7%B3%96%E6%9E%9C.cpp
            1. traverse only once with O(1) space. 2. O(n) space.
+           3. recursion + memo.
 */
 
 class Solution {
@@ -66,6 +68,24 @@ public:
         int res = 0;
         for (int i = 0; i < N; ++i)
             res += candy[i];
+        return res;
+    }
+    int dfs(const vector<int>& ratings, vector<int>& dp, int i)
+    {
+        if (dp[i] != -1) return dp[i];
+        dp[i] = 1;
+        if(i > 0  && ratings[i] > ratings[i-1])
+            dp[i] = max(dp[i], dfs(ratings, dp, i-1) + 1);
+        if(i < ratings.size()-1 && ratings[i] > ratings[i+1])
+            dp[i] = max(dp[i], dfs(ratings, dp, i+1) + 1);
+        return dp[i];
+    }
+    int candy_3(vector<int>& ratings)
+    {
+        vector<int> dp(ratings.size(), -1);
+        int res = 0;
+        for(int i = 0;i < ratings.size(); ++i)
+            res += dfs(ratings, dp, i);
         return res;
     }
 };

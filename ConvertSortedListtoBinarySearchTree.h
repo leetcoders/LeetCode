@@ -8,7 +8,8 @@
  Notes:
  Given a singly linked list where elements are sorted in ascending order, convert it to a height balanced BST.
 
- Solution: Recursion. Pre-order. O(n)
+ Solution: 1. Recursion. Pre-order. A very good Idea. O(n)
+           2. Recursion, Binary Search.
  */
 
 /**
@@ -30,7 +31,7 @@
  */
 class Solution {
 public:
-    TreeNode *sortedListToBST(ListNode *head) {
+    TreeNode *sortedListToBST_1(ListNode *head) {
         return sortedListToBSTRe(head, getLength(head));
     }
     
@@ -56,5 +57,26 @@ public:
             head = head->next;
         }
         return length;
+    }
+
+    TreeNode *sortedListToBST_2(ListNode *head) {
+        if(head==nullptr) return nullptr;
+        if(head->next==nullptr) return new TreeNode(head->val);
+        ListNode * slow = head;
+        ListNode * fast = head;
+        ListNode * pre = nullptr;
+        while(fast->next&&fast->next->next){
+            pre = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        fast = slow->next;
+        TreeNode * node = new TreeNode(slow->val);
+        if(pre){
+            pre->next = nullptr;
+            node->left = sortedListToBST(head);
+        }
+        node->right = sortedListToBST(fast);
+        return node;
     }
 };
