@@ -1,10 +1,10 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 10, 2013
- Update:     Sep 27, 2013
+ Update:     Dec 12, 2014
  Problem:    Remove Duplicates from Sorted List II
  Difficulty: Easy
- Source:     http://leetcode.com/onlinejudge#question_82
+ Source:     https://oj.leetcode.com/problems/remove-duplicates-from-sorted-list-ii/
  Notes:
  Given a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list.
  For example,
@@ -29,23 +29,20 @@ public:
     }
     
     ListNode *deleteDuplicates_1(ListNode *head) {
-        ListNode dummy(0), *cur = &dummy;
-        dummy.next = head;
-        while (cur->next)
-        {
-            ListNode *node = cur->next;
-            int val = node->val;
-            if (!node->next || node->next->val != val) {
-                cur = cur->next;
-                continue;
+        if(NULL==head||NULL==head->next) return head;
+        ListNode dummy(-1);
+        ListNode * pre = &dummy;
+        while(head!=NULL){
+            if(head->next&&head->val==head->next->val){
+                while(head->next&&head->val==head->next->val)
+                    head = head->next;
+            }else{
+                pre->next = head;
+                pre = pre->next;
             }
-            while (node && node->val == val) {
-                ListNode *del = node;
-                node = node->next;
-                delete del;
-            }
-            cur->next = node;
+            head = head->next;
         }
+        pre->next = NULL;
         return dummy.next;
     }
     
