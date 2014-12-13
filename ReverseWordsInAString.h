@@ -1,7 +1,7 @@
 /*
  Author:     King, wangjingui@outlook.com
  Date:       Dec 13, 2014
- Problem:    Reorder List
+ Problem:    Reverse Words in a String 
  Difficulty: Easy
  Source:     https://oj.leetcode.com/problems/reverse-words-in-a-string/
  Notes:
@@ -34,21 +34,15 @@ public:
     void reverseWords_2(string &s) {
         int N = s.size();
         reverse(s.begin(),s.end());
-        for (int i = 0; i < N; ++i) {
-            while (i < N && s[i] == ' ') ++i;
-            if(i == N) break;
-            int left = i;
-            while(i < N && s[i] != ' ') ++i;
-            int right = i - 1;
-            while (left < right) {
-                swap(s[left],s[right]);
-                ++left, --right;
-            }
+        for (string::iterator i = s.begin(); i != s.end();) {
+            while (i != s.end() && *i == ' ') ++i;
+            string::iterator left = i;
+            while((i) != s.end() && *(i) != ' ') ++i;
+            reverse(left,i);
         }
         int idx = 0;
         for (int i = 0; i < N;) {
-            while(i < N && s[i] == ' ') ++i;
-            if (i == N) break;
+            while (i < N && s[i] == ' ') ++i;
             while (i < N && s[i] != ' ') s[idx++] = s[i++];
             while (i < N && s[i] == ' ') ++i;
             if (i == N) break;
