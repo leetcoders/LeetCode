@@ -11,12 +11,13 @@
  Given s = "the sky is blue",
  return "blue is sky the".
 
- Solution: Reverse the raw string and reverse each word.
+ Solution: 1. Reverse the raw string and reverse each word.
+           2. In Place.
 */
 
 class Solution {
 public:
-    void reverseWords(string &s) {
+    void reverseWords_1(string &s) {
         string res;
         reverse(s.begin(),s.end());
         for (int i = 0; i < s.size(); ++i) {
@@ -29,5 +30,30 @@ public:
             else res = res + tmp;
         }
         s = res;
+    }
+    void reverseWords_2(string &s) {
+        int N = s.size();
+        reverse(s.begin(),s.end());
+        for (int i = 0; i < N; ++i) {
+            while (i < N && s[i] == ' ') ++i;
+            if(i == N) break;
+            int left = i;
+            while(i < N && s[i] != ' ') ++i;
+            int right = i - 1;
+            while (left < right) {
+                swap(s[left],s[right]);
+                ++left, --right;
+            }
+        }
+        int idx = 0;
+        for (int i = 0; i < N;) {
+            while(i < N && s[i] == ' ') ++i;
+            if (i == N) break;
+            while (i < N && s[i] != ' ') s[idx++] = s[i++];
+            while (i < N && s[i] == ' ') ++i;
+            if (i == N) break;
+            s[idx++] = ' ';
+        }
+        s.resize(idx);
     }
 };
