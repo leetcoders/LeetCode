@@ -1,9 +1,10 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com : King, wangjingui@outlook.com
  Date:       Jun 7, 2013
+ Update:     Dec 14, 2014
  Problem:    Insert Interval
  Difficulty: Medium
- Source:     http://leetcode.com/onlinejudge#question_57
+ Source:     https://oj.leetcode.com/problems/insert-interval/
  Notes:
  Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
  You may assume that the intervals were initially sorted according to their start times.
@@ -19,6 +20,8 @@
            3. merge [6,7] with [3,9], get newInterval = [3,9];
            4. merge [8,10] with [3,9], get newInterval = [3,10];
            5. compare [12,16] with [3,10], insert newInterval [3,10], then all the remaining intervals...
+           Solution 1 : Time O(N).
+           Solution 2 : Time O(Log(N)).
 */
 
 /**
@@ -32,13 +35,13 @@
  */
 class Solution {
 public:
-    vector<Interval> insert(vector<Interval> &intervals, Interval newInterval) {
+    vector<Interval> insert_1(vector<Interval> &intervals, Interval newInterval) {
         vector<Interval> res;
         vector<Interval>::iterator it = intervals.begin();
         bool inserted = false;
         for (; it != intervals.end(); ++it)
         {
-            if (inserted || it->end < newInterval.start) // non-overlaping
+            if (inserted == true || it->end < newInterval.start) // non-overlaping
             {
                 res.push_back(*it);
             }
@@ -54,8 +57,42 @@ public:
                 newInterval.end = max(it->end, newInterval.end);
             }
         }
-        if (!inserted)
+        if (inserted == false)
             res.push_back(newInterval);
+        return res;
+    }
+    vector<Interval> insert_2(vector<Interval> &intervals, Interval newInterval) {
+        vector<Interval> res;
+        int n = intervals.size();
+        int left = 0, right = n-1;
+        while(left<=right){
+            int mid = (left+right)/2;
+            if(intervals[mid].start>newInterval.start) right=mid-1;
+            else left = mid+1;
+        }
+        int idxStart = right;
+        left = 0; right = n-1;
+        while(left<=right){
+            int mid = (left+right)/2;
+            if(intervals[mid].end>=newInterval.end) right = mid -1;
+            else left = mid+1;
+        }
+        int idxEnd = left;
+        
+        if (idxStart>=0 && newInterval.start<=intervals[idxStart].end)
+        {
+            newInterval.start=intervals[idxStart--].start;
+        }
+        
+        if (idxEnd<intervals.size() && newInterval.end>=intervals[idxEnd].start)
+        {
+            newInterval.end=intervals[idxEnd++].end;
+        }
+        for(int i=0;i<=idxStart;i++)
+            res.push_back(intervals[i]);
+        res.push_back(newInterval);
+        for(int i=idxEnd;i<intervals.size();i++)
+            res.push_back(intervals[i]);
         return res;
     }
 };
