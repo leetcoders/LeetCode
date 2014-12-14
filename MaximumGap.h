@@ -40,6 +40,7 @@ public:
             maxVal = max(maxVal, num[i]);
         }
         //delta = (maxVal + 1 - minVal) / (n + 1)
+        //idx = (val - minVal) / delta = (val - minVal) * (n + 1) / (maxVal + 1 - minVal)
         vector<pair<int,int> > pool(n+2,make_pair(-1,-1));
         for (int i = 0; i < n; ++i) {
             int idx = (long long)(num[i] - minVal)* (n + 1) / (maxVal + 1 - minVal);
