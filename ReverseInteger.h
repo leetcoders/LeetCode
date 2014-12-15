@@ -1,10 +1,10 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 7, 2013
- Update:     Sep 1, 2013
+ Update:     Dec 14, 2014 (By wangjingui@outlook.com)
  Problem:    Reverse Integer
  Difficulty: Easy
- Source:     http://leetcode.com/onlinejudge#question_7
+ Source:     https://oj.leetcode.com/problems/reverse-integer/
  Notes:
  Reverse digits of an integer.
  Example1: x = 123, return 321
@@ -26,7 +26,7 @@ public:
             res = res * 10 + (x % 10);
             x /= 10;
         }
-        assert(res >= INT_MIN && res <= INT_MAX);
+        if (res < INT_MIN || res > INT_MAX) return 0;
         return res;
     }
 };
