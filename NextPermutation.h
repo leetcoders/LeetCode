@@ -1,6 +1,7 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com : King, wangjingui@outlook.com
  Date:       May 6, 2013
+ Update:     Dec 16, 2014
  Problem:    Next Permutation
  Difficulty: Medium
  Source:     http://leetcode.com/onlinejudge#question_31
@@ -26,15 +27,11 @@
 class Solution {
 public:
     void nextPermutation(vector<int> &num) {
-        int i = num.size() - 1;
-        while (i > 0 && num[i] <= num[i-1]) 
-            i--;
-        sort(num.begin() + i, num.end());
-        if (i == 0) 
-            return;
-        int j = i;
-        while (j < num.size() && num[j] <= num[i-1])
-            j++;
-        swap(num[j], num[i-1]);
+        int n = num.size(), i = n - 1, j = 0;
+        while(i > 0 && num[i-1] >= num[i]) --i;
+        reverse(num.begin() + i,num.end());
+        if (i == 0) return;
+        while (i+j < n && num[i-1] >= num[i+j]) ++j;
+        swap(num[i-1], num[i+j]);
     }
 };
