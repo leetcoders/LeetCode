@@ -49,12 +49,12 @@ public:
     
     bool isMatch_2(const char *s, const char *p) {
         if (*p == '\0') return *s == '\0';
-        
-        if (*s == *p || *p == '.' && *s != '\0')
-            return *(p+1) != '*' ? isMatch(s+1, p+1) : 
-                                   isMatch(s+1, p) || isMatch(s, p+2);
-        else
-            return *(p+1) == '*' && isMatch(s, p+2);
+        if ((*s != '\0') && (*s == *p || *p =='.')) {
+            if (*(p+1) == '*') {
+                return isMatch(s+1,p) || isMatch(s, p+2);
+            } else return isMatch(s+1, p+1);
+        }
+        return *(p+1) == '*' && isMatch(s, p+2);
     }
 
     bool isMatch_3(const char *s, const char *p) {
