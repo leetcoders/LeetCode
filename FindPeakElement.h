@@ -17,7 +17,7 @@ class Solution {
 public:
     int findPeakElement(const vector<int> &num) {
         int n = num.size();
-        int left = 0, right = n - 1,mid;
+        int left = 0, right = n - 1,mid = -1;
         while (left <= right) {
             mid = (left + right) / 2;
             if ((mid == 0 || num[mid-1] <= num[mid]) && (mid == n -1 || num[mid+1] <= num[mid]))
