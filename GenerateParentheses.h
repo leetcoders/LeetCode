@@ -16,14 +16,13 @@
 
 class Solution {
 public:
-    vector<string> res;
     vector<string> generateParenthesis(int n) {
-        res.clear();
-        generateParenthesisRe(n, n, "");
+        vector<string> res;
+        generateParenthesisRe(res, n, n, "");
         return res;
     }
 
-    void generateParenthesisRe(int left, int right, string s) {
+    void generateParenthesisRe(vector<string> &res, int left, int right, string s) {
         if (left == 0 && right == 0)
             res.push_back(s);
         if (left > 0)
