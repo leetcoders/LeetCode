@@ -39,11 +39,7 @@ public:
                 else if (sum > twosum)
                     r--;
                 else {
-                    vector<int> triplet;
-                    triplet.push_back(num[i]);
-                    triplet.push_back(num[l]);
-                    triplet.push_back(num[r]);
-                    res.push_back(triplet);
+                    res.push_back(vector<int>{num[i],num[l],num[r]});
                     l++; r--;
                     while (l < r && num[l] == num[l-1]) l++;  // avoid duplicates
                     while (l < r && num[r] == num[r+1]) r--;  // avoid duplicates
