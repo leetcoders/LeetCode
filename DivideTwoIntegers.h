@@ -13,35 +13,13 @@
 
 class Solution {
 public:
-    // Solution 1. Bottom->Up
-    int divide(int dividend, int divisor) {
+    //Top -> Down
+    int divide_1(int dividend, int divisor) {
         assert(divisor != 0);
-        bool flag = dividend > 0 && divisor < 0 || 
-                    dividend < 0 && divisor > 0;
+        bool flag = (dividend < 0) ^ (divisor < 0);
         long long dividendll = abs((long long)dividend);
         long long divisorll = abs((long long)divisor);
-        int res = 0;
-        while (dividendll >= divisorll)
-        {
-            long long div = divisorll;
-            int quot = 1;
-            while ((div << 1) <= dividendll) {
-                div <<= 1;
-                quot <<= 1;
-            }
-            dividendll -= div;
-            res += quot;
-        }
-        return flag ? -res : res;
-    }
-    // Solution 2. Top->Down
-    int divide_2(int dividend, int divisor) {
-        assert(divisor != 0);
-        bool flag = dividend > 0 && divisor < 0 || 
-                    dividend < 0 && divisor > 0;
-        long long dividendll = abs((long long)dividend);
-        long long divisorll = abs((long long)divisor);
-        int res = 0;
+        long long res = 0;
         long long d = divisorll, q = 1;
         while ((d << 1) <= dividendll) {
             d <<= 1;
@@ -55,6 +33,26 @@ public:
             d >>= 1;
             q >>= 1;
         }
-        return flag ? -res : res;
+        if (flag == true) res = -res;
+        if (res > INT_MAX) return INT_MAX;
+        return res;
+    }
+    //bottom -> up
+    int divide(int dividend, int divisor) {
+        assert(divisor != 0);
+        bool flag = (dividend < 0) ^ (divisor < 0);
+        long long Dividend = abs((long long)dividend);
+        long long Divisor = abs((long long)divisor);
+        long long res = 0;
+        while (Dividend >= Divisor) {
+            long long c = Divisor;
+            for (int i = 0; (c << i) <= Dividend; ++i) {
+                Dividend -= (c << i);
+                res += (1 << i);
+            }
+        }
+        if (flag == true) res = -res;
+        if (res > INT_MAX) return INT_MAX;
+        return res;
     }
 };
