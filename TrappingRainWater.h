@@ -17,7 +17,7 @@
 
 class Solution {
 public:
-    int trap(int A[], int n) {
+    int trap_1(int A[], int n) {
         if (n == 0) return 0;
         vector<int> maxLeft(n,0);
         vector<int> maxRight(n,0);
@@ -50,6 +50,21 @@ public:
                 res += max(0, maxRight - A[right]);
                 maxRight = max(maxRight, A[right]);
                 --right;
+            }
+        }
+        return res;
+    }
+    int trap_3(int A[], int n) {
+        int i = 0, j = n - 1, res = 0, cur;
+        while (i < j) {
+            if (A[i] < A[j]) {
+                cur = i+1;
+                while (cur <= j && A[cur] <= A[i]) res += A[i] - A[cur++];
+                i = cur;
+            } else {
+                cur = j - 1;
+                while (cur >= i && A[cur] <= A[j]) res += A[j] - A[cur--];
+                j = cur;
             }
         }
         return res;
