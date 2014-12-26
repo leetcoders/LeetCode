@@ -1,7 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 10, 2013
- Update:     Aug 17, 2013
+ Update:     Dec 25, 2014
  Problem:    Validate Binary Search Tree
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_98
@@ -46,20 +46,15 @@ public:
 
     // solution 2: inorder
     bool isValidBST_2(TreeNode *root) {
-        int val = INT_MIN;
-        return isValidBSTRe_2(root, val);
+        TreeNode * prev = NULL;
+        return inorder(root, prev);
     }
-
-    bool isValidBSTRe_2(TreeNode *node, int &val)
-    {
-        if (!node) return true;
-        if (node->left && !isValidBSTRe_2(node->left, val))
+    bool inorder(TreeNode * root, TreeNode*&prev) {
+        if (root == NULL) return true;
+        if (inorder(root->left, prev) == false) 
             return false;
-        if (node->val <= val)
-            return false;
-        val = node->val;
-        if (node->right && !isValidBSTRe_2(node->right, val))
-            return false;
-        return true;
+        if (prev && root->val <= prev->val) return false;
+        prev = root;
+        return inorder(root->right,prev);
     }
 };
