@@ -42,6 +42,7 @@ public:
             if(i>last){
                 last = cur;
                 ++res;
+                if (cur >= n - 1) break;
             }
             cur = max(cur,i+A[i]);
         }
