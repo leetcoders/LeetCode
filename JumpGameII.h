@@ -1,7 +1,7 @@
 /*
  Author:     Annie Kim, anniekim.pku@gmail.com
  Date:       Apr 21, 2013
- Update:     Aug 22, 2013
+ Update:     Dec 22, 2014
  Problem:    Jump Game II
  Difficulty: Easy
  Source:     http://leetcode.com/onlinejudge#question_45
@@ -18,7 +18,7 @@
 
 class Solution {
 public:
-    int jump(int A[], int n) {
+    int jump_1(int A[], int n) {
         int start = 0;
         int res = 0;
         while (start < n-1)
@@ -32,5 +32,19 @@ public:
                     mx = i;
             start = mx;
         }
+    }
+    int jump_2(int A[], int n) {
+        if(n==1) return 0;
+        int res = 0;
+        int last = 0;
+        int cur = 0;
+        for(int i=0;i<n;i++){
+            if(i>last){
+                last = cur;
+                ++res;
+            }
+            cur = max(cur,i+A[i]);
+        }
+        return res;
     }
 };
