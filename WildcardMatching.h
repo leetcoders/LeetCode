@@ -3,7 +3,7 @@
  Date:       Aug 20, 2013
  Problem:    Wildcard Matching
  Difficulty: Medium
- Source:     http://leetcode.com/onlinejudge#question_44
+ Source:     https://oj.leetcode.com/problems/wildcard-matching/
  Notes:
  Implement wildcard pattern matching with support for '?' and '*'.
  '?' Matches any single character.
@@ -28,13 +28,14 @@ public:
     bool isMatch(const char *s, const char *p) {
         const char *sBackup = NULL, *pBackup = NULL;
         while (*s != '\0') {
-            if (*p == '?' || *s == *p) {
-                ++s, ++p;
-            } else if (*p == '*') {
+            if (*p == '*') {
                 while (*p == '*') ++p;
                 if (*p == '\0') return true;
                 sBackup = s;
                 pBackup = p;
+            }
+            if (*p == '?' || *s == *p) {
+                ++s, ++p;
             } else {
                 if (!sBackup) return false;
                 s = ++sBackup;
