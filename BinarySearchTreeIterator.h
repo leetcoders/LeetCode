@@ -11,7 +11,8 @@
 
  Note: next() and hasNext() should run in average O(1) time and uses O(h) memory, where h is the height of the tree.
 
- Solution: Inorder traversal.
+ Solution: 1. Inorder traversal use stack.
+           2. Morris Inorder Traversal.
  */
 
 /**
@@ -23,7 +24,7 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
-class BSTIterator {
+class BSTIterator_1 {
 public:
     BSTIterator(TreeNode *root) {
         node = root;
@@ -52,6 +53,46 @@ public:
 private:
     TreeNode * node;
     stack<TreeNode*> stk;
+};
+
+class BSTIterator_2 {
+public:
+    BSTIterator(TreeNode *root) {
+        node = root;
+    }
+
+    /** @return whether we have a next smallest number */
+    bool hasNext() {
+        return node != NULL;
+    }
+
+    /** @return the next smallest number */
+    int next() {
+        if (node == NULL) return 0;
+        int res = 0;
+        while (node != NULL) {
+            if (node->left == NULL) {
+                res = node->val;
+                node = node->right;
+                return res;
+            }
+            TreeNode * pre = node->left;
+            while (pre->right != NULL && pre->right != node) 
+                pre = pre->right;
+            if (pre->right == NULL) {
+                pre->right = node;
+                node = node->left;
+            } else {
+                res = node->val;
+                node = node->right;
+                pre->right = NULL;
+                return res;
+            }
+        }
+        return res;
+    }
+private:
+    TreeNode * node;
 };
 /**
  * Your BSTIterator will be called like this:
