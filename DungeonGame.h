@@ -47,6 +47,7 @@ for any value of dungeon[i][j].
 
 Take D[0][0] and we are good to go. Also, like many other "table-filling" problems, the 2D array D can be replaced with a 1D "rolling" array here.
  */
+
 class Solution {
 public:
     int calculateMinimumHP(vector<vector<int> > &dungeon) {
@@ -56,17 +57,17 @@ public:
         vector<vector<int>> dp(M, vector<int>(N,0));
         dp[M-1][N-1] = 1 - min(0, dungeon[M-1][N-1]);
         for (int i = M - 2; i >= 0; --i) {
-            if (dp[i+1][N-1] - dungeon[i][N-1] < 0) dp[i][N-1] = 1;
+            if (dp[i+1][N-1] - dungeon[i][N-1] <= 0) dp[i][N-1] = 1;
             else dp[i][N-1] = dp[i+1][N-1] - dungeon[i][N-1]; 
         }
         for (int j = N - 2; j >= 0; --j) {
-            if (dp[M-1][j+1] - dungeon[M-1][j] < 0) dp[M-1][j] = 1;
+            if (dp[M-1][j+1] - dungeon[M-1][j] <= 0) dp[M-1][j] = 1;
             else dp[M-1][j] = dp[M-1][j+1] - dungeon[M-1][j];
         }
         for (int i = M - 2; i >= 0; --i) {
             for (int j = N - 2; j >= 0; --j) {
                 int val = min(dp[i+1][j], dp[i][j+1]);
-                if (dungeon[i][j] > val) dp[i][j] = 1;
+                if (dungeon[i][j] >= val) dp[i][j] = 1;
                 else dp[i][j] = val - dungeon[i][j];
             }
         }
