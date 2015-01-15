@@ -1,10 +1,10 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com : Andy, nkuwjg@gmail.com
  Date:       May 6, 2013
- Update:     Sep 26, 2013
+ Update:     Jan 15, 2015
  Problem:    Longest Valid Parentheses
  Difficulty: Easy
- Source:     http://leetcode.com/onlinejudge#question_32
+ Source:     https://oj.leetcode.com/problems/longest-valid-parentheses/
  Notes:
  Given a string containing just the characters '(' and ')', find the length of the longest valid 
  (well-formed) parentheses substring.
@@ -41,7 +41,7 @@ public:
         return res * 2;
     }
     
-    // Solution 2, my original version.
+    // Solution 2, By Annie.
     // Traverse the string twice, taking O(n) time.
     // First time, mark all the matching parentheses as '*' (push the index of '(' into <stack>).
     // Second time, count the longest consecutive '*'.
@@ -66,6 +66,48 @@ public:
             }
         }
         res = max(res, part);
+        return res;
+    }
+    // Dp Solution. By Andy.
+    int longestValidParentheses_3(string s) {
+        int n = s.size();
+        if(s.empty()) return 0;
+        if(n<=1) return 0;
+        int res = 0;
+        vector<int> f(n,0);
+        for(int i=n-2;i>=0;i--){
+            int match = i + f[i+1] + 1;
+            if(match<n&&s[i]=='('&&s[match]==')'){
+                f[i]=f[i+1]+2;
+                if(match+1<n) f[i]+=f[match+1];
+            }
+            res = max(res,f[i]);
+        }
+        return res;
+    }
+    // From Sun Mian.
+    // O(1) Space, and Traverse the string twice, taking O(n) time.
+    int longestValidParentheses_4(string s) {
+        int counter = 0, val = 0, res = 0;
+        for (int i = 0; i < s.length(); ++i) {
+            counter += s[i] == '(' ? 1 : -1;
+            if (counter < 0) {
+                val = counter = 0;
+                continue;
+            }
+            val += s[i] == '(' ? 0 : 2;
+            res = counter == 0 ? max(res, val) : res;
+        }
+        val = counter = 0;
+        for (int i = s.length() - 1; i >= 0; --i) {
+            counter += s[i] == ')' ? 1 : -1;
+            if (counter < 0) {
+                val = counter = 0;
+                continue;
+            }
+            val += s[i] == ')' ? 0 : 2;
+            res = counter == 0 ? max(res, val) : res;
+        }
         return res;
     }
 };
