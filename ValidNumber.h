@@ -1,10 +1,10 @@
 /*
- Author:     Annie Kim, anniekim.pku@gmail.com
+ Author:     Annie Kim, anniekim.pku@gmail.com : Andy, nkuwjg@gmail.com
  Date:       May 25, 2013
- Update:     Sep 30, 2013
+ Update:     Feb 7, 2015
  Problem:    Valid Number
  Difficulty: Hard
- Source:     http://leetcode.com/onlinejudge#question_65
+ Source:     https://oj.leetcode.com/problems/valid-number/
  Notes:
  Validate if a given string is numeric.
  Some examples:
@@ -21,7 +21,7 @@
 
 class Solution {
 public:
-    bool isNumber(const char *s) {
+    bool isNumber_1(const char *s) {
         enum InputType {INVALID, SPACE, SIGN, DIGIT, DOT, EXPONENT};
         int transitionTable[][SPACEEND] = 
         { /* 0   1   2   3   4   5  */
@@ -56,5 +56,27 @@ public:
         }
         bool validFinal[] = {0, 0, 0, 1, 0, 0, 1, 1, 1};
         return validFinal[last];
+    }
+    bool isNumber_2(const char *s) {
+        bool dot = false, digit = false, exp = false;
+        while (*s  == ' ') ++s;
+        if (*s == '-' || *s == '+') ++s;
+        if (*s == 0) return false;
+        for (;*s != '\0' && *s != ' '; ++s) {
+            if (isdigit(*s)) digit = true;
+            else if (*s == 'e' || *s == 'E') {
+                if (exp == true || digit == false || *(s+1) ==' ' || *(s+1) =='\0') return false;
+                exp = true;
+            } else if (*s == '.') {
+                if (dot == true || exp == true) return false; 
+                if (digit == false && (*(s+1) ==' ' || *(s+1) =='\0')) return false;
+                dot = true;
+            } else if (*s == '-' || *s == '+') {
+                if (*(s+1) == ' ' || *(s+1) == '\0') return false;
+                if (*(s-1) != 'e' && *(s-1) != 'E') return false;
+            } else return false;
+        }
+        while (*s  == ' ') ++s;
+        return *s == '\0';
     }
 };
